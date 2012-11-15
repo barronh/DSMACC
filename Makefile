@@ -54,3 +54,6 @@ tuv_old/%.o: %.f
 	$(F90) $(F90FLAGS) $(LINCLUDES) -c $<
 # list of dependencies (via USE statements)
 include depend.mk
+
+test: $(PROG)
+	cd test && ../dsmacc && python check.py

@@ -1,0 +1,9 @@
+*.o
+*.mod
+depend.mk
+fort.*
+dsmacc_*.f90
+dsmacc
+Rate_*.dat
+Spec_*.dat
+tuvlog.txt
