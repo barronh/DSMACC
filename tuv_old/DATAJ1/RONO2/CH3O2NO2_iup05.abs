@@ -1,0 +1,33 @@
+CH3O2NO2 cross sections, IUPAC 05
+MPI-Mainz Spectral Atlas
+values for 298 K
+200-280 nm:  I. Bridier, R. Lesclaux, and B. Veyret, Chem. Phys. Lett. 191, 259 (1992)
+> 290 nm:    Comparison with HO2NO2 spectrum
+n = 7
+nm	1e-20 cm2
+200	500
+205	360
+210	240
+215	150
+220	105
+225	80
+230	68
+235	60
+240	53
+245	46
+250	39
+255	32
+260	26
+265	20
+270	16
+275	13
+280	10.5
+285	6.2
+290	3.9
+295	2.4
+300	1.4
+305	0.85
+310	0.53
+315	0.39
+320	0.24
+325	0.15

@@ -1,0 +1,119 @@
+TUV input file
+==================================================================
+inpfil =      defin1   outfil =      usrout   nstr =            -2
+lat =          0.000   lon =          0.000   tmzone =         0.0
+iyear =         2002   imonth =           3   iday =            21
+zstart =       0.000   zstop =       80.000   nz =              81
+wstart =     280.000   wstop =      420.000   nwint =          140
+tstart =      12.000   tstop =       20.000   nt =               5
+lzenit =           F   alsurf =       0.100   psurf =       -999.0
+o3col =      300.000   so2col =       0.000   no2col =       0.000
+taucld =       0.000   zbase =        4.000   ztop =         5.000
+tauaer =       0.235   ssaaer =       0.990   alpha =        1.000
+dirsun =       1.000   difdn =        1.000   difup =        0.000
+zout =         0.000   zaird =   -9.990E+02   ztemp =     -999.000
+lirrad =           T   laflux =           F   lmmech =           F
+lrates =           T   isfix =            0   nms =              6
+ljvals =           F   ijfix =            0   nmj =              0
+iwfix =            0   itfix =            0   izfix =            0
+==================================================================
+===== Available spectral weighting functions:
+T  1 UV-B, 280-315 nm                                  
+T  2 UV-B*, 280-320 nm                                 
+T  3 UV-A, 315-400 nm                                  
+F  4 vis+, > 400 nm                                    
+F  5 Gaussian, 305 nm, 10 nm FWHM                      
+F  6 Gaussian, 320 nm, 10 nm FWHM                      
+F  7 Gaussian, 340 nm, 10 nm FWHM                      
+F  8 Gaussian, 380 nm, 10 nm FWHM                      
+F  9 RB Meter, model 501                               
+F 10 PAR, 400-700 nm, umol m-2 s-1                     
+F 11 Exponential decay, 14 nm/10                       
+T 12 DNA damage, in vitro (Setlow, 1974)               
+F 13 SCUP-mice (de Gruijl et al., 1993)                
+F 14 SCUP-human (de Gruijl and van der Leun, 1994)     
+T 15 CIE human erythema (McKinlay and Diffey, 1987)    
+T 16 UV index (WMO, 1994)                              
+F 17 Erythema, humans (Anders et al., 1995)            
+F 18 Occupational TLV (ACGIH, 1992)                    
+F 19 Phytoplankton (Boucher et al., 1994)              
+F 20 Phytoplankton, phaeo (Cullen et al., 1992)        
+F 21 Phytoplankton, proro (Cullen et al., 1992)        
+F 22 Cataract, pig (Oriowo et al., 2001)               
+F 23 Plant damage (Caldwell, 1971)                     
+F 24 Plant damage (Flint & Caldwell, 2003)             
+===== Available photolysis reactions
+F  1 O2 -> O + O                                       
+F  2 O3 -> O2 + O(1D)                                  
+F  3 O3 -> O2 + O(3P)                                  
+F  4 NO2 -> NO + O(3P)                                 
+F  5 NO3 -> NO + O2                                    
+F  6 NO3 -> NO2 + O(3P)                                
+F  7 N2O5 -> NO3 + NO + O(3P)                          
+F  8 N2O5 -> NO3 + NO2                                 
+F  9 N2O -> N2 + O(1D)                                 
+F 10 HO2 -> OH + O                                     
+F 11 H2O2 -> 2 OH                                      
+F 12 HNO2 -> OH + NO                                   
+F 13 HNO3 -> OH + NO2                                  
+F 14 HNO4 -> HO2 + NO2                                 
+F 15 CH2O -> H + HCO                                   
+F 16 CH2O -> H2 + CO                                   
+F 17 CH3CHO -> CH3 + HCO                               
+F 18 CH3CHO -> CH4 + CO                                
+F 19 CH3CHO -> CH3CO + H                               
+F 20 C2H5CHO -> C2H5 + HCO                             
+F 21 CHOCHO -> HCO + HCO                               
+F 22 CHOCHO -> CH2O + CO                               
+F 23 CH3COCHO -> CH3CO + HCO                           
+F 24 CH3COCH3 -> CH3CO + CH3                           
+F 25 CH3OOH -> CH3O + OH                               
+F 26 CH3ONO2 -> CH3O + NO2                             
+F 27 CH3CO(OONO2) -> Products                          
+F 28 ClOO -> Products                                  
+F 29 ClONO2 -> Cl + NO3                                
+F 30 ClONO2 -> ClO + NO2                               
+F 31 CH3Cl -> Products                                 
+F 32 CCl2O -> Products                                 
+F 33 CCl4 -> Products                                  
+F 34 CClFO -> Products                                 
+F 35 CF2O -> Products                                  
+F 36 CF2ClCFCl2 (CFC-113) -> Products                  
+F 37 CF2ClCF2Cl (CFC-114) -> Products                  
+F 38 CF3CF2Cl (CFC-115) -> Products                    
+F 39 CCl3F (CFC-11) -> Products                        
+F 40 CCl2F2 (CFC-12) -> Products                       
+F 41 CH3CCl3 -> Products                               
+F 42 CF3CHCl2 (HCFC-123) -> Products                   
+F 43 CF3CHFCl (HCFC-124) -> Products                   
+F 44 CH3CFCl2 (HCFC-141b) -> Products                  
+F 45 CH3CF2Cl (HCFC-142b) -> Products                  
+F 46 CF3CF2CHCl2 (HCFC-225ca) -> Products              
+F 47 CF2ClCF2CHFCl (HCFC-225cb) -> Products            
+F 48 CHClF2 (HCFC-22) -> Products                      
+F 49 BrONO2 -> Br + NO3                                
+F 50 BrONO2 -> BrO + NO2                               
+F 51 CH3Br -> Products                                 
+F 52 CHBr3 -> Products                                 
+F 53 CF3Br (Halon-1301) -> Products                    
+F 54 CF2BrCF2Br (Halon-2402) -> Products               
+F 55 CF2Br2 (Halon-1202) -> Products                   
+F 56 CF2BrCl (Halon-1211) -> Products                  
+F 57 Cl2 -> Cl + Cl                                    
+F 58 CH2(OH)CHO -> Products                            
+F 59 CH3COCOCH3 -> Products                            
+F 60 CH3COCHCH2 -> Products                            
+F 61 CH2C(CH3)CHO -> Products                          
+F 62 CH3COCO(OH) -> Products                           
+F 63 CH3CH2ONO2 -> CH3CH2O + NO2                       
+F 64 CH3CHONO2CH3 -> CH3CHOCH3 + NO2                   
+F 65 CH2(OH)CH2(ONO2) -> CH2(OH)CH2(O.) + NO2          
+F 66 CH3COCH2(ONO2) -> CH3COCH2(O.) + NO2              
+F 67 C(CH3)3(ONO2) -> C(CH3)3(O.) + NO2                
+F 68 ClOOCl -> Cl + ClOO                               
+F 69 CH2(OH)COCH3 -> CH3CO + CH2(OH)                   
+F 70 CH2(OH)COCH3 -> CH2(OH)CO + CH3                   
+F 71 HOBr -> OH + Br                                   
+F 72 BrO -> Br + O                                     
+F 73 Br2 -> Br + Br                                    
+==================================================================

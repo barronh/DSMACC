@@ -1,0 +1,88 @@
+33 56         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 165 ff.
+
+CF2Br2 (Halon-1202) + hv -> Products
+
+"The preferred absorption cross sections at 298 K, listed in Table 54, are the
+mean of the values reported by Gillotay and Simon [568] at 2 nm intervals and
+Burkholder et al. [219] at 1 nm intervals over the wavelength range where the
+agreement is no more than a factor of two.  At wavelengths longer than ca. 250
+nm, Burkholder et al. [219] measured cross sections larger than those reported
+by Gillotay and Simon [568] and Molina et al. [1106].  The discrepancy
+increases with wavelength and is more than a factor of two beyond 280 nm.
+However, the agreement between all three measurements is acceptable below 250
+nm.  The values of Molina et al. agree with those of Gillotay and Simon over
+the entire range of wavelengths.  The temperature dependence of the cross
+sections has been measured by Gillotay and Simon as well as Burkholder et al.
+[219].  The agreement between these two studies is poor.
+
+The quantum yield for the dissociation of CF2Br2 has been measured to be unity
+at 206, 248 and 308 nm by Molina and Molina [1104], independent of pressure, in
+contrast to an earlier report by Walton [1665] that the quantum yield at 265
+decreases from unity when the system pressure is raised to 50 torr of CO2."
+
+Table 54.  Absorption Cross Sections of CF2Br2
+--------------------------------------------------------------------------
+lambda (nm)		1E20 sigma (cm^2)
+--------------------------------------------------------------------------
+190			114
+192			109
+194			100
+196			91
+198			82
+200			75
+202			72
+204			74
+206			81
+208			93
+210			110
+212			136
+214			155
+216			180
+218			203
+220			224
+222			242
+224			251
+226			253
+228			250
+230			241
+232			227
+234			209
+236			189
+238			168
+240			147
+242			126
+244			106
+246			88
+248			73
+250			59
+252			47
+254			37
+256			29
+258			23
+260			18
+262			13
+264			10
+266			7.6
+268			5.7
+270			4.2
+272			3.1
+274			2.2
+276			1.6
+278			1.2
+280			0.89
+282			0.65
+284			0.48
+286			0.34
+288			0.24
+290			0.18
+292			0.13
+294			0.096
+296			0.068
+298			0.050
+300			0.036

@@ -1,0 +1,47 @@
+file CH2O_NBS_MOOR.AVE -  CH2O cross sect. ratio Moortgat to Bass et al (NBS)
+At T = 290 K
+Moortgat tabulates band max absorption, obtained with 0.5 nm resol.
+Bass et al. give values every 0.025 nm.
+Therefore before computing ratios, the following was done:
+(1) the Bass et al. values were smoothed (running average) over 20 
+points (0.5 nm) using the program [MADRONICH.JVALUES]SMOOTH.FOR
+(2) band maxima were identified for the smoothed Bass data.
+(3) these were compared to the Mortgat values. ratios given below
+(4) add end points (450.,1.82) and (250.,1.03)
+
+Wavelengths are those from the Bass data. There is about a 5-10 nm shift
+between band maxima of Moortgat and of Bass (Moortgat longer wave)
+To estimate the Moortgat values at all wavelengths, use the following band
+max ratios to multiply the Bass values.
+To estimate an average between Moortgat and Bass, use formula
+average cross sect. = (Bass value)*(1. + ratio)/2.
+________________________________
+250.00          1.03
+263.17          1.03
+267.02          0.94
+268.11          0.97
+271.11          1.02
+275.15          0.95
+275.89          0.99
+279.490         1.00
+281.000         1.00
+284.460         1.06
+288.575         1.06
+290.910         0.98
+293.725         1.10
+298.337         1.13
+301.212         1.10
+303.888         1.27
+305.413         1.07
+308.863         1.27
+312.238         0.97
+314.313         1.56
+316.988         1.41
+320.475         0.94
+326.113         1.81
+329.388         1.40
+338.813         1.97
+342.962         1.33
+352.925         1.82
+360.000         1.00
+

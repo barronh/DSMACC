@@ -1,0 +1,40 @@
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 125 ff.
+
+N2O + hv -> N2 + O(1D)
+
+"The recommended values are taken from the work of Selwyn et al. [1403], who
+measured the temperature dependence of the absorption cross section in the
+atmospherically relevant wavelength region.  They have fitted their data with
+the expression shown in Table 16;  Table 17 presents the romm temperature data.
+Hubrich and Stuhl [712] remeasured the N2O cross sections at 298K and 208K and
+Merienne et al [1072] in the range from 220K to 296K.  The results of these two
+sets of measurements are in very good agreement with those of Selwyn et al.
+The quantum yield for photodissociation is unity and the products are N2 and
+O(1D) (Zelikoff and Aschenbrand [1777]; Paraskevopoulos and Cvetanovic [1223];
+Preston and Barr [1282]; Simonaitis et al. [1427]).  The yield of N(4s) and
+NO(2Pi) is less than 1% (Greenblatt and Ravishankara [596])."
+
+Table 16. Mathematical Expression for Absorption Cross Sections of N2O as a
+Function of Temperature
+----------------------------------------------------------------------------
+                       4                                3
+                      __              n                __          n
+ ln sigma(lambda,T) = >   A    lambda   + (T-300) exp( >  B  lambda  )
+                      --   n                           --  n
+                      n=0                              n=0
+
+Where T: temperature K;      lambda: nm;
+
+    A0 = 68.21023                B0 = 123.4014
+    A1 = -4.071805               B1 = -2.116255
+    A2 = 4.301146E-02            B2 = 1.111572E-02
+    A3 = -1.777846E-04           B3 = -1.881058E-05
+    A4 = 2.520672E-07 
+
+Range 173 to 240 nm;  194 to 320 K;
+----------------------------------------------------------------------------

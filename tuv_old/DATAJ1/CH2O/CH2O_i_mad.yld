@@ -1,0 +1,33 @@
+file CH2O_I_MAD.YLD Quantum yields for CH2O->H+HCO, evaluated by S.Madronich
+using data from:
+Moortgat et al. (1983) J.Chem.Phys. v.78, p.1185-1190.
+Horowitz and Calvert (1978) Int.J.Chem.Kin., X, 805.
+Also used data given in Horowitz and Calvert, as renormalized by them:
+    from Marlin,  from Clark.
+Data of Lewis et al. was specifically discarded because appears to be too low
+at shorter wavelengths.
+nm      yield
+$$
+250.    .35
+255.    .32
+260.    .315
+265.    .33
+270.    .38
+275.    .44
+280.    .525
+285.    .635
+288.    .685
+290.    .714
+295.    .74
+300.    .75
+305.    .755
+310.    .750
+312.    .74
+315.    .715
+320.    .595
+325.    .46
+330.    .310
+335.    .12
+338.5   0.
+$$
+

@@ -1,0 +1,44 @@
+O2 absorption cross section (Herzberg continuum), 205 -240 nm, from:
+* Yoshino, K., A. S.-C. Cheung, J. R. Esmond, W. H. Parkinson, 
+*  D. E. Freeman, S. L. Guberman, A. Jenouvrier, B. Coquart, and
+*  M. F. Merienne, Imporved absorption cross sections of oxygen
+*  in the wavelength region 205-240 nm of the Herzberg continuum,
+*  Planet. Space Sci., 36, 1469-1475, 1988.
+*  (also the JPL-94 and -97 recommendation)
+w, nm   xs, 1.e-24 cm2
+205	7.35
+206	7.13
+207	7.05
+208	6.86
+209	6.68
+210	6.51
+211	6.24
+212	6.05
+213	5.89
+214	5.72
+215	5.59
+216	5.35
+217	5.13
+218	4.88
+219	4.64
+220	4.46
+221	4.26
+222	4.09
+223	3.89
+224	3.67
+225	3.45
+226	3.21
+227	2.98
+228	2.77
+229	2.63
+230	2.43
+231	2.25
+232	2.10
+233	1.94
+234	1.78
+235	1.63
+236	1.48
+237	1.34
+238	1.22
+239	1.10
+240	1.01

@@ -1,0 +1,43 @@
+28 16         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 156 ff.
+
+CF3CHFCl (HCFC-124) + hv -> Products
+
+"The preferred absorption cross sections at 298 K, listed in Table 47, are the 
+mean of the values reported by Gillotay and Simon [570] and Orlando et al.
+[1212] over the wavelength range where the agreement is bettern than a factor
+of two.  At lower wavelengths the agreement is much better;  e.g., at 200 nm
+the agreement is within 5%.  Green and Wayne [594] and Hubrich and Stuhl [712]
+have also measured the cross sections in the ranges 185-200 nm and 160-230 nm,
+respectively.  The results of Green and Wayne are very different from the
+recommended value and were not considered for this evaluation.  The results of
+Hubrich and Stuhl (reported at 5 nm intervals) are in reasonable agreement
+with the more recent studies of Fillotay and Simon and of Orlando et al.  The
+temperature dependence of the cross sections has been measured by Orlando et
+al. and by Gillotay and Simon;  it has not been included in this evaluation."
+
+Table 47.  Absorption Cross Sections of Hydrochlorofluoroethanes at 298K
+----------------------------------------------------------------------------
+lambda (nm)		1E20 sigma (cm^2) at 298K
+----------------------------------------------------------------------------
+190			0.77
+192			0.55
+194			0.39
+196			0.27
+198			0.18
+200			0.13
+202			0.086
+204			0.060
+206			0.040
+208			0.027
+210			0.019
+212			0.012
+214			0.008
+216			0.006
+218			0.004
+220			0.003

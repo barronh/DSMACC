@@ -1,0 +1,38 @@
+file N2O5.ABS  
+REFERENCE:  JPL PUBLICATION 94-26
+            CHEMICAL KINETICS AND PHOTOCHEMICAL DATA FOR USE IN 
+            STRATOSPHERIC MODELING.
+            DECEMBER 15, 1994
+TEMPERATURE:  NO TEMPERATURE REPORTED BETWEEN 200 AND 280 NM
+              TEMPERATURE DEPENDANDENCE BETWEEN 280 AND 380 NM IS
+              GIVEN BY THE EXPRESSION:
+    
+    FOR 285 NM < WAVELENGTH < 380 NM
+    300 K > T > 225 K
+
+    10EXP20*XS = EXP[2.735 + ((4728.5 - 17.127*W)/T]
+    
+    WHERE XS/CM SQ ;  W/NM;  T/K
+
+ABSORPTION CROSS SECTION DATA REPORTED BY YAO ET AL. (1982)
+TEMPERATURE RANGE FROM 223 TO 300 K
+
+WAVELENGTH (NM)     ABSORPTION CROSS SECTION (CM SQ)
+******************
+     200                    920
+     205                    820
+     210                    560
+     215                    370
+     220                    220
+     225                    144
+     230                    99
+     235                    77
+     240                    62
+     245                    52
+     250                    40
+     255                    32
+     260                    26
+     265                    20
+     270                    16.1
+     275                    13.0
+     280                    11.7

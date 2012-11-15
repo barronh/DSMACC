@@ -1,0 +1,54 @@
+24 31         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 136
+
+ClOO + hv -> ClO + O
+
+"Johnston et al. [779] measured the absorption cross sections of the ClOO
+radical using a molecular modulation technique which required interpretation of
+a complex kinetic scheme.  More recently, Mauldin et al. [1047] reported ross
+section measurements in the range from 220 to 280 nm, and Baer et al. [81] from
+240 to 300 nm.  These two studies are in very good agreement, yielding cross
+section values which are more than twice as large as the older Johnston et al.
+values.  The recommended cross sections are listed in Table 26, and are taken
+from the work of Mauldin et al."
+
+Table 26.  Absorption Cross Sections of ClOO
+-------------------------------------------------------------------
+  lambda (nm)		1E20 sigma (cm^2)
+-------------------------------------------------------------------
+220			611
+222			670
+224			747
+226			951
+228			1100
+230			1400
+232			1650
+234			1960
+236			2240
+238			2520
+240			2730
+242			2910
+244			2960
+246			2980
+248			2950
+250			2800
+252			2630
+254			2370
+256			2120
+258			1890
+260			1610
+262			1370
+264			1120
+266			905
+268			725
+270			596
+272			435
+274			344
+276			282
+278			210
+280			200

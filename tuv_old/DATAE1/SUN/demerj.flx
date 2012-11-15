@@ -1,0 +1,70 @@
+23 48
+
+Reference:
+
+K.L. Demerjian, K.L. Schere, and J.T. Peterson, Theoretical estimates of
+actinic (spectrally integrated) flux and photolytic rate constatns of
+atmospheric species in the lower troposphere, Adv.Env.Sci. and Technol., v10,
+369-459, 1980.
+
+[Note, that only SCOPT, EXOPT, and ALB are included in this exerpt from
+Appendix B.]
+
+Appendix B.  Values of Model Input Data for Each Wavelength Interval: 
+Extraterrestrial Solar Flux (ETR), Ozone Absoprtion Coefficient (O3ABS), Normal
+Ozone Optical Thickness (O3OPT), Normal Rayleigh Scattering Optical Thickness
+(ROPT), Normal Aerosol Scattering Optical Thickness (SCOPT), Normal Aerosol
+Extinction Optical Thickness (EXOPT), and Surface Albedo (ALB).
+
+----------------------------------------------------
+Wavelength	ETR
+  (nm)             
+----------------------------------------------------
+290 295		2.67
+295 300		2.75
+300 305		2.70
+305 310		3.17
+310 315		3.90
+315 320		3.92
+320 325		4.09
+325 330		5.28
+330 335		5.19
+335 340		4.89
+340 345		5.09
+345 350		4.94
+350 355		5.47
+355 360		4.92
+360 365		5.34
+365 370		6.43
+370 375		5.70
+375 380		6.24
+380 385		5.07
+385 390		5.48
+390 395		5.55
+395 400		6.62
+400 405		7.68
+405 410		8.48
+410 415		8.81
+415 420		8.80
+420 430		16.93
+430 440		16.94
+440 450		19.15
+450 460		20.47
+460 470		20.49
+470 480		20.49
+480 490		19.94
+490 500		19.54
+500 510		20.47
+510 520		18.45
+520 530		18.45
+530 540		18.15
+540 550		17.54
+550 560		17.15
+560 570		17.04
+570 580		17.16
+580 600		33.92
+600 620		32.67
+620 640		31.43
+640 660		30.26
+660 680		29.13
+680 700		28.00

@@ -1,0 +1,77 @@
+32 46         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 165 ff.
+
+CF2BrCF2Br (Halon-2402) + hv -> Products
+
+"The preferred absorption cross sections at 298 K, listed in Table 54, are the
+mean of the values reported by Gillotay et al. [571] at 2 nm intervals and
+Burkholder et al. [219] at 1 nm intervals over the wavelength range where the
+agreement is acceptable, i.e., ca. 70%.  At longer wavelengths, Burkholder et
+al. [219] measured larger cross sections than those measured by Gillotay et al.
+Molina et al. [1106] have also measured these cross sections and they agree
+with the results of Gillotay et al. at longer wavelengths.  The agreement
+between the three studies at wavelengths shorter than 250 nm is good.  The
+results of Robbins [1331] are in good agreement with the recommended values.
+
+The temperature dependence of the cross sections has been measured by Gillotay
+et al. [571] and Burkholder et al. [219].  The agreement between the two
+studies is poor at longer wavelengths.  We have not evaluated the temperature
+dependence of the cross section and the readres are referred to the
+investigators for the information."
+
+
+Table 54.  Absorption Cross Sections of CF2BrCF2Br
+--------------------------------------------------------------------------
+lambda (nm)		1E20 sigma (cm^2)
+--------------------------------------------------------------------------
+190			109
+192			114
+194			119
+196			122
+198			124
+200			124
+202			124
+204			120
+206			117
+208			112
+210			106
+212			100
+214			92
+216			85
+218			77
+220			69
+222			61
+224			54
+226			47
+228			40
+230			35
+232			29
+234			24
+236			20
+238			16
+240			13
+242			11
+244			8.4
+246			6.7
+248			5.2
+250			4.1
+252			3.1
+254			2.3
+256			1.8
+258			1.3
+260			0.95
+262			0.71
+264			0.53
+266			0.39
+268			0.28
+270			0.21
+272			0.16
+274			0.11
+276			0.082
+278			0.060
+280			0.044

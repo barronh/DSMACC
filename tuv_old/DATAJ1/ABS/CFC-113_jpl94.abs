@@ -1,0 +1,48 @@
+25 24         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 152 
+
+CF2ClCFCl2 (CFC-113) + hv -> Products
+
+"The recommended absorption cross section values for these species at 295 K and
+at 210 K are presented in Table 42, and are taken from Simon et al. [1426].
+These values are in good agreement with those reported by Hubrich and Stuhl
+[712], who also carried out measurements at lower temperatures.  They are also
+in good agreement with the data of Chou et al. [299], except that these authors
+report cross section values for CF3CF2Cl that are about 50% higher.  Also, for
+this species the temperature dependency is unimportant in the wavelength region
+of interest."
+
+Table 42.  Absorption Cross Sections for CF2ClCFCl2
+-------------------------------------------------------------------------
+lambda                    1E20 sigma (cm^2)
+ (nm)		T = 295K		T = 210 K
+-------------------------------------------------------------------------
+184		118			118
+186		104			104
+188		83.5			83.5
+190		64.5			64.5
+192		48.8			48.8
+194		36.0			36.0
+196		26.0			24.3
+198		18.3			15.9
+200		12.5			10.1
+202		8.60			6.54
+204		5.80			4.09
+206		4.00			2.66
+208		2.65			1.68
+210		1.8			1.12
+212		1.15			0.696
+214		0.760			0.452
+216		0.505			0.298
+218		0.318			0.184
+220		0.220			0.125
+222		0.145			0.081
+224		0.095			0.053
+226		0.063			0.034
+228		0.041			0.022
+230		0.027			0.014

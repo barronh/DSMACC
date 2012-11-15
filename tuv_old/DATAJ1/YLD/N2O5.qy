@@ -1,0 +1,23 @@
+# The following data for the production of O-atoms (O(3P)) from N2O5 photolysis
+# are taken from the JPL 95 recommendations 
+# The original studies were done by Barker et al., Margitan, and Ravishankara et
+# al.
+wavelength (nm)  phi(O(3P))  phi(NO2)=1-phi(O(3P))   study
+248              0.72        0.28                    Ravishankara
+266              0.35        0.65                    Margitan
+266              0.38        0.62                    Ravishankara
+287              0.21        0.79                    Ravishankara
+289              0.15        0.85                    Ravishankara
+290              0.1         0.9                     Barker
+# A linear regression through the data above (for phi(O(3P))) gives the
+# following approximation for phi(O(3P)):
+#
+#         phi(O(3P)) = 3.832441 - 0.012809638 * lambda
+#
+# Assuming the cutoff points at phi = 1 and phi = 0, we get the following:
+#      
+#    phi(O(3P)) = 1                           for l < 221.11820
+#    phi(O(3P)) = 3.832441 - 0.012809638 * l  for 221.11820 <= l <= 299.18441
+#    phi(O(3P)) = 0                           for l > 299.18441
+
+From siri@siri.acd.ucar.edu Wed Apr 17 11:29:22 1996

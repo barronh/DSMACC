@@ -1,0 +1,23 @@
+file H011_JPL85.ABS - CH3O2H->CH3O+HO cross sectionS FROM JPL85
+Units:  Wavelength (NM)
+        Absorption Cross Section (1E-20 CM2)
+Wavelength        Cross section
+$$$$$$$$
+1.	1.0e-20
+210     37.5
+220     22.0
+230     13.9
+240      8.8
+250      5.8
+260      3.8
+270      2.5
+280      1.5
+290      0.90
+300      0.58
+310      0.34
+320      0.19
+330      0.11
+340      0.06
+350      0.04
+360      0.00
+$$$$$$

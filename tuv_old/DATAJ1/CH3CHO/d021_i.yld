@@ -1,0 +1,30 @@
+file F021_I.YLD - CH3CHO->CH3+CHO quantum yield from Moortgat
+CH3CHO quantum yield data - RADICAL CHANNEL
+Date Of Last Entry 3/14/86
+Reference:  Moortgat
+Species Code     Common Name          Chemical Formula
+     F021         Acetaldehyde         CH3CHO
+Units:  Wavelength (NM)
+        Quantum Yield 
+Scale Factor
+Temperature:  
+Pressure:  760 Torr
+Subroutine corrects for pressure dependence
+Added endpoint 0.0 at 450 nm
+N =  10
+Quantum Yeild Data
+Wvl (Nm)     Qy ()
+$$
+1       1
+  260     0.31
+  270     .39
+  280     0.58
+  290     0.53
+  300     0.44
+  310     0.28
+  320     0.105
+  328     0.02
+  330     0.0
+  450     0.0
+$$
+\EOF

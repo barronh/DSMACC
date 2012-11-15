@@ -1,0 +1,21 @@
+file F021_III.YLD acetaldehyde channel III from Moorgat
+date of last entry   3/14/86
+reference:  Moortgot
+species code     common name         chemical formula
+    F021          acetaldehyde        CH3CHO
+pressure:  760  torr
+quantum yield data for acetaldehyde    path iii
+wvl (nm)    qy( )
+$$
+1       1
+  260     0.17
+  270     0.14
+  280     0.12
+  290     0.10
+  300     0.08
+  310     0.06
+  320     0.0
+  328     0.0
+  330     0.0
+$$
+\EOF

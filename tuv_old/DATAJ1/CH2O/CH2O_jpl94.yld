@@ -1,0 +1,56 @@
+34 23
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 130 ff.
+
+CH2O + hv -> H + HCO  (Phi1)
+          -> H2 + CO  (Phi2)
+
+"The quantum yields have been reported with good agreement by Horowitz and
+Calvert [691], Clark et al. [307], Tang et al. [1535], Moortgat and Warneck
+[1127], and Moortgat et al. [1121, 1224].  The recommended values listed in
+Table 22 are based on the results of these investigators, as evaluated by S.
+Madronich (private communication, 1991).  The quantum yield for the production
+of H2 and CO is pressure and temperature dependent for wavelengths longer than
+about 330 nm (Morrtgat et al. [1124]).  Table 22 gives the values at
+atmospheric pressure and room temperature;  the reader is referred to the
+Moortgat et al. publication for information on values at lower pressures and
+temperatures."
+
+Table 22.  Absorption Cross Sections and Quantum Yields for Photolysis of CH2O
+
+Note:  The values are averaged for 2.5 nm intervals centered on the indicated
+wavelength.
+
+* Cross sections for -50 C < T < 20 C calculated as sigma(T) = A + Bx1E-3xT
+
+===============================================================================
+lambda 		 Phi1   	  Phi2
+(nm)		(H+HCO) 	(H2+CO)
+===============================================================================
+301.25		0.749		0.251
+303.75		0.753		0.247
+306.25		0.753		0.247
+308.75		0.748		0.252
+311.25		0.739		0.261
+313.75		0.724		0.276
+316.25		0.684		0.316
+318.75		0.623		0.368
+321.25		0.559		0.423
+323.75		0.492		0.480
+326.25		0.420		0.550
+328.75		0.343		0.634
+331.25		0.259		0.697
+333.75		0.168		0.739
+336.25		0.093		0.728
+338.75		0.033		0.667
+341.25		0.003		0.602
+343.75		0.001		0.535
+346.25		0.000		0.469
+348.75		0.000		0.405
+351.25		0.000		0.337
+353.75		0.000		0.265
+356.25		0.000		0.197

@@ -1,0 +1,63 @@
+34 30         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 150 ff.
+
+CCl2F2 (CFC-12) + hv -> Products
+
+"Tables 39, 40 and 41 list the present recommendations for the cross sections
+of CCl4, CCl3F and CCl2F2, respectively.  These data are given by the mean of
+the values reported by various groups, i.e., Hubrich et al. [713], Hubrich and
+Stuhl [712], Vanlaethem-Meuree et al. [1613, 1614], and Green and Wayne [594],
+as well as those referred to in earlier evaluations (CODATA [347]).  Absorption
+cross sections for these species over the temperature range 295-210K have also
+been reported by Simon et al. [1425].  These results are in generally good
+agreement with the present recommendations.  Expressions for the temperature
+dependence of the CCl3F and CCl2F2 cross sections are given at the bottom of
+Tables 40 and 41, respetively.  These expressions are valid in the wavelength
+range of maximum solar photodissociation, i.e., about 190-210 nm, but may not
+exactly reproduce the experimental temperature dependences outside this
+wavelength range.  However, J-value calculations should not be affected."
+
+sigma(T) = sigma(298) * exp[1E-04 (lambda-184.9)(T-298)]
+where sigma(298) = cross section at 298 K
+      lambda : nm
+      T      : temperature, K
+
+Table 41.  Absorption Cross Sections of CCl2F2
+-------------------------------------------------------------------
+ lambda (nm)		1E20 sigma (cm^2)
+-------------------------------------------------------------------
+170			124
+172			151
+174			171
+176			183
+178			189
+180			173
+182			157
+184			137
+186			104
+188			84.1
+190			62.8
+192			44.5
+194			30.6
+196			20.8
+198			13.2
+200			8.84
+202			5.60
+204			3.47
+206			2.16
+208			1.52
+210			0.80
+212			0.48
+214			0.29
+216			0.18
+218			0.12
+220			0.068
+225			0.022
+230			0.0055
+235			0.0016
+240			0.00029

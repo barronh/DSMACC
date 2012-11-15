@@ -1,0 +1,39 @@
+file HNO3.ABS
+REFERENCE:  JPL PUBLICATION 85-37
+            CHEMICAL KINETICS AND PHOTOCHEMICAL DATA FOR USE IN
+            STRATOSPHERIC MODELING
+            JULY 1, 1985
+ABSORPTION CROSS SECTION DATA REPORTED BY MOLINA AND MOLINA (1973)
+WAVELENGTH (NM)     ABSORPTION CROSS SECTION (1E-20  CM SQ)
+$$$$$$$$$
+1.	1.e-20
+     190                    1560
+     195                    1150
+     200                    661
+     205                    293
+     210                    105
+     215                    35.6
+     220                    15.1
+     225                    8.62
+     230                    5.65
+     235                    3.72
+     240                    2.57
+     245                    2.10
+     250                    1.91
+     255                    1.90
+     260                    1.88
+     265                    1.71
+     270                    1.59
+     275                    1.35
+     280                    1.1
+     285                    0.848
+     290                    0.607
+     295                    0.409
+     300                    0.241
+     305                    0.146
+     310                    0.071
+     315                    0.032
+     320                    0.012
+     325                    0.005
+     330                    0.002
+$$$$$$$$$$$$$$$$$$$$

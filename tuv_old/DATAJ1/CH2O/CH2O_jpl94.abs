@@ -1,0 +1,65 @@
+37 23
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 130 ff.
+
+CH2O + hv -> H + HCO  (Phi1)
+          -> H2 + CO  (Phi2)
+
+"The earlier recommendation for the formaldehyde absorption cross sections was
+based on the work carried out by Bass et al. [116] with a resolution of 0.05 nm
+at 296 K and 223 K, and by Moortgat et al. [1121, 1124] with a resolution of
+0.5 nm in the 210-360 K temperature range.  More recently, Cantrell et al.
+[250] measured the cross sections in the 300-360 nm range between 223K and 293
+K, and Rogers [1338] measured the cross sections in the 235-365 nm range at 296
+K, both groups using Fourier transform spectrometry at a resolution of up to
+0.011 nm (1 cm-1).  The agreement between these two reports is very good.  The
+recommended values are those given by Cantrell et al. as a function of
+temperature;  the reader is referred to the original article to obtain the high
+resolution data.  Table 22 lists the low resolution cross sections taken from
+that work, which are suitable for atmospheric photodissociation calculations."
+
+Table 22.  Absorption Cross Sections and Quantum Yields for Photolysis of CH2O
+
+Note:  The values are averaged for 2.5 nm intervals centered on the indicated
+wavelength.
+
+* Cross sections for -50 C < T < 20 C calculated as sigma(T) = A + Bx1E-3xT
+
+===============================================================================
+                  1E20 sigma (cm^2)               T-parameters *
+lambda        -------------------------       ---------------------
+(nm)  		223 K		293 K		A		B
+===============================================================================
+301.25		1.38		1.36		1.37		-0.21
+303.75		4.67		4.33		4.43		-4.73
+306.25		3.32		3.25		3.27		-1.06
+308.75		2.27		2.22		2.24		-0.724
+311.25		0.758		0.931		0.882		 2.48
+313.75		3.65		3.40		3.47		-3.64
+316.25		4.05		3.89		3.94		-2.30
+318.75		1.66		1.70		1.69	  	 0.659
+321.25		1.24		1.13		1.16		-1.52
+323.75		0.465		0.473		0.471		 0.118
+326.25		5.06		4.44		4.61		-8.86
+328.75		2.44		2.29		2.34		-2.15
+331.25		1.39		1.28		1.31		-1.53
+333.75		0.093		0.123		0.114		 0.432
+336.25		0.127		0.131		0.130		 0.050
+338.75		3.98		3.36		3.54		-8.96
+341.25		0.805		0.936		0.898		1.86
+343.75		1.44		1.26		1.31		-2.64
+346.25		0.004		0.071		0.052		 0.957
+348.75		0.009		0.040		0.031		 0.438
+351.25		0.169		0.235		0.216		 0.948
+353.75		1.83		1.55		1.63		-4.05
+356.25		0.035		0.125		0.099		 1.27
+
+
+
+
+
+

@@ -1,0 +1,110 @@
+40 71
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 122 f.
+
+NO3 + hv -> NO + O2 (1)
+            NO2 + O (2)
+
+"The absorption cross sections for the nitrate free radical, NO3, have been 
+studied by (1) Johnston and Graham [778]; (2) Graham and Johnston [589]; (3)
+Mitchell et al. [1096]; (4) Marinelli et al. [1030]; (5) Ravishankara and Wine
+[1311]; (6) Cox et al. [365]; (7) Burrows et al. [227]; (8) Ravishankara and
+Mauldin [1302]; (9) Sander [1360]; (10) Cantrell et al. [251]; and (11)
+Canosa-Mas et al. [246].  The 1st and 4th studies required calculation of the
+NO3 concentration by modeling a complex kinetic system.  The other studies are
+more direct and the results in terms of intefrated absorption coefficients are
+in good agreement.  The recommended value at 298 K and 662 nm, (2.00 +-
+0.25)x1E-17 cm^2, is the average of the results of studies (4), (5) and (7)
+through (11).  The values in the wavelength range 600-670 nm, shown in Figure 2
+and listed in Table 15, were calculated using the spectra measured in studies
+(8), (9) and (11), and normalizing the 662 nm value to the above average.  The
+spectra obtained in other studies are consulted for a more extended wavelength
+range.  The temperature dependence of the 662 nm band has been studied by
+Ravishankara and Mauldin [1302], Sander [1360] and Cantrell et al. [251], while
+the first two investigators observe the cross section at 662 nm to increase
+with decreasing temperature, Cantrell et al. [251] found no measurable
+dependence.  The reason for this discrepancy is not clear.
+
+[...]
+
+The spectroscopy of NO3 has been review by Wayne et al. [1688].  The reader is
+referred to this work for a more detailed discussion of the cross section and
+quantum yield data, and for estimates of the photodissociation rates as a
+function of zenith angle."
+
+Wavelength (nm)     Cross Section (1E-20 cm^2) at 298 K
+600			258
+601			263
+602			302
+603			351
+604			413
+605			415
+606			322
+607			225
+608			170
+609			153
+610			192
+611			171
+612			202
+613			241
+614			242
+615			210
+616			190
+617			189
+618			208
+619			229
+620			292
+621			450
+622			941
+623			1407
+624			1139
+625			796
+626			703
+627			715
+628			702
+629			672
+630			638
+631			470
+632			344
+633			194
+634			142
+635			128
+636			159
+637			191
+638			193
+639			162
+640			121
+641			99
+642			91
+643			93
+644			92
+645			85
+646			72
+647			69
+648			60
+649			51
+650			49
+651			52
+652			55
+653			61
+654			76
+655			93
+656			131
+657			172
+658			222
+659			356
+660			658
+661			1308
+662			2000
+663			1742
+664			1110
+665			752
+666			463
+667			254
+668			163
+669			113
+670			85

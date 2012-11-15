@@ -1,0 +1,74 @@
+BrONO2 -> Products. 
+The bromine nitrate cross sections have been measured at room temperature by
+Spencer and Rowland [386] in the wavelength region 186-390 nm, and by 
+Burkholder et al. [54] from 200-500 nm. The results from both studies are in 
+excellent agreement over the range of spectral overlap. The recommended cross 
+sections (Table 4-65) are taken from Burkholder et al. The only study of 
+photolysis products is that of Nickolaisen and Sander [292]. In that study, 
+quantum yields for the Br + NO3 and BrO + NO2 channels were measured using 
+broadband photolysis in quartz (lambda>200 nm) and pyrex (lambda>300 nm) 
+reaction cells with the assumption that these were the only reaction pathways. 
+The quantum yields were phi(BrO+NO2) = 0.71 and phi(Br+NO3) = 0.29.
+Wavelength, nm
+	xsection, 10-20 cm2
+200	680
+205	520
+210	361
+215	293
+220	258
+225	231
+230	205
+235	174
+240	139
+245	106
+250	79.5
+255	60.1
+260	47.1
+265	38.9
+270	33.8
+275	30.5
+280	27.9
+285	25.6
+290	23.2
+295	20.7
+300	18.4
+305	16.2
+310	14.2
+315	12.4
+320	11
+325	9.82
+330	8.94
+335	8.22
+340	7.64
+345	7.17
+350	6.66
+355	6.21
+360	5.69
+365	5.17
+370	4.66
+375	4.16
+380	3.69
+385	3.23
+390	2.88
+395	2.53
+400	2.25
+405	1.99
+410	1.81
+415	1.66
+420	1.5
+425	1.38
+430	1.3
+435	1.2
+440	1.11
+445	1.04
+450	0.93
+455	0.834
+460	0.743
+465	0.652
+470	0.566
+475	0.461
+480	0.39
+485	0.275
+490	0.243
+495	0.214
+500	0.135

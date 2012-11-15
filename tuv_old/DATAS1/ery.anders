@@ -1,0 +1,34 @@
+Minimal erythemal doses (MEDs)
+* Anders, A., H.-J. Altheide, M. Knalmann, and H. Tronnier,
+* Action spectrum for erythema in humands investigated with dye lasers, 
+* Photochem. and Photobiol., 61, 200-203, 1995.
+* for skin types II and III, Units are J m-2.
+	294	382 
+	295	359   
+	296	321 
+	297	322 
+	297.5	313 
+	298	306 
+	298.5	305 
+	299	306 
+	300	321 
+	301	338 
+	302	338 
+	305	605 
+	310	7900 
+	320	1.82e5
+	330	4.18e5 
+	338	4.20e5
+	341	4.10e5 
+	344	3.98e5 
+	347	4.00e5 
+	350	3.81e5
+	353	3.48e5	
+	356	3.28e5
+	359	2.87e5	
+	362	2.87e5	
+	365	3.01e5
+	368     3.53e5 
+	371	3.55e5	
+	374	4.07e5
+

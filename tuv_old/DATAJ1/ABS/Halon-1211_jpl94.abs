@@ -1,0 +1,76 @@
+27 50         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 165 ff.
+
+CF2BrCl (Halon-1211) + hv -> Products
+
+"The preferred absorption cross sections at 298 K, listed in Table 54, are the
+mean of the values reported by Gillotay and Simon [568] at 2 nm intervals and
+Burkholder et al. [219] at 1 nm intervals.  Molina et al. [1106] and Giolando
+et al. [574] have also measured the cross sections at 5 nm and 10 nm intervals,
+respectively.  The agreement between the four studies is quite good.
+
+The temperature dependence of the cross sections has been measured by Gillotay
+and Sim,on as well as Burkholder et al. [219].  The agreement between the two
+studies is poor.  We have not evaluated the temperature dependence of the cross
+section and the readers are referred to the original publications for this
+information."
+
+Table 54.  Absorption Cross Sections of CF2BrCl
+--------------------------------------------------------------------------
+lambda (nm)		1E20 sigma (cm^2)
+--------------------------------------------------------------------------
+190			47
+192			58
+194			70
+196			83
+198			96
+200			112
+202			118
+204			121
+206			122
+208			121
+210			117
+212			112
+214			106
+216			98
+218			90
+220			81
+222			72
+224			64
+226			56
+228			49
+230			42
+232			36
+234			31
+236			26
+238			22
+240			18
+242			15
+244			12
+246			10
+248			8.0
+250			6.5
+252			5.1
+254			4.0
+256			3.2
+258			2.4
+260			1.9
+262			1.4
+264			1.1
+266			0.84
+268			0.63
+270			0.48
+272			0.36
+274			0.27
+276			0.20
+278			0.15
+280			0.1
+282			0.079
+284			0.058
+286			0.043
+288			0.031

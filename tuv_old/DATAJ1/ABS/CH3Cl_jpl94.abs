@@ -1,0 +1,39 @@
+24 16         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 154
+
+CH3Cl + hv -> Products
+
+"The preferred absorption cross sections, listed in Table 44, are those given
+by Vanlaethem-Meuree er al [1614].  These values are in very good agreement
+with those reported by Robbins [1330] at 298 K, as well as with those given by
+Hubrich et al. [713] at 298 K and 208 K, if the temperature trend is taken into
+consideration.  The results recently reported by Simon et al. [1425] over the
+temperature range 295-210K are in excellent agreement with the present
+recommendation."
+
+Table 44.  Absorption Cross Sections of CH3Cl
+-----------------------------------------------------------------------
+lambda			1E20 sigma (cm^2)
+ (nm)		296K		279K		255K
+-----------------------------------------------------------------------
+186		24.7		24.7		24.7
+188		17.5		17.5		17.5
+190		12.7		12.7		12.7
+192		8.86		8.86		8.86
+194		6.03		6.03		6.03
+196		4.01		4.01		4.01
+198		2.66		2.66		2.66
+200		1.76		1.76		1.76
+202		1.09		1.09		1.09
+204		0.691		0.691		0.691
+206		0.483		0.475		0.469
+208		0.321		0.301		0.286
+210		0.206		0.189		0.172
+212		0.132		0.121		0.102
+214		0.088		0.074		0.059
+216		0.060		0.048		0.033
