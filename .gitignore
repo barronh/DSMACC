@@ -1,9 +1,12 @@
 *.o
 *.mod
 depend.mk
+depend.mk.old
 fort.*
 dsmacc_*.f90
 dsmacc
+dsmacc.map
 Rate_*.dat
 Spec_*.dat
 tuvlog.txt
+Makefile_dsmacc
