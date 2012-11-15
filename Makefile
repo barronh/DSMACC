@@ -8,12 +8,14 @@ PROG = dsmacc
 
 # complete list of all f90 source files
 SRCS1 = $(wildcard dsmacc_*.f90)
-SRCS2 = $(wildcard tuv_old/*.f) constants.f90 
+SRCS2 = $(wildcard tuv_old/*.f)
+SRCS3 = constants.f90 
 
 # the object files are the same as the source files but with suffix ".o"
 OBJS1 := $(SRCS1:.f90=.o) 
 OBJS2 := $(SRCS2:.f=.o)
-OBJS := $(OBJS1) $(OBJS2)
+OBJS3 := $(SRCS3:.f90=.o) 
+OBJS := $(OBJS1) $(OBJS2) $(OBJS3)
 MAKEFILE_INC = depend.mk
 
 # If you don't have the perl script sfmakedepend, get it from:
@@ -33,8 +35,8 @@ $(PROG): src depend $(OBJS1) $(OBJS2)
 	$(LD) $(F90FLAGS) $(OBJS1) $(OBJS2) -o $@
 
 # update file dependencies
-depend $(MAKEFILE_INC): $(SRCS1) $(SRCS2)
-	$(F_makedepend) $(SRCS1) $(SRCS2)
+depend $(MAKEFILE_INC): $(SRCS1) $(SRCS2) $(SRCS3)
+	$(F_makedepend) $(SRCS1) $(SRCS2) $(SRCS3)
 
 clean:
 	rm -f $(OBJS) *.mod *.log *~ depend.mk.old $(SRCS1) Makefile_dsmacc
