@@ -183,7 +183,7 @@ PROGRAM driver
         WRITE(ERROR_UNIT,*)'Concentrations in ppb'
         IF (NMONITOR > 0) THEN
             WRITE(ERROR_UNIT,'(100000(a25,"!"))') 'TIME', (SPC_NAMES(MONITOR(i)),i=1,NMONITOR)
-            WRITE(ERROR_UNIT,'(100000(E25.16,"!"))') time, (C(MONITOR(i))/CFACTOR * 1e9,i=1,NMONITOR)
+            WRITE(ERROR_UNIT,'(100000(E25.16E3,"!"))') time, (C(MONITOR(i))/CFACTOR * 1e9,i=1,NMONITOR)
         ENDIF
 ! This is the main loop for integrations
         time_loop: DO WHILE (time < TEND)
@@ -200,9 +200,9 @@ PROGRAM driver
                 WRITE(OUTPUT_UNIT,*) 'Integration error.'
                 WRITE(OUTPUT_UNIT,*) 'Skipping point'
                 IF (NMONITOR > 0) THEN
-                    WRITE(OUTPUT_UNIT,'(100000(E25.16,"!"))') time,&
+                    WRITE(OUTPUT_UNIT,'(100000(E25.16E3,"!"))') time,&
                       (C(MONITOR(i))/CFACTOR * 1e9,i=1,NMONITOR)
-                    WRITE(OUTPUT_UNIT,'(100000(E25.16,"!"))') time,&
+                    WRITE(OUTPUT_UNIT,'(100000(E25.16E3,"!"))') time,&
                       ((C(MONITOR(i))-COLD(MONITOR(i)))/COLD(MONITOR(i))/CFACTOR&
                        * 1e9,i=1,NMONITOR)
                 ENDIF
@@ -260,7 +260,7 @@ PROGRAM driver
             ENDIF
 
             IF (NMONITOR > 0) THEN
-                WRITE(ERROR_UNIT,'(100000(E25.16,"!"))') time,&
+                WRITE(ERROR_UNIT,'(100000(E25.16E3,"!"))') time,&
                   (C(MONITOR(i))/CFACTOR * 1e9,i=1,NMONITOR)
             ENDIF
 

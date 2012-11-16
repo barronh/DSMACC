@@ -1,33 +1,43 @@
 def readfile(path):
-    header, data = file(path, 'r').read().strip().split('\n')
-    
+    lines = file(path, 'r').read().strip().split('\n')
+    header = lines.pop(0)
     header = map(str.strip, header.split('!')[:-1])
-    data = map(float, data.split('!')[:-1])
-    return dict(zip(header, data))
+    data = dict([(h, []) for h in header])
+    for line in lines:
+        for k, v in zip(header, map(float, line.split('!')[:-1])):
+            data[k].append(v)
+    return data
 
-spec_ref = readfile('Spec_1.dat.check')
-spec_test = readfile('../Spec_1.dat')
-
-abs_tol = 1e-25
-rel_tol = 1e-5
-print 'Species'.ljust(16) + ' Pass'
-checks = []
-for key, refval in spec_ref.iteritems():
-    checkval = spec_test[key]
-    diff = checkval - refval
-    pctdiff = diff / refval
+def check(check_path, test_path):
+    spec_ref = readfile(check_path)
+    spec_test = readfile(test_path)
     
-    allowable = abs(refval) * rel_tol + abs_tol
-    check = abs(diff) <= allowable
-    checks.append(check)
-    print key.ljust(16), check
+    abs_tol = 1e-25
+    rel_tol = 1e-5
+    print 'Species'.ljust(16) + ' Pass'
+    checks = []
+    for key, refvals in spec_ref.iteritems():
+        checkvals = spec_test[key]
+        diffs = [checkval - refval for checkval, refval in zip(checkvals, refvals)]
+        allowables = [abs(refval) * rel_tol + abs_tol for refval in refvals]
+        check = all([diff <= allowable for diff, allowable in zip(map(abs, diffs), allowables)])
+        checks.append(check)
+        print key.ljust(16), check
+    
+    sum_checks = sum(checks)
+    len_checks = len(checks)
+    print '-'*25
+    print 'Passed'.ljust(16), '%d/%d' % (sum_checks, len_checks)
+    
+    if len_checks > sum_checks:
+        print '!!!!Failed:', len_checks - sum_checks
+    
+    assert(all(checks))
+    return checks
 
-sum_checks = sum(checks)
-len_checks = len(checks)
-print '-'*25
-print 'Passed'.ljust(16), '%d/%d' % (sum_checks, len_checks)
 
-if len_checks > sum_checks:
-    print '!!!!Failed:', len_checks - sum_checks
-
-assert(all(checks))
+if __name__ == '__main__':
+    import sys
+    check_path, test_path = sys.argv[1:]
+    check(check_path, test_path)
+     

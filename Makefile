@@ -22,24 +22,41 @@ MAKEFILE_INC = depend.mk
 # http://www.arsc.edu/~kate/Perl
 F_makedepend = ./sfmakedepend --file=$(MAKEFILE_INC)
 
-all: $(PROG) src
+all:
+	make src
+	make depend
+	make build
 
-src: dsmacc_Main.f90
+build: $(PROG)
 
-dsmacc_Main.f90: dsmacc.kpp driver.f90
+check: build
+	make check_timeseries
+	make check_diurnal
+
+check_diurnal:
+	cd test && ln -fs Init_cons.dat.diurnal Init_cons.dat && \
+	../dsmacc && mv Spec_1.dat Spec_1.dat.diurnal && mv Rate_1.dat Rate_1.dat.diurnal && \
+	python check.py Spec_1.dat.diurnal.check Spec_1.dat.diurnal
+	
+check_timeseries:
+	cd test && ln -fs Init_cons.dat.timeseries Init_cons.dat && \
+	../dsmacc && mv Spec_1.dat Spec_1.dat.timeseries && mv Rate_1.dat Rate_1.dat.timeseries && \
+	python check.py Spec_1.dat.timeseries.check Spec_1.dat.timeseries
+
+src dsmacc_Main.f90: dsmacc.kpp global.inc rate.inc util.inc driver.f90
 	kpp dsmacc.kpp dsmacc
 # the dependencies depend on the link
 # the executable depends on depend and also on all objects
 # the executable is created by linking all objects
-$(PROG): src depend $(OBJS1) $(OBJS2)
-	$(LD) $(F90FLAGS) $(OBJS1) $(OBJS2) -o $@
+$(PROG): depend $(OBJS) dsmacc_Main.f90
+	$(LD) $(F90FLAGS) $(OBJS) -o $@
 
 # update file dependencies
 depend $(MAKEFILE_INC): $(SRCS1) $(SRCS2) $(SRCS3)
 	$(F_makedepend) $(SRCS1) $(SRCS2) $(SRCS3)
 
 clean:
-	rm -f $(OBJS) *.mod *.log *~ depend.mk.old $(SRCS1) Makefile_dsmacc
+	rm -f $(OBJS) *.mod *.log *~ depend.mk.old $(SRCS1) Makefile_dsmacc dsmacc.map tuvlog.txt dsmacc
 
 distclean: clean
 	rm -f $(PROG)
@@ -54,8 +71,7 @@ distclean: clean
 
 tuv_old/%.o: %.f
 	$(F90) $(F90FLAGS) $(LINCLUDES) -c $<
+
 # list of dependencies (via USE statements)
 include depend.mk
 
-test: $(PROG)
-	cd test && ../dsmacc && python check.py
