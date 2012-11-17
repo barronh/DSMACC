@@ -2,12 +2,12 @@
 // and chemical equations
 
 //#INCLUDE ./mcm_subset.kpp 
-#INCLUDE ./CRI_subset.kpp
+#INCLUDE ../CRI_subset.kpp
 
 
-#INCLUDE global.inc
-#INCLUDE rate.inc
-#INCLUDE util.inc
+#INCLUDE ../global.inc
+#INCLUDE ../rate.inc
+#INCLUDE ../util.inc
 
 #DOUBLE ON 
 
@@ -30,7 +30,7 @@ ALL_SPEC = 0.;
 // #INTEGRATOR radau5
 
 // driver file that calls kpp subroutines
-#DRIVER ./driver
+#DRIVER ../driver
 
 // set indices of unused species to ind_*=0
 #DUMMYINDEX ON

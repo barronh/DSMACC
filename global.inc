@@ -13,7 +13,7 @@
     REAL(kind=dp) :: COLD(NSPEC)
     INTEGER, PARAMETER :: OUTPUT_UNIT = 6, ERROR_UNIT = 0, SPEC_UNIT = 10, RATE_UNIT = 12
     !Photolysis variables
-    include 'tuv_old/params'
+    include '../tuv_old/params'
     REAL*8::bs(19,kj), cs(19,kj),ds(19,kj)
     REAL::svj_tj(kt,kj), szas(kt), jfactno2, jfacto1d
     !END photolysis variables

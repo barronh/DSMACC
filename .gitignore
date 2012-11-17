@@ -10,3 +10,4 @@ Rate_*.dat
 Spec_*.dat
 tuvlog.txt
 Makefile_dsmacc
+.DS_Store

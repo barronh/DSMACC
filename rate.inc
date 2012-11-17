@@ -11,7 +11,7 @@
         REAL(kind=dp) k0,ki
         REAL*8 tmp(19), tmp2(19),b(19), c(19), d(19), time2, lat2, theta
         INTEGER n,jl, i
-        include 'tuv_old/params'
+        include '../tuv_old/params'
     
         extarr=0.0d0
         IF (type .eq. '0.00') then 

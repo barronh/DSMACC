@@ -1,0 +1,617 @@
+#include geos_chem.spc
+#include geos_chem.eqn
+
+#LANGUAGE Fortran90
+#INTEGRATOR kpp_lsode
+#DRIVER ./driver
+#MEX OFF
+#HESSIAN OFF
+
+#LOOKATALL
+
+#MONITOR O3; NO; NO2;
+
+#INLINE F90_RATES
+  
+  REAL(kind=dp) FUNCTION GEOS_STD(A0, B0, C0)
+    REAL A0, B0, C0
+
+!   GEOS Chem reaction rates have the form K = A * (300 / T)**B * EXP(C / T)
+!   KPP ARR reaction rates have the form   K = A * (T/300.0)**C * EXP(-B/T) 
+!   
+!   Translation reorders B and C and changes both their signs
+    GEOS_STD = ARR(A0, -C0, -B0)
+  END FUNCTION
+  
+  !---------------------------------------------------------------------------
+  
+  REAL(kind=dp) FUNCTION GEOS_P(A0, B0, C0, A1, B1, C1, &
+                                FCV, FCT1, FCT2)
+    REAL A0, B0, C0, A1, B1, C1 ,CF
+    REAL FCV, FCT1, FCT2
+    REAL(kind=dp) K0M, K1
+
+    IF (FCT2 .NE. 0.000000e+00) THEN 
+      CF = EXP(-TEMP / FCT1) + EXP(-FCT2 / TEMP) 
+    ELSEIF (FCT1 .NE. 0.000000e+00) THEN 
+      CF = EXP(-TEMP / FCT1)
+    ELSE
+      CF = FCV
+    ENDIF
+    
+!   GEOS Chem reaction rates have the form K = A * (300 / T)**B * EXP(C / T)
+!   KPP ARR reaction rates have the form   K = A * (T/300.0)**C * EXP(-B/T) 
+!   
+!   Translation reorders B and C and changes both their signs
+
+    K0M = GEOS_STD(A0, B0, C0) * M
+
+    K1 = GEOS_STD(A1, B1, C1)
+    K1 = K0M / K1
+
+    GEOS_P = (K0M / (1.0_dp + K1))*   &
+           DBLE(CF)**(1.0_dp / (1.0_dp + (LOG10(K1))**2))
+  END FUNCTION
+
+  !---------------------------------------------------------------------------
+  
+  REAL(kind=dp) FUNCTION GEOS_Z(A0, B0, C0, A1, B1, C1, A2, B2, C2)
+    REAL A0, B0, C0, A1, B1, C1, A2, B2, C2
+    REAL(kind=dp) K0, K1, K2
+
+    K0 = GEOS_STD(A0, B0, C0)
+    K1 = GEOS_STD(A1, B1, C1)*M
+    K2 = GEOS_STD(A2, B2, C2)
+
+    GEOS_Z = (K0 + K1) * (1 + H2O * K2)
+  END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_Y(A0, B0, C0)
+    REAL A0, B0, C0
+    REAL(kind=dp) K0
+    K0 = GEOS_STD(A0, B0, C0)
+    GEOS_Y = K0 * (1 + .6 * (PRESS * 100.) / 101325.)
+  END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_X(A0, B0, C0, A1, B1, C1, A2, B2, C2)
+    REAL A0, B0, C0, A1, B1, C1, A2, B2, C2
+    REAL(kind=dp) K0, K2, K3            
+    K0 = GEOS_STD(A0, B0, C0)
+    K2 = GEOS_STD(A1, B1, C1)
+    K3 = GEOS_STD(A2, B2, C2)
+    K3 = K3 * M
+    GEOS_X = K0 + K3 / (1.0_dp + K3 / K2 )
+  END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_C(A0, B0, C0)
+    REAL A0, B0, C0, A1, B1, C1, A2, B2, C2
+    REAL(kind=dp) K1
+    K1 = GEOS_STD(A0, B0, C0)
+    GEOS_C = K1 * (O2 + 3.5D18) / (2.0_dp * O2 + 3.5D18)
+  END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_K(A0, B0, C0)
+    REAL A0, B0, C0
+    GEOS_K = 0
+  END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_V(A0, B0, C0, A1, B1, C1)
+    REAL A0, B0, C0, A1, B1, C1
+    REAL(kind=dp) K1, K2
+    K1 = GEOS_STD(A0, B0, C0)
+    K2 = GEOS_STD(A1, B1, C1)
+    GEOS_V = K1 / (1 + K2)
+  END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_E(A0, B0, C0, Kf)
+    REAL A0, B0, C0
+    REAL(kind=dp) K1, Kf
+    K1 = GEOS_STD(A0, B0, C0)
+    GEOS_E = Kf / K1
+  END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+  REAL*4 FUNCTION FYRNO3(CN)
+    REAL*4, PARAMETER :: Y300 = .826, ALPHA = 1.94E-22
+    REAL*4, PARAMETER :: BETA = .97, XM0 = 0., XMINF = 8.1
+    REAL*4, PARAMETER :: XF = .411
+    
+    REAL*4 CN
+    REAL*4 XCARBN, ZDNUM, TT, XXYN, YYYN, AAA, ZZYN, RARB
+    XCARBN = CN
+    ZDNUM = M
+    TT = TEMP
+    
+    XXYN = ALPHA * exp(BETA * XCARBN) * ZDNUM * ((300. / TT)**XM0)
+    YYYN = Y300 * ((300. / TT)**XMINF)
+    AAA = log10(XXYN / YYYN)
+    ZZYN = 1. / (1. + AAA / AAA)
+    RARB = (XXYN / (1. + (XXYN / YYYN))) * (XF**ZZYN)
+    FYRNO3 = RARB / (1. + RARB)
+  END FUNCTION
+  
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_A(A0, B0, C0, A1, B1, C1 )
+    REAL A0, B0, C0, A1, B1, C1
+    REAL TMP_A0
+    TMP_A0 = A0 * FYRNO3(A1)
+    GEOS_A = GEOS_STD(TMP_A0, B0, C0)
+  END FUNCTION
+  
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_B(A0, B0, C0, A1, B1, C1 )
+    REAL A0, B0, C0, A1, B1, C1
+    REAL TMP_A0
+    TMP_A0 = A0 * ( 1. - FYRNO3(A1) )
+    GEOS_B = GEOS_STD(TMP_A0, B0, C0)
+  END FUNCTION
+  
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_JO3(O3J)
+    REAL(kind=dp) O3J, T3I
+    T3I = 1.0_dp/TEMP
+    GEOS_JO3 = O3J * &
+               1.45d-10 * EXP( 89.0_dp * T3I) * H2O / &
+               ( 1.45d-10 * EXP( 89.0_dp * T3I) * H2O + &
+                 2.14d-11 * EXP(110.0_dp * T3I) * N2 + &
+                 3.20d-11 * EXP( 70.0_dp * T3I) * O2 &
+               )
+  END FUNCTION
+  
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_JHNO4(HNO4J)
+    REAL(kind=dp) HNO4J
+    IF (HNO4J .GT. 0.d0) THEN
+      GEOS_JHNO4 = HNO4J + 1D-5
+    ELSE
+      GEOS_JHNO4 = HNO4J
+    ENDIF
+    
+  END FUNCTION
+  
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_G(A0, B0, C0, A1, B1, C1)
+    REAL A0, B0, C0, A1, B1, C1
+    REAL(kind=dp) K1, K2
+    K1 = GEOS_STD(A0, B0, C0)
+    K2 = GEOS_STD(A1, B1, C1)
+    GEOS_G = K1 / ( 1.0_dp + K1 * O2 )
+  END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION TUV_J(IJ, THETA)
+    USE model_Global,  only: BS, CS, DS, SZAS, SVJ_TJ, NSZAS
+    REAL(kind=dp) B(NSZAS), C(NSZAS), D(NSZAS), TMP_SVJ_TJ(NSZAS), &
+  &               TMP_SZAS(NSZAS), THETA
+  ! IJ is the integer index of the TUV photolysis calculation
+  ! THETA is the current solar zenith angle
+    INTEGER IJ, THIS_CSZA
+
+    REAL SEVAL ! function from TUV
+    EXTERNAL SEVAL ! function from TUV
+    INTEGER THIS_SZA ! temporary variables
+    IF (THETA .LT. 90.D0) THEN
+      DO THIS_CSZA = 1, NSZAS
+        B(THIS_CSZA) = BS(THIS_CSZA, IJ)
+        C(THIS_CSZA) = CS(THIS_CSZA, IJ)
+        D(THIS_CSZA) = DS(THIS_CSZA, IJ)
+        TMP_SZAS(THIS_CSZA) = SZAS(THIS_CSZA)
+        TMP_SVJ_TJ(THIS_CSZA) = SVJ_TJ(THIS_CSZA, IJ)
+      ENDDO
+      
+      TUV_J = SEVAL(NSZAS, THETA, TMP_SZAS, TMP_SVJ_TJ, B, C, D, .false.)
+      if (.false.) then
+          write(*,*) 'MP'
+          write(*,*) 'I,THETA,J:', IJ, THETA, TUV_J
+          write(*,8879) 'B     :', B
+          write(*,8879) 'C     :', C
+          write(*,8879) 'D     :', D
+          write(*,8879) 'SZAS  :', TMP_SZAS
+          write(*,8879) 'SVJ_TJ:', TMP_SVJ_TJ
+          
+8879     FORMAT(1A6,100000(E26.17))
+          TUV_J = SEVAL(NSZAS, THETA, TMP_SZAS, TMP_SVJ_TJ, B, C, D, .true.)
+
+      endif
+    
+      IF (TUV_J .LT. 0.d0) TUV_J = 0.d0
+    ELSE
+      TUV_J = 0.d0
+    ENDIF
+
+  END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+  SUBROUTINE SHOW_RCONST()
+    INTEGER THIS_RK
+    do THIS_RK = 1, 288
+      write(*,*) THIS_RK, RCONST(THIS_RK)
+    enddo
+  END SUBROUTINE
+#ENDINLINE
+
+#INLINE F90_GLOBAL
+  REAL(dp) :: PRESS, LAT, LON, O3COL, JO1D, JNO2, H2O, H2, CH4, M, O2, N2, RO2 = 0
+  REAL(dp), parameter :: AVOGADRO = 6.02214179e23 ! molecules mol-1
+  REAL(dp), parameter :: R = 8.314472 * 1e6 ! cm3 Pa K-1 mol-1
+  REAL(dp) :: JDAY, THETA
+  INTEGER :: INIT_TIME, NOX(NVAR)
+  REAL(dp):: CONSTRAIN(NVAR)
+  LOGICAL :: SPEC_CH4, SPEC_H2
+  INTEGER :: IntTime
+  LOGICAL :: CONSTRAIN_NOX
+  LOGICAL :: CONSTRAIN_RUN, LAST_POINT, OUTPUT_LAST
+  CHARACTER(LEN=15) :: spec_name(10000)
+  INTEGER :: const_method(10000)
+!Photolysis variables
+  include 'tuv_old/params'
+  INTEGER, parameter :: NSZAS = 19, NJ = kj
+  
+  REAL*8::bs(NSZAS,NJ), cs(NSZAS,NJ),ds(NSZAS,NJ)
+  REAL::svj_tj(kt,kj), szas(kt), jfactno2, jfacto1d
+!End photolysis variables
+
+#ENDINLINE {above lines go into MODULE KPP_ROOT_Global}
+
+#INLINE F90_INIT
+ TSTART = (12.*3600.) ! seconds
+ TEND = TSTART + (3.*24.*3600.) ! seconds
+ DT = 1./15.*3600. ! seconds
+ TEMP = 230. ! K
+ PRESS = 298.30 ! hPa
+ M = AVOGADRO * PRESS * 100. /TEMP/R ! molecules cm-3
+#ENDINLINE
+
+#INLINE F90_RCONST 
+ !end of USE statements 
+ !
+ ! start of executable statements
+
+ INTEGER IDATE
+ REAL ZENITH
+ REAL(kind=dp) :: Time2
+
+
+ M = AVOGADRO * PRESS * 100 / TEMP / R ! molecules cm-3
+ N2 = 0.7808*M
+ O2 = 0.2095*M
+ Time2=mod(Time/(60.*60.), 24.)
+
+ IDATE = 19840701
+ THETA=DBLE( ZENITH ( REAL(LAT), REAL(LON), IDATE, REAL(Time2) ))
+
+#ENDINLINE 
+
+#INLINE F90_UTIL
+
+! ****************************************************************
+!                            
+! InitSaveData - Opens the data file for writing
+!   Parameters :                                                  
+!
+! ****************************************************************
+
+      SUBROUTINE NewInitSaveData(counter)
+
+        USE model_Parameters
+        USE model_monitor
+        USE model_GLOBAL
+  
+        Integer counter, length, ierr
+        character*20 filename1, filename
+  
+      
+        CALL  ICNVRT(0, counter, filename1, length, ierr)
+
+        filename='geos_Spec_'//TRIM(filename1)//'.dat'
+        open(10, file=filename)
+   
+        filename='geos_Rate_'//TRIM(filename1)//'.dat'
+        open(12, file=filename)
+
+        write (10,'(100000(a24,"!"))') 'TIME','LAT','LON','PRESS', &
+           'TEMP','THETA','H2O', 'CFACTOR', 'RO2', SPC_NAMES
+
+        write (12,'(100000(a50,"!"))') 'TIME','LAT','LON','PRESS', &
+           'TEMP','THETA','H2O', 'CFACTOR', 'RO2', EQN_NAMES
+
+      END SUBROUTINE NewInitSaveData
+
+! End of InitSaveData function
+! ****************************************************************
+! ****************************************************************
+!                            
+! SaveData - Write LOOKAT species in the data file 
+!   Parameters :                                                  
+!
+! ****************************************************************
+
+      SUBROUTINE NewSaveData ()
+
+        USE model_Global
+        USE model_Monitor
+        USE model_Integrator
+
+        INTEGER i
+      
+        IF (CONSTRAIN_RUN) THEN
+            WRITE(10,999) JDAY,LAT,LON,PRESS,TEMP,THETA,H2O,CFACTOR,RO2,C
+            WRITE(12,999) JDAY,LAT,LON,PRESS,TEMP,THETA,H2O,CFACTOR,RO2,RCONST
+        ELSE
+            WRITE(10,999) TIME,LAT,LON,PRESS,TEMP,THETA,H2O,CFACTOR,RO2,C
+            WRITE(12,999) TIME,LAT,LON,PRESS,TEMP,THETA,H2O,CFACTOR,RO2,RCONST
+        ENDIF
+
+999     FORMAT(100000(E24.16,"!"))
+
+      END SUBROUTINE NewSaveData
+
+! End of SaveData function
+! ****************************************************************
+
+! ****************************************************************
+!                            
+! CloseSaveData - Close the data file 
+!   Parameters :                                                  
+!
+! ****************************************************************
+
+      SUBROUTINE NewCloseData ()
+
+          USE model_Parameters
+
+          CLOSE(10)
+          CLOSE(12)
+
+      END SUBROUTINE NewCloseData
+
+! End of CloseSaveData function
+! ****************************************************************
+
+      SUBROUTINE ICNVRT(WAY,NUM,STRING,LENGTH,IERR)
+!
+!       FUNCTION:
+!F
+!F        This subroutine does an integer-to-character conversion
+!F        or a characater-to-integer conversion depending on the
+!F        integer WAY:
+!F                If WAY = 0 then an integer-to-character conversion
+!F                is done. If WAY .NE. 0 then a character-to-integer
+!F                conversion is done.
+!F
+!       USAGE:
+!U
+!U        !ALL I!NVRT(WAY,NUM,STRING)
+!U             where WAY, NUM, STRING, and LENGTH are defined below.
+!U
+!U        Example: !ALL I!NVRT(0,1000,STRING,LENGTH)
+!U                 on return STRING = '1000' and
+!U                 LENGTH = 4.
+!U         
+!       INPUTS:
+!I
+!I        WAY - INTEGER; Determines which way the conversion goes:
+!I              if WAY = 0 then an integer-to-character conversion
+!I                         is performed;
+!I              if WAY.NE.0 then a character-to-integer conversion
+!I                         is performed.
+!I
+!I         NUM - INTEGER; an input only if WAY = 0. NUM is the integer
+!I               number to be converted to a character expression.
+!I
+!I         STRING - !HARACTER; an input only if WAY .NE. 0. STRING
+!I                is the character expression to be converted to an
+!CI                integer value. It contain no decimal points or 
+!I                non-numeric characters other than possibly a
+!I                sign. If STRING contains  a '+' sign, it will be
+!I                stripped of it on return.
+!I
+!       OUTPUTS:
+!O
+!O         NUM - INTEGER; contains the INTEGER representation of 
+!O                STRING.
+!O
+!O         STRING - !HARA!TER; contains the CHARACTER representation of
+!O                  NUM.
+!CO
+!CO         LENGTH - INTEGER; The length of STRING to the first blank.
+!CO                  The significant part of STRING can be accessed with
+!CO                  the declaration STRING(1:LENGTH).
+!CO
+!CO         IERR - INTEGER variable giving return condition:
+!CO                IERR = 0 for normal return;
+!CO                IERR = 1 if NUM cannot be converted to STRING because
+!CO                       STRING is too short or STRING cannot be
+!CO                       converted to NUM because STRING is too long.
+!CO                IERR = 2 if STRING contained a non-numeric character
+!CO                       other than a leading sign or something went
+!CO                       wrong with an integer-to-character conversion.
+!CO
+!C       ALGORITHM:
+!CA
+!CA         Nothing noteworthy, except that this subroutine will work
+!CA          for strange character sets where the character '1' doesn't
+!CA          follow '0', etc.
+!CA
+!C       MACHINE DEPENDENCIES:
+!CM
+!CM          The parameter MAXINT (below) should be set to the
+!CM          number of digits that an INTEGER data type can have
+!CM          not including leading signs. For VAX FORTRAN V4.4-177
+!CM          MAXINT = 10.
+!CM
+!CM          NOTE: Under VAX FORTRAN V4.4-177, the
+!CM          error condition IERR = 1 will never occur for an
+!CM          integer-to-character conversion if STRING
+!CM          is allocated at least 11 bytes (CHARACTER*11).
+!CM
+!C       HISTORY:
+!CH
+!CH      written by:             bobby bodenheimer
+!CH      date:                   september 1986
+!CH      current version:        1.0
+!CH      modifications:          none
+!CH
+!C       ROUTINES CALLED:
+!CC
+!CC          NONE.
+!CC
+!C----------------------------------------------------------------------
+!C       written for:    The CASCADE Project
+!C                       Oak Ridge National Laboratory
+!C                       U.S. Department of Energy
+!C                       contract number DE-AC05-840R21400
+!C                       subcontract number 37B-7685 S13
+!C                       organization:  The University of Tennessee
+!C----------------------------------------------------------------------
+!C       THIS SOFTWARE IS IN THE PUBLIC DOMAIN
+!C       NO RESTRICTIONS ON ITS USE ARE IMPLIED
+!C----------------------------------------------------------------------
+!C
+!C Global Variables.
+!C
+      INTEGER       WAY
+      INTEGER       LENGTH
+      INTEGER       NUM
+      INTEGER       IERR
+      CHARACTER*(*) STRING
+!C
+!C Local Variables
+!C
+      INTEGER       I
+      INTEGER       MAXINT
+      INTEGER       MNUM
+      INTEGER       M
+      LOGICAL       NEG
+!C
+      PARAMETER(MAXINT=10)
+!C
+      NEG = .FALSE.
+      IERR = 0
+!C
+!C  Integer-to-character conversion.
+!C
+      IF (WAY.EQ.0) THEN
+         STRING = ' '
+         IF (NUM.LT.0) THEN
+            NEG = .TRUE.
+            MNUM = -NUM
+            LENGTH = INT(LOG10(REAL(MNUM))) + 1
+         ELSE IF (NUM.EQ.0) THEN
+            MNUM = NUM
+            LENGTH = 1
+         ELSE
+            MNUM = NUM
+            LENGTH = INT(LOG10(REAL(MNUM))) + 1
+         END IF
+         IF (LENGTH.GT.LEN(STRING)) THEN
+            IERR = 1
+            RETURN
+         END IF
+         DO 10, I=LENGTH,1,-1
+            M=INT(REAL(MNUM)/10**(I-1))
+            IF (M.EQ.0) THEN
+               STRING(LENGTH-I+1:LENGTH-I+1) = '0'
+            ELSE IF (M.EQ.1) THEN
+               STRING(LENGTH-I+1:LENGTH-I+1) = '1'
+            ELSE IF (M.EQ.2) THEN
+               STRING(LENGTH-I+1:LENGTH-I+1) = '2'
+            ELSE IF (M.EQ.3) THEN
+               STRING(LENGTH-I+1:LENGTH-I+1) = '3'
+            ELSE IF (M.EQ.4) THEN
+               STRING(LENGTH-I+1:LENGTH-I+1) = '4'
+            ELSE IF (M.EQ.5) THEN
+               STRING(LENGTH-I+1:LENGTH-I+1) = '5'
+            ELSE IF (M.EQ.6) THEN
+               STRING(LENGTH-I+1:LENGTH-I+1) = '6'
+            ELSE IF (M.EQ.7) THEN
+               STRING(LENGTH-I+1:LENGTH-I+1) = '7'
+            ELSE IF (M.EQ.8) THEN
+               STRING(LENGTH-I+1:LENGTH-I+1) = '8'
+            ELSE IF (M.EQ.9) THEN
+               STRING(LENGTH-I+1:LENGTH-I+1) = '9'
+            ELSE
+               IERR = 2
+               RETURN
+            END IF
+            MNUM = MNUM - M*10**(I-1)
+10       CONTINUE
+         IF (NEG) THEN
+            STRING = '-'//STRING
+            LENGTH = LENGTH + 1
+         END IF
+!C
+!C  Character-to-integer conversion.
+!!C
+      ELSE
+         IF (STRING(1:1).EQ.'-') THEN
+            NEG = .TRUE.
+            STRING = STRING(2:LEN(STRING))
+         END IF
+         IF (STRING(1:1).EQ.'+') STRING = STRING(2:LEN(STRING))
+         NUM = 0
+         LENGTH = INDEX(STRING,' ') - 1
+         IF (LENGTH.GT.MAXINT) THEN
+            IERR = 1
+            RETURN
+         END IF
+         DO 20, I=LENGTH,1,-1
+            IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'0') THEN
+               M = 0
+            ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'1') THEN
+               M = 1
+            ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'2') THEN
+               M = 2
+            ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'3') THEN
+               M = 3
+            ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'4') THEN
+               M = 4
+            ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'5') THEN
+               M = 5
+            ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'6') THEN
+               M = 6
+            ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'7') THEN
+               M = 7
+            ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'8') THEN
+               M = 8
+            ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'9') THEN
+               M = 9
+            ELSE
+               IERR = 2
+               RETURN
+            END IF
+            NUM = NUM + INT(10**(I-1))*M
+20       CONTINUE
+         IF (NEG) THEN
+            NUM = -NUM
+            STRING = '-'//STRING
+            LENGTH = LENGTH + 1
+         END IF
+      END IF
+!C
+!C  Last lines of ICNVRT
+!C
+      RETURN
+      END SUBROUTINE
+         
+#ENDINLINE
