@@ -26,6 +26,7 @@ F_makedepend = ../sfmakedepend --file=$(MAKEFILE_INC)
 # the executable depends on depend and also on all objects
 # the executable is created by linking all objects
 $(PROG): dsmacc_Main.f90 $(MAKEFILE_INC) $(OBJS) dsmacc_Main.f90
+	@mkdir -p ../bin
 	$(LD) $(F90FLAGS) $(OBJS) -o $@
 
 # update file dependencies
