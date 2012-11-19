@@ -339,10 +339,10 @@
         CALL  ICNVRT(0, counter, filename1, length, ierr)
 
         filename='Spec_'//TRIM(filename1)//'.dat'
-        open(10, file=filename)
+        open(SPEC_UNIT, file=filename)
  
         filename='Rate_'//TRIM(filename1)//'.dat'
-        open(12, file=filename)
+        open(RATE_UNIT, file=filename)
 
         WRITE(SPEC_UNIT,'(100000(a25,"!"))') 'TIME','LAT','LON','PRESS','TEMP','H2O', &
                 'M', 'JNO2FACT','JO1DFACT','RO2', (SPC_NAMES(LOOKAT(i)), i=1,NLOOKAT)
@@ -368,7 +368,6 @@
         USE dsmacc_Integrator
         
         INTEGER i
-      
         IF (CONSTRAIN_RUN) THEN
             WRITE(SPEC_UNIT,'(100000(E25.16E3,"!"))') JDAY,LAT,LON,PRESS,TEMP,H2O,CFACTOR,&
             JFACTNO2, JFACTO1D, RO2,C
@@ -394,9 +393,10 @@
     SUBROUTINE NewCloseData ()
         
         USE dsmacc_Parameters
+        USE dsmacc_Global, ONLY : SPEC_UNIT, RATE_UNIT
         
-        CLOSE(10)
-        CLOSE(12)
+        CLOSE(SPEC_UNIT)
+        CLOSE(RATE_UNIT)
         
     END SUBROUTINE NewCloseData
 

@@ -1,67 +1,68 @@
-#INLINE F90_RATES
-    REAL(kind=dp) FUNCTION extarr(type, var1,var2,var3,var4,var5, &
-                      var6, var7,var8,var9,var10, var11)
-         
-        use dsmacc_global, only: lat, lon, jday, szas, svj_tj, bs,cs,ds
-        use constants,  ONLY:zenang, seval
-    
-        CHARACTER(LEN=*) type
-        REAL var1, var2, var3, var4, var5, var6, &
-             var7, var8, var9, var10, var11, var12
-        REAL(kind=dp) k0,ki
-        REAL*8 tmp(19), tmp2(19),b(19), c(19), d(19), time2, lat2, theta
-        INTEGER n,jl, i
-        include '../tuv_old/params'
-    
-        extarr=0.0d0
-        IF (type .eq. '0.00') then 
-             ! Standard arhenius equation. No designation number so becomes '0.00'
-             extarr=arr(var2, var3, -var4)
-        ENDIF    
-    
-        IF (type .eq. 'P') then 
-    ! standard pressure dependent reacions
-            k0=arr(var2, var3, -var4)
-            ki=arr(var9, var10, -var11)
-            extarr=(k0*m/(1+k0*m/ki))*var6 ** ( &
-                (1e0+(log10(k0*m/ki)) ** 2.0e0) ** -1.0e0)
-        ENDIF    
-    
-        IF (type .eq. 'hv') then 
-    ! photolysis rates
-    ! this is copied from the constants.f90 bit of the mcm
-            
-    
-        Time2=mod(Time/(60.*60.), 24.)
-        IF (TIME2 .LT. 0) TIME2=TIME2+24.
-            LAT2=LAT
-            THETA=ZENANG(int(jday),Time2,LAT2)*180./PI
-            
-            IF (theta .le. 90) then     
-                n=19 
-        
-                jl=-1
-                IF (var1 .eq. 36.1) jl=2 
-                IF (var1 .eq. 35.1) jl=4
-                
-        
-                IF (jl .ne. -1) then 
-                do i=1,n    
-                    tmp(i)=szas(i)
-                    tmp2(i)=svj_tj(i,jl)
-        
-                    b(i)=bs(i,jl)
-                    c(i)=cs(i,jl)
-                    d(i)=ds(i,jl)
-                enddo
-        
-                    extarr=seval(n, theta, tmp, tmp2, b,c,d)
-            ELSE
-                    extarr=0.e0
-            ENDIF 
-                WRITE(OUTPUT_UNIT,*) 'hv',jl, var1, extarr
-            ENDIF
-                
-        ENDIF            
-    END FUNCTION extarr
+#INLINE F90_GLOBAL
+
+  ! generic reaction rate variables
+  REAL(dp) kro2no, kro2ho2, kapho2, kapno, kro2no3, kno3al, kdec, &
+    krosec, kalkoxy, kalkpxy, kroprim
+  REAL(dp) k298ch3o2
+  REAL(dp) kch3o2
+  ! variables for calculation of kfpan and kbpan
+  REAL(dp) kfpan, kbpan
+  REAL(dp) kc0, kci, krc, fcc, fc
+  REAL(dp) kd0, kdi, krd, fcd, fd
+  ! variables for calculation of kmt01
+  REAL(dp) kmt01
+  REAL(dp) k10, k1i, kr1, fc1, f1
+  ! variables for calculation of kmt02
+  REAL(dp) kmt02
+  REAL(dp) k20, k2i, kr2, fc2, f2
+  ! variables for calculation of kmt03
+  REAL(dp) kmt03
+  REAL(dp) k30, k3i, kr3, fc3, f3
+  ! variables for calculation of kmt04
+  REAL(dp) kmt04
+  REAL(dp) k40, k4i, kr4, fc4, f4
+  ! variables for calculation of kmt05
+  REAL(dp) kmt05
+  ! variables for calculation of kmt06
+  REAL(dp) kmt06
+  ! variables for calculation of kmt07
+  REAL(dp) kmt07
+  REAL(dp) k70, k7i, kr7, fc7, f7
+  ! variables for calculation of kmt08
+  REAL(dp) kmt08
+  REAL(dp) k80, k8i, kr8, fc8, f8
+  ! variables for calculation of kmt09
+  REAL(dp) kmt09
+  REAL(dp) k90, k9i, kr9, fc9, f9
+  ! variables for calculation of kmt10
+  REAL(dp) kmt10
+  REAL(dp) k100, k10i, kr10, fc10, f10
+  ! variables for calculation of kmt11
+  REAL(dp) kmt11
+  REAL(dp) k1,k2,k3,k4
+  ! variables for calculation of kmt12
+  REAL(dp) kmt12
+  REAL(dp) k0, ki, ssign,f
+  ! variables for calculation of kmt13
+  REAL(dp) kmt13
+  REAL(dp) k130, k13i, kr13, fc13, f13
+  ! variables for calculation of kmt14
+  REAL(dp) kmt14
+  REAL(dp) k140, k14i, kr14, fc14, f14
+  ! variables for calculation of kmt15
+  REAL(dp) kmt15
+  ! variables for calculation of kmt16
+  REAL(dp) kmt16
+  REAL(dp) k160, k16i, kr16, fc16, f16
+  ! variables for calculation of kmt17
+  REAL(dp) kmt17
+  REAL(dp) kmt18
+  REAL(dp) f12, f15, f17, fc12, fc15, fc17, k120
+  REAL(dp) k12i, k150, k15i, k170, k17i, kr12, kr15
+  REAL(dp) kr17, nc, nc1, nc10, nc12, nc13, nc14
+  REAL(dp) nc15, nc16, nc17, nc2
+  REAL(dp) nc3, nc4, nc7, nc8, nc9, ncd
 #ENDINLINE
+#INLINE F90_RCONST
+  THETA = DBLE( ZENITH ( REAL(LAT), -REAL(LON), JDAY))
+#ENDINLINE F90_RCONST
