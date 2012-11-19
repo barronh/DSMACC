@@ -1,0 +1,26 @@
+CH3COCHO yields (zero pressure HCO yields) from
+
+Chen, Y., W. Wang, and L. Zhu, Wavelength-dependent photolysis of methylglyoxal 
+in the 290-440 nm region, J Phys Chem A, 104, 11126-11131, 2000
+
+Stern-Volmer relationship
+
+n = 16
+
+nm	phi(0 torr)
+290	0.82
+300	0.89
+310	0.88
+320	0.97
+330	1.02
+340	1.16
+350	1.13
+360	1.01
+370	0.86
+380	0.92
+390	0.89
+400	0.56
+410	0.32
+420	0.27
+430	0.2
+440	0.17

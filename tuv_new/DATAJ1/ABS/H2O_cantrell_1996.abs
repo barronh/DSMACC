@@ -1,0 +1,23 @@
+13 11
+Reference: 	Cantrell, Zimmer and Tyndall
+		Absorption cross sections for water vapor from 183 to 193nm
+		Geophys. Res. Lett., 24, 17, 2195-2198, 1997.
+
+H2O + hv -> H + OH
+
+Absorption cross sections for water vapor at 184.9 nm were measured using a
+standand low-pressure mercury lamp light source, optically filtered to isolate 
+the spectrial region near the emission line. 
+
+Wavelength (nm)    Cross section (1E-20 cm^2 molecule-1)
+183.0	16.9
+184.0	12.1
+185.0	6.78
+186.0	4.39
+187.0	2.71
+188.0	1.77
+189.0	1.08
+190.0	0.672
+191.0	0.464
+192.0	0.277
+193.0	0.175	

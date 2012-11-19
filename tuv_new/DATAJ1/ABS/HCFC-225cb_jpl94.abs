@@ -1,0 +1,31 @@
+21 11         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 158
+
+CF2ClCF2CHFCl (HCFC-225cb) + hv -> Products
+
+"Table 48 lists the absorption cross sections for these molecules at 298K,
+taken from the work of Braun et al. [180].  These values have been fitted with
+a mathematical expression for the wavelength range from 170 to 250 nm, for each
+of the two molecules;  the expressions are listed in the original publication.
+The authors also measured the cross sections in the liquid phase."
+
+Table 48.  Absorption Cross Sections of CF2ClCF2CHFCl
+-------------------------------------------------------------------
+lambda (nm) 		1E20 sigma (cm^2)
+-------------------------------------------------------------------
+160			188
+165			145
+170			91
+175			47
+180			21
+185			9.1
+190			3.5
+195			1.4
+200			0.63
+205			0.33
+210			0.25

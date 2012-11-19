@@ -1,0 +1,35 @@
+Br2 Absorption cross section, from
+Seery, D.J. and D. Britton, The continuous absorption spectra of chlorine, 
+bromine, bromine chloride, iodine chloride, and iodine bromide, J. Phys. 
+Chem. 68, p. 2263 (1964).
+Wavelength, nm
+	Xsection, cm2
+320	7.64735E-22
+330	3.05894E-21
+340	1.10887E-20
+350	3.82368E-20
+360	8.90916E-20
+370	1.82007E-19
+380	3.11247E-19
+390	4.55017E-19
+400	5.69345E-19
+410	6.30907E-19
+420	6.32818E-19
+430	5.94582E-19
+440	5.38374E-19
+450	4.87136E-19
+460	4.47752E-19
+470	4.14486E-19
+480	3.88103E-19
+490	3.56367E-19
+500	3.16983E-19
+510	2.70334E-19
+520	1.76654E-19
+530	1.28093E-19
+540	1.00563E-19
+550	7.91501E-20
+560	6.15612E-20
+570	4.55017E-20
+580	3.36483E-20
+590	2.33244E-20
+600	0

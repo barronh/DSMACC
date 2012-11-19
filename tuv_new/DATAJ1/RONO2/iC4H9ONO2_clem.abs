@@ -1,0 +1,36 @@
+iso-butyl nitrate cross-sections (i-C4H9ONO2)
+MPI-Mainz Spectral Atlas
+
+K.C. Clemitshaw, J. Williams, O.V. Rattigan, D.E. Shallcross, K.S. Law,
+and R.A. Cox, "Gas-phase ultraviolet absorption cross-sections and
+atmospheric lifetimes of several C2-C5 alkyl nitrates,"
+J. Photochem. Photobiol. A: Chem. 102, 117-126 (1996).       
+
+n = 25
+
+nm	sig(294K)
+220    1.033e-18
+225    5.49e-19
+230    3.07e-19
+235    1.62e-19
+240    9.65e-20
+245    6.67e-20
+250    5.17e-20
+255    4.17e-20
+260    4.07e-20
+265    3.69e-20
+270    3.22e-20
+275    2.77e-20
+280    2.26e-20
+285    1.76e-20
+290    1.28e-20
+295    9.03e-21
+300    5.92e-21
+305    3.60e-21
+310    2.11e-21
+315    1.20e-21
+320    6.67e-22
+325    3.62e-22
+330    2.34e-22
+335    1.57e-22
+340    1.13e-22

@@ -1,0 +1,10 @@
+CH3COCHO yields (of CO) from
+S. Koch and G. K. Moortgat (pers. comm., 1997) also S. Kock Thesis
+For 260 < wavelength < 320 nm, phi is unity, indep. of pressure. For longer
+wavelengths, obeys Stern-Volmer line with non-zero intercept given in table.
+nm	phi(760 torr)	phi(0 torr)
+320.	1.0		1.0
+380.	.11		1.0
+400.	.04		.45
+420.	.02		.25
+440.	.0		.1

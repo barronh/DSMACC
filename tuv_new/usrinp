@@ -1,0 +1,178 @@
+TUV inputs:
+==================================================================
+inpfil =        arr3   outfil =      arrout   nstr =             1 
+lat =          0.000   lon =          0.000   tmzone =         0.0
+iyear =         2005   imonth =           7   iday =             1
+zstart =       0.000   zstop =       80.000   nz =               9
+wstart =     120.000   wstop =      735.000   nwint =         -156
+tstart =       0.000   tstop =       90.000   nt =              19
+lzenit =           T   alsurf =       0.100   psurf =       -999.0
+o3col =      300.000   so2col =       0.000   no2col =       0.000
+taucld =       0.000   zbase =        4.000   ztop =         5.000
+tauaer =       0.235   ssaaer =       0.990   alpha =        1.000
+dirsun =       1.000   difdn =        1.000   difup =        1.000
+zout =         0.000   zaird =   -9.990E+02   ztemp =     -999.000
+lirrad =           F   laflux =           F   lmmech =           F
+lrates =           F   isfix =            0   nms =              0
+ljvals =           T   ijfix =            0   nmj =             54
+iwfix =            0   itfix =            0   izfix =            0
+==================================================================
+===== Available spectral weighting functions:
+T  1 UV-B, 280-315 nm                                  
+F  2 UV-B*, 280-320 nm                                 
+T  3 UV-A, 315-400 nm                                  
+F  4 vis+, > 400 nm                                    
+F  5 Gaussian, 305 nm, 10 nm FWHM                      
+T  6 Gaussian, 320 nm, 10 nm FWHM                      
+F  7 Gaussian, 340 nm, 10 nm FWHM                      
+F  8 Gaussian, 380 nm, 10 nm FWHM                      
+T  9 RB Meter, model 501                               
+F 10 Eppley UV Photometer                              
+F 11 PAR, 400-700 nm, umol m-2 s-1                     
+F 12 Exponential decay, 14 nm/10                       
+T 13 DNA damage, in vitro (Setlow, 1974)               
+F 14 SCUP-mice (de Gruijl et al., 1993)                
+F 15 SCUP-human (de Gruijl and van der Leun, 1994)     
+F 16 CIE human erythema (McKinlay and Diffey, 1987)    
+T 17 UV index (WMO, 1994)                              
+F 18 Erythema, humans (Anders et al., 1995)            
+F 19 Occupational TLV (ACGIH, 1992)                    
+F 20 Phytoplankton (Boucher et al., 1994)              
+F 21 Phytoplankton, phaeo (Cullen et al., 1992)        
+F 22 Phytoplankton, proro (Cullen et al., 1992)        
+F 23 Cataract, pig (Oriowo et al., 2001)               
+F 24 Plant damage (Caldwell, 1971)                     
+F 25 Plant damage (Flint & Caldwell, 2003)             
+T 26 Previtamin-D3 (CIE 2006)                          
+F 27 NMSC (CIE 2006)                                   
+===== Available photolysis reactions
+F  1 O2 -> O + O                                       
+F  2 O3 -> O2 + O(1D)                                  
+F  3 O3 -> O2 + O(3P)                                  
+F  4 HO2 -> OH + O                                     
+F  5 H2O2 -> 2 OH                                      
+F  6 NO2 -> NO + O(3P)                                 
+F  7 NO3 -> NO + O2                                    
+F  8 NO3 -> NO2 + O(3P)                                
+F  9 N2O5 -> NO3 + NO + O(3P)                          
+F 10 N2O5 -> NO3 + NO2                                 
+F 11 N2O -> N2 + O(1D)                                 
+F 12 HNO2 -> OH + NO                                   
+F 13 HNO3 -> OH + NO2                                  
+F 14 HNO4 -> HO2 + NO2                                 
+F 15 NO3-(aq) -> NO2(aq) + O-                          
+F 16 NO3-(aq) -> NO2-(aq) + O(3P)                      
+F 17 CH2O -> H + HCO                                   
+F 18 CH2O -> H2 + CO                                   
+F 19 CH3CHO -> CH3 + HCO                               
+F 20 CH3CHO -> CH4 + CO                                
+F 21 CH3CHO -> CH3CO + H                               
+F 22 C2H5CHO -> C2H5 + HCO                             
+F 23 CH2(OH)CHO -> Products                            
+F 24 CH2=CHCHO -> Products                             
+F 25 CH2=C(CH3)CHO -> Products                         
+F 26 CH3COCH3 -> CH3CO + CH3                           
+F 27 CH3COCHCH2 -> Products                            
+F 28 CH3COCH2CH3 -> CH3CO + CH2CH3                     
+F 29 CH2(OH)COCH3 -> CH3CO + CH2(OH)                   
+F 30 CH2(OH)COCH3 -> CH2(OH)CO + CH3                   
+F 31 CH3OOH -> CH3O + OH                               
+F 32 HOCH2OOH -> HOCH2O. + OH                          
+F 33 CH3CO(OOH) -> Products                            
+F 34 CH3ONO2 -> CH3O + NO2                             
+F 35 CH3CH2ONO2 -> CH3CH2O + NO2                       
+F 36 CH3CHONO2CH3 -> CH3CHOCH3 + NO2                   
+F 37 CH2(OH)CH2(ONO2) -> CH2(OH)CH2(O.) + NO2          
+F 38 CH3COCH2(ONO2) -> CH3COCH2(O.) + NO2              
+F 39 C(CH3)3(ONO2) -> C(CH3)3(O.) + NO2                
+F 40 CH3CO(OONO2) -> CH3CO(OO) + NO2                   
+F 41 CH3CO(OONO2) -> CH3CO(O) + NO3                    
+F 42 CH3CH2CO(OONO2) -> CH3CH2CO(OO) + NO2             
+F 43 CH3CH2CO(OONO2) -> CH3CH2CO(O) + NO3              
+F 44 CHOCHO -> 2CO + H2                                
+F 45 CHOCHO -> HCO + HCO                               
+F 46 CHOCHO -> CH2O + CO                               
+F 47 CH3COCHO -> CH3CO + HCO                           
+F 48 CH3COCOCH3 -> Products                            
+F 49 CH3COCO(OH) -> Products                           
+F 50 Cl2 -> Cl + Cl                                    
+F 51 ClOOCl -> Cl + ClOO                               
+F 52 ClOO -> Products                                  
+F 53 ClONO2 -> Cl + NO3                                
+F 54 ClONO2 -> ClO + NO2                               
+F 55 Br2 -> Br + Br                                    
+F 56 BrO -> Br + O                                     
+F 57 HOBr -> OH + Br                                   
+F 58 BrONO2 -> BrO + NO2                               
+F 59 BrONO2 -> Br + NO3                                
+F 60 CH3Cl -> Products                                 
+F 61 CCl2O -> Products                                 
+F 62 CCl4 -> Products                                  
+F 63 CClFO -> Products                                 
+F 64 CF2O -> Products                                  
+F 65 CF2ClCFCl2 (CFC-113) -> Products                  
+F 66 CF2ClCF2Cl (CFC-114) -> Products                  
+F 67 CF3CF2Cl (CFC-115) -> Products                    
+F 68 CCl3F (CFC-11) -> Products                        
+F 69 CCl2F2 (CFC-12) -> Products                       
+F 70 CH3CCl3 -> Products                               
+F 71 CF3CHCl2 (HCFC-123) -> Products                   
+F 72 CF3CHFCl (HCFC-124) -> Products                   
+F 73 CH3CFCl2 (HCFC-141b) -> Products                  
+F 74 CH3CF2Cl (HCFC-142b) -> Products                  
+F 75 CF3CF2CHCl2 (HCFC-225ca) -> Products              
+F 76 CF2ClCF2CHFCl (HCFC-225cb) -> Products            
+F 77 CHClF2 (HCFC-22) -> Products                      
+F 78 CH3Br -> Products                                 
+F 79 CHBr3 -> Products                                 
+F 80 CF3Br (Halon-1301) -> Products                    
+F 81 CF2BrCF2Br (Halon-2402) -> Products               
+F 82 CF2Br2 (Halon-1202) -> Products                   
+F 83 CF2BrCl (Halon-1211) -> Products                  
+F 84 nC3H7CHO -> nC3H7 + HCO                           
+F 85 nC3H7CHO -> C2H4 + CH3CHO                         
+F 86 iC3H7CHO -> iC3H7 + HCO                           
+F 87 nC4H9CHO -> nC4H9 + HCO                           
+F 88 nC4H9CHO -> C3H6 + CH3CHO                         
+F 89 iC4H9CHO -> iC4H9 + HCO                           
+F 90 iC4H9CHO -> C3H6 + CH3CHO                         
+F 91 tC4H9CHO -> tC4H9 + HCO                           
+F 92 nC5H11CHO -> nC5H11 + HCO                         
+F 93 nC5H11CHO -> C4H8 + CH3CHO                        
+F 94 nC6H13CHO -> nC6H13 + HCO                         
+F 95 nC6H13CHO -> C5H10 + CH3CHO                       
+F 96 CH3COC2H5 -> C2H5 + CH3CO                         
+F 97 pinonaldehyde -> products                         
+F 98 CH2CHCHO -> CH2CHCO + H                           
+F 99 CH2CHCHO -> CH2CH + HCO                           
+F100 nC3H7ONO2 -> nC3H7O + NO2                         
+F101 nC4H9ONO2 -> nC4H9O + NO2                         
+F102 iC4H9ONO2 -> iC4H9O + NO2                         
+F103 2-C4H9ONO2 -> 2-C4H9O + NO2                       
+F104 nC5H11ONO2 -> nC5H11O + NO2                       
+F105 2-C5H11ONO2 -> 2-C5H11O + NO2                     
+F106 3-C5H11ONO2 -> 3-C5H11O + NO2                     
+F107 i-C5H11ONO2 -> i-C5H11O + NO2                     
+F108 CH3CH2C(O)CH2(ONO2) -> CH3CH2C(O)CH2(O.) + NO2    
+F109 CH3CH(ONO2)C(O)CH3 -> CH3CH(O.)C(O)CH3 + NO2      
+F110 CH3CH(ONO2)CH2(ONO2) -> CH3CH(O.)CH2(ONO2) + NO2  
+F111 CH3CH(ONO2)CH2(ONO2) -> CH3CH(ONO2)CH2(O.) + NO2  
+F112 C2H5CH(ONO2)CH2(ONO2) -> C2H5CH(O.)CH2(ONO2) + NO2
+F113 C2H5CH(ONO2)CH2(ONO2) -> C2H5CH(ONO2)CH2(O.) + NO2
+F114 CH3CH(ONO2)CH(ONO2)CH3 -> CH3CH(O.)CH(ONO2)CH3 + N
+F115 CH2=CHCH(ONO2)CH2(ONO2) -> C2H3CH(O.)CH2(ONO2) + N
+F116 CH2=CHCH(ONO2)CH2(ONO2) -> C2H3CH(ONO2)CH2(O.) + N
+F117 CH2(ONO2)C2H2CH2(ONO2) -> CH2(ONO2)C2H2CH2(O.) + N
+F118 CH3CH=CHCHO -> CH3CH=CHCO + H                     
+F119 CH3CH=CHCHO -> CH3CH=CH + HCO                     
+F120 CH3CH=CHCHO -> CH3CH=CH2 + CO                     
+F121 CH3COC3H7 -> C3H7 + CH3CO                         
+F122 C2H5COC2H5 -> C2H5 + C2H5CO                       
+F123 ((CH3)2CH)2C(O) -> (CH3)2C + (CH3)2CHCO           
+F124 CH3C(O)CH2CH(CH3)2 -> CH3CO + (CH3)2CHCH2         
+F125 CH3C(O)CH2CH(CH3)2 -> CH3C(O)CH3 + CH2=CHCH3      
+F126 CH3C(O)C3H5(CH3)2 -> CH3CO + (CH3)2C3H5           
+F127 CH3C(O)C3H5(CH3)2 -> CH3C(O)CH3 + CH2=CHCH(CH3)2  
+F128 CH3OONO2 -> CH3O2 + NO2                           
+F129 CH3OONO2 -> CH3O + NO3                            
+==================================================================

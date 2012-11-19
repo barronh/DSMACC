@@ -1,0 +1,69 @@
+file F021_CP.ABS - CH3CHO absorption cross section from Calvert and Pitts
+CH3CHO ABSORPTION CROSS SECTION
+Reference:  Calvert And Pitts
+Species Code     Common Name     Chemical Formula
+     F021         Acetaldehyde     CH3CHO
+Units:   Wavelength  (A)
+         Absorption Cross Section  (Dm**3/Mol/Cm)
+Scale Factor:     To Cm**2/Molec  Multiply By
+    3.82e-21
+Temperature:   25 Degrees C
+Absorption Cross Section Data
+Wavelength (A)     Absorption Cross Section (Dm**3/Mol/Cm)
+$$$$$$$$$$$$
+0.1	3.82e-21
+     2050                 2.0
+     2100                 1.0
+     2120                 1.4
+     2150                 0.45
+     2200                 0.1
+     2250                 0.0
+     2300                 0.1
+     2350                 0.7
+     2400                 1.2
+     2450                 2.0
+     2500                 2.9
+     2550                 4.2
+     2580                 5.4
+     2600                 5.75
+     2625                 6.5
+     2650                 7.4
+     2700                 9.0
+     2750                 10.8
+     2780                 10.6
+     2800                 11.7
+     2805                 12.1
+     2825                 12.45
+     2850                 11.95
+     2865                 11.8
+     2880                 12.45
+     2900                 12.6
+     2930                 12.05
+     2950                 11.2
+     2980                 11.8
+     3000                 11.1
+     3020                 10.1
+     3030                 10.1
+     3031                 9.45
+     3050                 9.2
+     3080                 9.0
+     3100                 8.0
+     3130                 6.5
+     3150                 6.0
+     3170                 5.4
+     3200                 4.35
+     3215                 4.0
+     3225                 4.0
+     3235                 3.3
+     3250                 3.3
+     3270                 2.95
+     3280                 2.1
+     3300                 1.9
+     3315                 1.9
+     3350                 0.5
+     3365                 0.5
+     3380                 0.25
+     3400                 0.2
+     3450                 0.1
+     3500                 0.0
+$$$$$$$$$

@@ -1,0 +1,40 @@
+25 16         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 155
+
+CHClF2 (HCFC-22) + hv -> Products
+
+"The absorption cross sections of CHClF2 (HCFC-22) have been measured at room
+temperature by Robbins and Stolarski [1332] and Chou et al. [300], at 208K and
+218K by Hubrich et al. [713], and between 210 and 295 K by Simon et al. [1425].
+The agreement between these groups is reasonable.  The preferred absorption
+cross sections, listed in Table 46, are taken from work of Simon et al.
+
+Photolysis of CHClF2 is rather unimportant throughout the atmosphere:  reaction
+with OH radicals is the dominant destruction process."
+
+Table 46.  Absorption Cross Sections of CHClF2.
+---------------------------------------------------------------------------------------
+lambda				1E20 sigma (cm^2)
+ (nm)		295K		270K		250K		230K		210K
+---------------------------------------------------------------------------------------
+174		5.72		5.72		5.72		5.72		5.72
+176		4.04		4.04		4.04		4.04		4.04
+178		2.76		2.76		2.76		2.76		2.76
+180		1.91		1.91		1.91		1.91		1.91
+182		1.28		1.28		1.28		1.28		1.28
+184		0.842		0.842		0.842		0.842		0.842
+186		0.576		0.576		0.576		0.576		0.576
+188		0.372		0.372		0.372		0.372		0.372
+190		0.245		0.245		0.245		0.245		0.242
+192		0.156		0.156		0.156		0.152		0.148
+194		0.103		0.102		0.099		0.096		0.093
+196		0.072		0.069		0.067		0.064		0.062
+198		0.048		0.045		0.043		0.041 		0.039
+200		0.032		0.029		0.029		0.0259		0.0159
+202		0.0220		0.0192		0.0184		0.0169		0.0159
+204		0.0142		0.0121		0.0114		0.0104		0.0096

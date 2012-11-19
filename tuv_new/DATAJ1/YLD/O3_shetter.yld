@@ -1,0 +1,90 @@
+46 45
+Reference: R.E.Shetter et al.
+           Actinometric and Radiometric Measurement and Modeling of the
+           Photosylis Rate Coefficient of Ozone to O(1D) During MLOPEX II
+           Journal of Geophysical Research, v 101 (D9), pg. 14,631-14,641,
+           June 20, 1996
+           
+           
+
+O3 + hv -> O2 + O(1D)
+
+"The measurements have been compared to modeled photolysis rate coefficients
+calculated using quantum yields from DeMore et al. [1994], from Michelsen et
+al. [1994], and from a reevaluation of the existing data.  Indications from the
+comparison of many days of clear sky data are that quantum yields in the
+312-320 nm range are not close to zero as suggested by DeMore et al. [1994] but
+closer to the data of Brock and Watson [1980] and Armerding et al. [1995], thus
+agreeing with the conclusions of Muller et al. [1995].  A recommendation for
+the quantum yield as a function of wavelength and temperature is made from our
+reevaluation of the existing data and fits well with the data taken at MLOPEX
+II."
+
+"At present, to obtain data at temperatures other than room temperature, the
+expressions of Adler-Golden and Michelsen are used (after multiplication by
+0.95) to give Phi versus wavelength data at 230 K, and interpolations between
+230 and 298 K are conducted using the following expression:
+
+     Phi(lambda,T) = A(lambda) Exp[ -B(lambda)/T ]             (11)
+
+Table 1 lists the recommended O(1D) quantum yields at 298 K and 230 K
+normalized to 0.95 at 305 nm and the A and B factors for extrapolating the data
+to other temperatures using the above equation."
+
+"Table 1:  Recommended ozone photolysis O(1D) quantum yileds at 298 K and 230 K
+normalized to 0.95 at 305 nm and the A and B factors for extrapolating the data
+to other temperatures using Equation 11."
+
+[Comment:  Table 1 has been extended by 'artificial' values of A and B from
+280-306 nm to generalize the applicability of Phi=A*EXP(-B/T).  Also, the
+recommended value at 260 nm has been included in the table.  ***SF**]
+
+------------------------------------------------------------------------------
+Wavelength	Phi(298)	Phi(230)	A		B
+(nm)
+------------------------------------------------------------------------------
+260		0.870		0.870		0.870		0.0	
+280		0.893		0.893		0.893		0.0
+281		0.895		0.895		0.895		0.0
+282		0.897		0.897		0.897		0.0
+283		0.900		0.900		0.900		0.0
+284		0.902		0.902		0.902		0.0
+285		0.904		0.904		0.904		0.0
+286		0.907		0.907		0.907		0.0
+287		0.909		0.909		0.909		0.0
+288		0.911		0.911		0.911		0.0
+289		0.913		0.913		0.913		0.0
+290		0.916		0.916		0.916		0.0
+291		0.918		0.918		0.918		0.0
+292		0.920		0.920		0.920		0.0
+293		0.923		0.923		0.923		0.0
+294		0.925		0.925		0.925		0.0
+295		0.927		0.927		0.927		0.0
+296		0.929		0.929		0.929		0.0
+297		0.932		0.932		0.932		0.0
+298		0.934		0.934		0.934		0.0
+299		0.936		0.936		0.936		0.0
+300		0.939		0.939		0.939		0.0
+301		0.941		0.941		0.941		0.0
+302		0.943		0.943		0.943		0.0
+303		0.945		0.945		0.945		0.0
+304		0.948		0.948		0.948		0.0
+305		0.950		0.950		0.950		0.0
+306		0.893		0.893		0.893		0.0
+307		0.827		0.808		0.89		23.44
+308		0.751		0.665		1.13		121.91
+309		0.646		0.485		1.71		289.97
+310		0.466		0.333		1.45		339.14
+311		0.380		0.219		2.47		557.78
+312		0.285		0.143		2.97		698.65
+313		0.228		0.105		3.19		786.35
+314		0.209		0.089		3.71		857.09
+315		0.209		0.081		5.21		958.53
+316		0.200		0.067		7.81		1093.04
+317		0.181		0.061		7.16		1096.78
+318		0.162		0.055		6.13		1083.90
+319		0.133		0.038		9.21		1262.71
+320		0.114		0.021		35.39		1709.92
+321		0.095		0.018		26.14		1673.92
+325		0.051		0.000		
+330		0.011		0.000		

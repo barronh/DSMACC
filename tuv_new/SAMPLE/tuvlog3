@@ -1,0 +1,126 @@
+TUV inputs:
+==================================================================
+inpfil =      defin3   outfil =      usrout   nstr =             4
+lat =          0.000   lon =          0.000   tmzone =         0.0
+iyear =         2002   imonth =           3   iday =            21
+zstart =       0.000   zstop =      100.000   nz =             101
+wstart =     120.000   wstop =      735.000   nwint =         -156
+tstart =       0.000   tstop =       23.750   nt =              96
+lzenit =           F   alsurf =       0.100   psurf =       -999.0
+o3col =      300.000   so2col =       0.000   no2col =       0.000
+taucld =       0.000   zbase =        4.000   ztop =         5.000
+tauaer =       0.235   ssaaer =       0.990   alpha =        1.000
+dirsun =       1.000   difdn =        1.000   difup =        1.000
+zout =         0.500   zaird =   -9.990E+02   ztemp =     -999.000
+lirrad =           F   laflux =           F   lmmech =           T
+lrates =           F   isfix =            0   nms =              0
+ljvals =           F   ijfix =            0   nmj =              0
+iwfix =            0   itfix =            0   izfix =            0
+==================================================================
+==== Spectral weighting functions used:
+==== Photolysis reactions used:
+==================================================================
+ Discrete ordinates  4-stream radiative transfer
+ air temperature: USSA, 1976
+ air concentrations: USSA, 1976
+ ozone profile: USSA, 1976
+ DATAE1/SUN/susim_hi.flx
+ DATAE1/SUN/atlas3_1994_317_a.dat        
+ DATAE1/SUN/neckel.flx                   
+ aerosols:  Elterman (1968) continental profile
+step =    1 sza =   178.153 Earth-sun factor =  1.0079633
+step =    2 sza =   178.092 Earth-sun factor =  1.0079567
+step =    3 sza =   174.343 Earth-sun factor =  1.0079522
+step =    4 sza =   170.592 Earth-sun factor =  1.0079455
+step =    5 sza =   166.842 Earth-sun factor =  1.0079390
+step =    6 sza =   163.091 Earth-sun factor =  1.0079345
+step =    7 sza =   159.340 Earth-sun factor =  1.0079279
+step =    8 sza =   155.590 Earth-sun factor =  1.0079212
+step =    9 sza =   151.839 Earth-sun factor =  1.0079168
+step =   10 sza =   148.088 Earth-sun factor =  1.0079101
+step =   11 sza =   144.337 Earth-sun factor =  1.0079035
+step =   12 sza =   140.587 Earth-sun factor =  1.0078990
+step =   13 sza =   136.836 Earth-sun factor =  1.0078924
+step =   14 sza =   133.085 Earth-sun factor =  1.0078857
+step =   15 sza =   129.334 Earth-sun factor =  1.0078813
+step =   16 sza =   125.584 Earth-sun factor =  1.0078746
+step =   17 sza =   121.833 Earth-sun factor =  1.0078679
+step =   18 sza =   118.082 Earth-sun factor =  1.0078635
+step =   19 sza =   114.331 Earth-sun factor =  1.0078568
+step =   20 sza =   110.580 Earth-sun factor =  1.0078502
+step =   21 sza =   106.830 Earth-sun factor =  1.0078458
+step =   22 sza =   103.079 Earth-sun factor =  1.0078391
+step =   23 sza =    99.328 Earth-sun factor =  1.0078325
+step =   24 sza =    95.578 Earth-sun factor =  1.0078280
+step =   25 sza =    91.827 Earth-sun factor =  1.0078213
+step =   26 sza =    88.076 Earth-sun factor =  1.0078148
+step =   27 sza =    84.325 Earth-sun factor =  1.0078102
+step =   28 sza =    80.574 Earth-sun factor =  1.0078037
+step =   29 sza =    76.824 Earth-sun factor =  1.0077970
+step =   30 sza =    73.073 Earth-sun factor =  1.0077925
+step =   31 sza =    69.322 Earth-sun factor =  1.0077859
+step =   32 sza =    65.571 Earth-sun factor =  1.0077791
+step =   33 sza =    61.821 Earth-sun factor =  1.0077747
+step =   34 sza =    58.070 Earth-sun factor =  1.0077680
+step =   35 sza =    54.319 Earth-sun factor =  1.0077614
+step =   36 sza =    50.569 Earth-sun factor =  1.0077569
+step =   37 sza =    46.818 Earth-sun factor =  1.0077504
+step =   38 sza =    43.067 Earth-sun factor =  1.0077437
+step =   39 sza =    39.317 Earth-sun factor =  1.0077393
+step =   40 sza =    35.566 Earth-sun factor =  1.0077326
+step =   41 sza =    31.815 Earth-sun factor =  1.0077258
+step =   42 sza =    28.065 Earth-sun factor =  1.0077215
+step =   43 sza =    24.314 Earth-sun factor =  1.0077147
+step =   44 sza =    20.563 Earth-sun factor =  1.0077082
+step =   45 sza =    16.813 Earth-sun factor =  1.0077037
+step =   46 sza =    13.063 Earth-sun factor =  1.0076970
+step =   47 sza =     9.313 Earth-sun factor =  1.0076904
+step =   48 sza =     5.566 Earth-sun factor =  1.0076859
+step =   49 sza =     1.829 Earth-sun factor =  1.0076792
+step =   50 sza =     1.963 Earth-sun factor =  1.0076727
+step =   51 sza =     5.701 Earth-sun factor =  1.0076683
+step =   52 sza =     9.449 Earth-sun factor =  1.0076615
+step =   53 sza =    13.198 Earth-sun factor =  1.0076548
+step =   54 sza =    16.948 Earth-sun factor =  1.0076504
+step =   55 sza =    20.699 Earth-sun factor =  1.0076437
+step =   56 sza =    24.449 Earth-sun factor =  1.0076371
+step =   57 sza =    28.200 Earth-sun factor =  1.0076326
+step =   58 sza =    31.950 Earth-sun factor =  1.0076261
+step =   59 sza =    35.701 Earth-sun factor =  1.0076193
+step =   60 sza =    39.451 Earth-sun factor =  1.0076150
+step =   61 sza =    43.202 Earth-sun factor =  1.0076082
+step =   62 sza =    46.953 Earth-sun factor =  1.0076015
+step =   63 sza =    50.704 Earth-sun factor =  1.0075971
+step =   64 sza =    54.454 Earth-sun factor =  1.0075904
+step =   65 sza =    58.205 Earth-sun factor =  1.0075837
+step =   66 sza =    61.956 Earth-sun factor =  1.0075793
+step =   67 sza =    65.706 Earth-sun factor =  1.0075725
+step =   68 sza =    69.457 Earth-sun factor =  1.0075660
+step =   69 sza =    73.208 Earth-sun factor =  1.0075616
+step =   70 sza =    76.959 Earth-sun factor =  1.0075549
+step =   71 sza =    80.709 Earth-sun factor =  1.0075482
+step =   72 sza =    84.460 Earth-sun factor =  1.0075438
+step =   73 sza =    88.211 Earth-sun factor =  1.0075371
+step =   74 sza =    91.961 Earth-sun factor =  1.0075305
+step =   75 sza =    95.712 Earth-sun factor =  1.0075259
+step =   76 sza =    99.463 Earth-sun factor =  1.0075194
+step =   77 sza =   103.213 Earth-sun factor =  1.0075127
+step =   78 sza =   106.964 Earth-sun factor =  1.0075082
+step =   79 sza =   110.715 Earth-sun factor =  1.0075016
+step =   80 sza =   114.465 Earth-sun factor =  1.0074948
+step =   81 sza =   118.216 Earth-sun factor =  1.0074904
+step =   82 sza =   121.967 Earth-sun factor =  1.0074837
+step =   83 sza =   125.717 Earth-sun factor =  1.0074772
+step =   84 sza =   129.468 Earth-sun factor =  1.0074726
+step =   85 sza =   133.218 Earth-sun factor =  1.0074661
+step =   86 sza =   136.969 Earth-sun factor =  1.0074593
+step =   87 sza =   140.719 Earth-sun factor =  1.0074548
+step =   88 sza =   144.470 Earth-sun factor =  1.0074482
+step =   89 sza =   148.220 Earth-sun factor =  1.0074415
+step =   90 sza =   151.970 Earth-sun factor =  1.0074371
+step =   91 sza =   155.721 Earth-sun factor =  1.0074303
+step =   92 sza =   159.471 Earth-sun factor =  1.0074236
+step =   93 sza =   163.220 Earth-sun factor =  1.0074192
+step =   94 sza =   166.969 Earth-sun factor =  1.0074127
+step =   95 sza =   170.716 Earth-sun factor =  1.0074059
+step =   96 sza =   174.458 Earth-sun factor =  1.0074016

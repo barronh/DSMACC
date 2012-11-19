@@ -1,0 +1,22 @@
+file F021_II.YLD acetaldehyde channel II yields from Moortgat
+date of last entry  3/14/86
+species code     common name          chemical formula
+   F021           acetaldehyde          CH3CHO
+temperature
+pressure:  760 torr
+quantum yeild data for acetaldehyde    path ii
+wvl (nm)     qy ( )
+$$
+1       1
+  260     0.46
+  270     0.33
+  280     0.05
+  290     0.01
+  300     0.0
+  310     0.0
+  320     0.0
+  328     0.0
+  330     0.0
+$$
+
+\EOF

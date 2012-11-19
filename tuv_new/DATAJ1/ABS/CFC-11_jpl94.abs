@@ -1,0 +1,70 @@
+34 37         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 150 ff.
+
+CCl3F (CFC-11) + hv -> Products
+
+"Tables 39, 40 and 41 list the present recommendations for the cross sections
+of CCl4, CCl3F and CCl2F2, respectively.  These data are given by the mean of
+the values reported by various groups, i.e., Hubrich et al. [713], Hubrich and
+Stuhl [712], Vanlaethem-Meuree et al. [1613, 1614], and Green and Wayne [594],
+as well as those referred to in earlier evaluations (CODATA [347]).  Absorption
+cross sections for these species over the temperature range 295-210K have also
+been reported by Simon et al. [1425].  These results are in generally good
+agreement with the present recommendations.  Expressions for the temperature
+dependence of the CCl3F and CCl2F2 cross sections are given at the bottom of
+Tables 40 and 41, respetively.  These expressions are valid in the wavelength
+range of maximum solar photodissociation, i.e., about 190-210 nm, but may not
+exactly reproduce the experimental temperature dependences outside this
+wavelength range.  However, J-value calculations should not be affected."
+
+sigma(T) = sigma(298) * exp[1E-04 (lambda-184.9)(T-298)]
+where sigma(298) = cross section at 298 K
+      lambda : nm
+      T      : temperature, K
+
+Table 40.  Absorption Cross Sections of CCl3F
+-------------------------------------------------------------------
+ lambda (nm)		1E20 sigma (cm^2)
+-------------------------------------------------------------------
+170			316
+172			319
+174			315
+176			311
+178			304
+180			308
+182			285
+184			260
+186			233
+188			208
+190			178
+192			149
+194			123
+196			 99
+198			80.1
+200			64.7
+202			50.8
+204			38.8
+206			29.3
+208			21.2
+210			15.4
+212			10.9
+214			7.52
+216			5.28
+218			3.56
+220			2.42
+222			1.60
+224			1.10
+226			0.80
+228			0.55
+230			0.35
+235			0.126
+240			0.0464
+245			0.0173
+250			0.00661
+255			0.00337
+260			0.00147

@@ -1,0 +1,9 @@
+CH3CHO -> CH3 + CHO
+from Horowitz and Calvert (1982)
+Slope and intercept of Sterm-Volmer plots
+wavelngth	slope(atm-1)   intercept    slope/intercept, atm-1
+	290	0.658	1.123	0.59
+	300	1.63	1.08	1.51	
+	313	6.06	1.04	5.83
+	320	16.8	1.98	8.48
+	331.2	86.3	30.0	2.88

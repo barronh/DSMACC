@@ -1,0 +1,29 @@
+BrO -> Br + O. The BrO radical has a banded spectrum in the 290¨C380 nm range. 
+The strongest absorption feature is around 338 nm. The measured cross sections 
+are both temperature- and resolution dependent. As an example, the spectrum 
+measured by Wahner et al. [423] is shown in Figure 4-4. The bands are due to a 
+vibrational progression in the A <- X system, and the location of the bands, 
+along with the assignments and cross sections measured using 0.4 nm resolution, 
+are shown in Table 4-62. BrO is expected to dissociate upon light absorption. 
+As a guide, the cross sections averaged over 5 nm wavelength intervals are taken 
+from the work of Cox et al. [92], and are listed in Table 4-63. These authors 
+estimate a BrO lifetime against atmospheric photodissociation of ~20 seconds at 
+the earth's surface, for a solar zenith angle of 30 deg. The earlier BrO cross 
+section measurements were carried out mostly around 338 nm, and these have been
+reviewed by CODATA ([81,82]).
+wlow   wupper   xs, 1e-20 cm2
+300	305	200
+305	310	259
+310	315	454
+315	320	391
+320	325	600
+325	330	753
+330	335	628
+335	340	589
+340	345	515
+345	350	399
+350	355	228
+355	360	172
+360	365	161
+365	370	92
+370	375	51

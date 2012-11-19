@@ -1,0 +1,46 @@
+# values from 2-74 km are from US Standard Atmosphere, 1976, for 45N, annual
+# means.
+# values at 0 and 1 km are filled in assuming a typical surface mixing ratio 
+# of 40 ppb.
+# total ozone (assuming linear behavior between altitude points): 349.82 DU
+# 1st column:  Geometric Altitude (km)
+# 2nd column:  Ozone number density (n(O3) cm-3)
+ 0 1.02E+12
+ 1 9.2E+11
+ 2 6.8E+11
+ 4 5.8E+11
+ 6 5.7E+11
+ 8 6.5E+11
+10 1.13E+12
+12 2.02E+12
+14 2.35E+12
+16 2.95E+12
+18 4.04E+12
+20 4.77E+12
+22 4.86E+12
+24 4.54E+12
+26 4.03E+12
+28 3.24E+12
+30 2.52E+12
+32 2.03E+12
+34 1.58E+12
+36 1.22E+12
+38 8.73E+11
+40 6.07E+11
+42 3.98E+11
+44 2.74E+11
+46 1.69E+11
+48 1.03E+11
+50 6.64E+10
+52 3.84E+10
+54 2.55E+10
+56 1.61E+10
+58 1.12E+10
+60 7.33E+09
+62 4.81E+09
+64 3.17E+09
+66 1.72E+09
+68 7.5E+08
+70 5.4E+08
+72 2.2E+08
+74 1.7E+08

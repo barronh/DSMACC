@@ -352,7 +352,7 @@ CONTAINS
                        if (jl .eq.  3)  j(2)=seval(n,theta,tmp, tmp2, b,c,d) ! O3->O3P
                        if (jl .eq. 11)  j(3)=seval(n,theta,tmp, tmp2, b,c,d) ! H2O2->2*OH
                        if (jl .eq.  4)  j(4)=seval(n,theta,tmp, tmp2, b,c,d) ! NO2->NO+O3P
-	               if (jl .eq.  5)  j(5)=seval(n,theta,tmp, tmp2, b,c,d) ! NO3->NO+O2
+	                   if (jl .eq.  5)  j(5)=seval(n,theta,tmp, tmp2, b,c,d) ! NO3->NO+O2
                        if (jl .eq.  6)  j(6)=seval(n,theta,tmp, tmp2, b,c,d) ! NO3->NO2+O3P
                        if (jl .eq. 12)  j(7)=seval(n,theta,tmp, tmp2, b,c,d) ! HNO2->OH+NO
                        if (jl .eq. 13)  j(8)=seval(n,theta,tmp, tmp2, b,c,d) ! HNO3->NO2+OH
@@ -360,7 +360,7 @@ CONTAINS
                        if (jl .eq. 15)  j(11)=seval(n,theta,tmp, tmp2, b,c,d)
                        if (jl .eq. 16)  j(12)=seval(n,theta,tmp, tmp2, b,c,d)
                        if (jl .eq. 17)  j(13)=seval(n,theta,tmp, tmp2, b,c,d)
- 		       if (jl .eq. 20)  j(14)=seval(n,theta,tmp, tmp2, b,c,d)
+ 		               if (jl .eq. 20)  j(14)=seval(n,theta,tmp, tmp2, b,c,d)
                        if (jl .eq. 75)  j(15)=seval(n,theta,tmp, tmp2, b,c,d)
                        if (jl .eq. 76)  j(16)=seval(n,theta,tmp, tmp2, b,c,d)
                        if (jl .eq. 77)  j(17)=seval(n,theta,tmp, tmp2, b,c,d)

@@ -1,0 +1,41 @@
+file pan_senum.abs - PAN absorption cross section from Senum et al., 1984
+PAN ABSORPTION CROSS SECTION
+Reference:  Senum et al., 1984, J.Phys.Chem. 88/7, 1269-1270
+Species Code     Common Name     Chemical Formula
+     ????         Peroxyacetylnitrate  CH3CO2NO2
+Units:   Wavelength  (nm)
+         Absorption Cross Section  (Cm**2/Molec)
+Scale Factor:     To Dm**3/Mol/Cm  Divide By
+    3.82e-21
+Temperature:   25 Degrees C
+Absorption Cross Section Data
+Wavelength (nm)    Absorption Cross Section (Cm**2/Molec)
+$$$$$$$$$$$$
+1.0     1.E-20     
+200       317
+205       237
+210       165
+215       115
+220        77
+225        55
+230        39.9
+235        29.0
+240        20.9
+245        15.0
+250        10.9
+255         7.9
+260         5.7
+265         4.04
+270         2.79
+275         1.82
+280         1.14
+285         0.716
+290         0.414
+295         0.221
+300         0.105
+$$$$$$$$$
+
+
+
+
+

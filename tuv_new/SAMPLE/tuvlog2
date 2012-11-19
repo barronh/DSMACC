@@ -1,0 +1,42 @@
+TUV inputs:
+==================================================================
+inpfil =      defin2   outfil =      usrout   nstr =             4
+lat =          0.000   lon =          0.000   tmzone =         0.0
+iyear =         2002   imonth =           3   iday =            21
+zstart =       0.000   zstop =      120.000   nz =             121
+wstart =     120.000   wstop =      735.000   nwint =         -156
+tstart =      12.000   tstop =       20.000   nt =               5
+lzenit =           F   alsurf =       0.100   psurf =       -999.0
+o3col =      300.000   so2col =       0.000   no2col =       0.000
+taucld =       0.000   zbase =        4.000   ztop =         5.000
+tauaer =       0.235   ssaaer =       0.990   alpha =        1.000
+dirsun =       1.000   difdn =        1.000   difup =        1.000
+zout =         0.500   zaird =   -9.990E+02   ztemp =     -999.000
+lirrad =           F   laflux =           T   lmmech =           F
+lrates =           F   isfix =            0   nms =              0
+ljvals =           T   ijfix =            0   nmj =              7
+iwfix =            0   itfix =            0   izfix =            0
+==================================================================
+==== Spectral weighting functions used:
+==== Photolysis reactions used:
+T  1 O3 -> O2 + O(1D)                                  
+T  2 H2O2 -> 2 OH                                      
+T  3 NO2 -> NO + O(3P)                                 
+T  4 NO3 -> NO + O2                                    
+T  5 NO3 -> NO2 + O(3P)                                
+T  6 CH2O -> H + HCO                                   
+T  7 CH2O -> H2 + CO                                   
+==================================================================
+ Discrete ordinates  4-stream radiative transfer
+ air temperature: USSA, 1976
+ air concentrations: USSA, 1976
+ ozone profile: USSA, 1976
+ DATAE1/SUN/susim_hi.flx
+ DATAE1/SUN/atlas3_1994_317_a.dat        
+ DATAE1/SUN/neckel.flx                   
+ aerosols:  Elterman (1968) continental profile
+step =    1 sza =     1.829 Earth-sun factor =  1.0076792
+step =    2 sza =    28.200 Earth-sun factor =  1.0076326
+step =    3 sza =    58.205 Earth-sun factor =  1.0075837
+step =    4 sza =    88.211 Earth-sun factor =  1.0075371
+step =    5 sza =   118.216 Earth-sun factor =  1.0074904

@@ -1,0 +1,44 @@
+24 43
+Reference: Burley, J. D. & H. S. Johnston
+           Ionic mechanisms for heterogeneous stratospheric reactions and
+           ultraviolet absorption cross sections for NO2+, HNO3, and NO3- 
+           in sulphuric acid,
+           Geophys. Res. Lett. 13, 1359-1362, 1992.
+   
+NO3-(aq) + hv => NO2(aq) + O-(aq)      (i)
+
+              -> NO2-(aq) + O(3P)(aq)  (ii)
+ 
+Quantum yields: channel (i) 9.2e-3;  channel (ii) 1.1e-3  @ 305 nm
+           Warneck, P., and C. Wurzinger
+           Product quantum yields for the 305-nm photodecomposition
+           of NO3- in aqueous solution,
+           J. Phys. Chem 92, 6278-6283, 1988.
+  
+The absorption spectrum has two main peaks: at c. 200 nm and at 302 nm.
+
+345-370 nm values extrapolated from 320-340 data by Julia Lee-Taylor, Feb'01
+-----------------------------------------------------------------------------
+lambda	sigma(20'C)  sigma(-20'C)
+(nm)	(1E-20 cm2 mol-1)
+-----------------------------------------------------------------------------
+270	0.72	0.78	
+275	0.99	1.12
+280	1.33	1.48
+285	1.72	1.92
+290	2.13	2.34
+295	2.49	2.70
+300	2.70	2.88
+305	2.68	2.80
+310	2.38	2.42	
+315	1.87	2.84
+320	1.24	1.16
+325	0.704	0.64
+330	0.33	0.29
+335	0.13	0.11
+340	0.061	0.05
+345	0.029	0.022
+350	0.014	0.01
+355	0.006	0.004
+360	0.003	0.002
+

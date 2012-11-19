@@ -1,0 +1,41 @@
+31 11         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 154 ff.
+
+CH3CCl3 + hv -> Products
+
+"The absorption cross sections have been measured by Robbuns [1331],
+Vanlaethem-Meuree et al. [1615], Hubrich and Stuhl [712], and Nayak et al.
+[1148].  Hubrich and Stuhl corrected the results to account for the presence of
+a UV-absorbing stabilizer in their samples, a correction which might account
+for the rather large discrepancy with the other three sets of measurements,
+which are in good agreement with each other.  The recommended values are taken
+from Vanlaethem-Meuree et al. [1615], who report values at 210 K, 230 K, 250 K,
+270 K and 295 K, every 2 nm, and in a separate table at wavelengths
+corresponding to the wavenumber intervals generally used in stratospheric
+photodissociation calculations.  Table 45 lists the values at 210 K, 250 K and
+295 K, every 5 nm;  the odd wavelength values were computed by linear
+interpolation.  These values agree within 10% with those reported by Nayak et
+al.;  these authors carried out measurements between 160 and 260 nm, from 220
+to 330 K."
+
+Table 45.  Absorption Cross Scetions of CH3CCl3.
+-----------------------------------------------------------------------
+lambda				1E20 sigma (cm^2)
+ (nm)		295K		250K		210K
+-----------------------------------------------------------------------
+185		265		265		265
+190		192		192		192
+200		81.0		81.0		81.0
+205		46.0		44.0		42.3
+210		24.0		21.6		19.8
+215		10.3		8.67		7.47
+220		4.15		3.42		2.90
+225		1.76		1.28		0.97
+230		0.700		0.470		0.330
+235		0.282		0.152		0.088
+240		0.102		0.048		0.024

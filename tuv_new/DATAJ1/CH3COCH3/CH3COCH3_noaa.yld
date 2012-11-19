@@ -1,0 +1,9 @@
+CH3COCH3 quantum yields
+from McKeen et al. 1997
+1/phi = a + b*M  where M = air number density, molec/cm3
+nm	a	b
+292	1	4e-20
+301.5	1.5	1.9e-19
+308	1.9	5e-19
+321	8.4	8.5e-19
+337	11.9	2.6e-18

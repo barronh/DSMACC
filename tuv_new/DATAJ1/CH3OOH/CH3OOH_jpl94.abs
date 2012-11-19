@@ -1,0 +1,42 @@
+27 16      #  first data line, number of data lines
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 132 
+
+CH3OOH + hv -> Products
+"Vaghjiani and Ravishankara [1600] mesured the cross sections of CH3OOH by
+monitoring the CH3OOH concentration via trapping and titration.  These results
+are recommended and are listed in Table 24.  The earlier results of Molina and
+ARguello [1110] are consistently 40% higher than the values shown in Table 24;
+this difference is believed to be due to difficulty in trapping CH3OOH and
+measuring its concentration.  CH3OOH dissociates upon light absorption to give
+CH3O with unit quantum yield (Vaghjiani and Ravishankara, [1601]);  these
+authors also observed some production of H and O atmos at shorter wavelengths
+(i.e. 193 nm).  Thelen et al. [1540] report unit quantum yield for OH
+production at 248 and 193 nm, in agreement with the results of Vaghjiani and
+Ravishankara."
+
+Table 24.  Absorption Cross section of CH3OOH
+--------------------
+lambda  10E20 sigma
+(nm)    (cm^2)
+--------------------
+210     31.5
+220     15.4
+230      9.62
+240      6.05
+250      3.98
+260      2.56
+270      1.70
+280      1.09
+290      0.69
+300      0.41
+310      0.24
+320      0.14
+330      0.079
+340      0.047
+350      0.027
+360      0.016

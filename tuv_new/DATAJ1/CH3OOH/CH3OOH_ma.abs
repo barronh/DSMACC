@@ -1,0 +1,19 @@
+CH3OOH cross section from Molina and Arguello (1979).
+according to Vaghjiani and Ravishankara (1989), Molina and
+Arguello had a problem measuring CH3OOH, cross sections 40% too high.
+nm       sigma, cm2
+210	3.75E-19
+220	2.20E-19
+230	1.38E-19
+240	8.80E-20
+250	5.80E-20
+260	3.80E-20
+270	2.50E-20
+280	1.50E-20
+290	9.00E-21
+300	5.80E-21
+310	3.40E-21
+320	1.90E-21
+330	1.10E-21
+340	6.00E-22
+350	4.00E-22

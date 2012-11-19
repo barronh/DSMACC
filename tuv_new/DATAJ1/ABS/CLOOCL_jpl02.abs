@@ -1,0 +1,156 @@
+From JPL 2002:
+CLOOCl + hv -> Cl + ClOO. Recommended absorption cross sections in the wavelength range 190-450 nm for
+ClOOCl are listed in Table 4-29. The values for the wavelength range 200-360 nm are the average of
+experimental results reported by Cox and Hayman [90], DeMore and Tschuikow-Roux [107], Permien et al.
+[313], and Burkholder et al. [53]. For the 190-200-nm range the data are from DeMore and Tschuikow-Roux
+[107], these being the only data available in that range. Data at wavelengths greater than 360 nm were obtained
+from a linear extrapolation of the logarithm of the cross sections, using the expression
+log(10**20 sigma(cm2)) = -0.01915 x lambda(nm) + 7.589. For lambda > 360 nm the extrapolated data are considered to be more
+reliable than the experimental measurements because of the very small dimer cross sections in this region.
+While the results of Cox and Hayman, DeMore and Tschuikow-Roux, Permien et al., and Burkholder et al. are
+in good agreement at wavelengths below 250 nm, there are significant discrepancies at longer wavelengths,
+which may be attributed to uncertainties in the spectral subtraction of impurities such as Cl2O, Cl2, and Cl2O2.
+Huder and DeMore [167] measured ClOOCl cross sections over the 190-310-nm range using a method that
+minimized the corrections required for impurities such as Cl2O. The cross sections from this study are
+significantly smaller (up to a factor of 2) than the current recommendation, particularly when extrapolated
+beyond 400 nm. Additional measurements are needed, particularly at the longer wavelengths, to check the
+results of Huder and DeMore.
+These studies also indicate that only one stable species is produced in the recombination reaction of ClO with
+itself, and that this species is dichlorine peroxide, ClOOCl, rather than ClOClO. Using submillimeter wave
+spectroscopy, Birk et al. [34] have further established the structure of the recombination product to be ClOOCl.
+These observations are in agreement with the results of quantum mechanical calculations (McGrath et al.
+[254,255]; Jensen and Odershede [184]; Stanton et al. [387]).
+Table 4-29. Absorption Cross Sections of ClOOCl at 200-250 K
+Wavelength, nm
+	Xsection, 10**-20 cm2
+190	565
+192	526
+194	489
+196	450
+198	413
+200	383.5
+202	352.9
+204	325.3
+206	298.6
+208	274.6
+210	251.3
+212	231.7
+214	217
+216	207.6
+218	206.1
+220	212.1
+222	227.1
+224	249.4
+226	280.2
+228	319.5
+230	365
+232	415.4
+234	467.5
+236	517.5
+238	563
+240	600.3
+242	625.7
+244	639.4
+246	642.6
+248	631.5
+250	609.3
+252	580.1
+254	544.5
+256	505.4
+258	463.1
+260	422
+262	381.4
+264	344.6
+266	311.6
+268	283.3
+270	258.4
+272	237.3
+274	218.3
+276	201.6
+278	186.4
+280	172.5
+282	159.6
+284	147.3
+286	136.1
+288	125.2
+290	114.6
+292	104.6
+294	95.4
+296	87.1
+298	79
+300	72.2
+302	65.8
+304	59.9
+306	54.1
+308	48.6
+310	43.3
+312	38.5
+314	34.6
+316	30.7
+318	28
+320	25.6
+322	23.4
+324	21.4
+326	19.2
+328	17.8
+330	16.7
+332	15.6
+334	14.4
+336	13.3
+338	13.1
+340	12.1
+342	11.5
+344	10.9
+346	10.1
+348	9
+350	8.2
+352	7.9
+354	6.8
+356	6.1
+358	5.8
+360	5.5
+362	4.5
+364	4.1
+366	3.8
+368	3.5
+370	3.2
+372	2.9
+374	2.7
+376	2.4
+378	2.2
+380	2.1
+382	1.9
+384	1.7
+386	1.6
+388	1.4
+390	1.3
+392	1.2
+394	1.1
+396	1
+398	0.92
+400	0.85
+402	0.78
+404	0.71
+406	0.65
+408	0.6
+410	0.54
+412	0.5
+414	0.46
+416	0.42
+418	0.38
+420	0.35
+422	0.32
+424	0.29
+426	0.27
+428	0.25
+430	0.23
+432	0.21
+434	0.19
+436	0.17
+438	0.16
+440	0.15
+442	0.13
+444	0.12
+446	0.11
+448	0.1
+450	0.09

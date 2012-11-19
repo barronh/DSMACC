@@ -1,0 +1,27 @@
+1-pentyl nitrate cross-sections (n-C5H11ONO2)
+MPI-Mainz Spectral Atlas
+
+average from the following:
+
+Clemitshaw et al., J. Photochem. Photobiol. A. Chem., 102, 117 (1996)
+Zhu and Kellis, chem. Phys. Lett., 278, 41 (1997)
+
+n = 16
+
+nm	sig(298K)
+265	4.09E-20
+270	3.50E-20
+275	2.88E-20
+280	2.50E-20
+285	1.92E-20
+290	1.41E-20
+295	9.40E-21
+300	6.61E-21
+305	4.21E-21
+310	2.55E-21
+315	1.40E-21
+320	7.31E-22
+325	3.79E-22
+330	2.14E-22
+335	1.29E-22
+340	8.51E-23

@@ -1,0 +1,36 @@
+29 8
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 117
+
+H2O + hv -> H + OH
+
+"Water vapor has a continuum absorption spectrum at wavelengths longer than 145
+nm, with a maximum around 165 nm, the cross sections falling off rapidly toward
+longer wavelengths; the photodissociation threshold occurs at 246 nm.  Below 69
+nm the spectrum is also a continuum, and between 69 and 145 nm it consists of
+diffuse bands.  In the atmosphere water vapor is photodissociated mainly by the
+solar Lyman alpha line (121.6 nm).
+
+The absorption cross sections and the photochemistry of water vapor have been
+reviewed, for example, by Hudson [716, 717], by Hudson and Kiefer [718]; by
+Calvert and Pitts [241]; and by Okabe [1204].
+
+The recommended absorption cross sections are taken from the review by Hudson
+and Kiefer [718], and are listed in Table 10 between 175 and 190 nm.  At these
+wavelengths the quantum yield for production of H and OH is unity.  At shorter
+wavelengths H2 and O are also formed as primary products; Stief et al. [1498]
+report a quantum yield of 0.11 for this process between 105 and 145 nm."
+
+Wavelength (nm)    Cross section (1E-20 cm^2)
+175.5			262.8
+177.5			185.4
+180.0			78.1
+182.5			23.0
+185.0			5.5
+186.0			3.1
+187.5			1.6
+189.3			0.7

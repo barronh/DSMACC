@@ -1,0 +1,26 @@
+Eppley UV-A radiometer response functions
+Column 1: wavelenght, nm
+Column 2: relative spectral response of photodiode, presumably on the basis
+          of Joules rather than quanta
+Column 3: Transmission function of filter.
+*********
+295.	.49	.01
+300.	.49	.08
+305.	.49	.144
+310.	.49	.236
+315.	.495	.345
+320.	.50	.40
+325.	.507	.447
+330.	.515	.470
+335.	.521	.499
+340.	.53	.458
+345.	.54	.43
+350.	.555	.391
+355.	.572	.357
+360.	.580	.322
+365.	.610	.261
+370.	.640	.190
+375.	.670	.104
+380.	.70	.037
+385.	.74	.002
+********	

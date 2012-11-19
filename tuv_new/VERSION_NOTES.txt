@@ -1,0 +1,96 @@
+Version 4.6 March 2009, Sasha Madronich
+Corrected indexing problem for PAN and PPN, two channels:
+        j = j+1
+        jlabel(j) = 'CH3CO(OONO2) -> CH3CO(OO) + NO2'
+        j = j+1
+        jlabel(j) = 'CH3CO(OONO2) -> CH3CO(O) + NO3'
+    The sq assignment was to j and j+1 rather than to j-1 and j.  Therefore the 
+    NO2 channel was not assigned (zeros) and the NO3 channel contained the NO2 channel
+    instead.  Same problem for PPN.
+Deleted old input files in directory INPUTS (mex, j01, t1).  The order of reactions was 
+    old and different than new order. Their potential use would lead to mis-assignment of reactions.
+Changed interopolation schemes in vpair.  Now interpolating log concentrations onto z-grid, 
+    then doing log integration to get column increments.  Also changed notation.
+Changed interpolation shcemes in vpo3. Linear interpolations of concentrations.  Also extended the 
+    ussa O3 profile to 121 km (from 74 km) using exponential scale height of 4.5 km.
+___________________________________________
+Version 4.5 July-September 2007, Sasha Madronich
+Added biological weighting functions for:
+	vitamin-D production (CIE, 2006a)
+	non-melanoma skin cancer spectrum (CIE, 2006b)
+Added photolysis reactions: 
+	CH3COCH2CH3 (MEK)
+	CH3CH2COO2NO2 (PPN) 
+	CH2=CHCHO (acrolein)
+	CH3CO(OOH) (peracetic acid)
+Modified:
+	CH2=C(CH3)CHO (methacrolein) updated to JPL2007
+	Put in quantum yields for PAN photolysis to NO2 and NO3
+Created z-grid for mexico city. Cleaned up some gridz options.
+Created option to overwrite PBL pollutants O3, SO2, NO2, aerosol
+   This is a preliminary add-on, with some cautions requred. See TUV.f
+Changed deltax to 1e-5 (in file params). This uncovered minor data 
+   termination error in file rxn.f, subroutine r43, for Halon-2402 (CF2BrCF2Br)
+Changed order of photolysis reactions (in swchem.f), to group together 
+   related reactions.
+Moved all input files (including default inputs, and user-defined inputs) 
+   to new directory INPUTS
+Regenerated SAMPLE files.  Most values are identical to before.  Some 
+   minor changes, mostly due to new/modifed photolysis reaction.
+
+_____
+15 November 2005, J. Lee-Taylor
+Version 4.4 includes calculation of snowpack radiative properties:
+* Lee-Taylor, J., and S. Madronich (2002), Calculation of actinic fluxes 
+* with a coupled atmosphere-snow radiative transfer model, J. Geophys. 
+* Res., 107(D24) 4796 (2002) doi:10.1029/2002JD002084
+It includes absorption by ice:
+*Grenfell and Perovich, J. Geophys. Res., 86, 7447-7450 (1981),
+*Perovich and Govoni, Geophys. Res. Lett.,18(7),1233-1235 (1991)
+and photodissociation of NO3-(aq):
+*Cross section: Burley & Johnston, Geophys. Res. Lett., 19, 1359-1362, (1992)
+*Quantum yield: Warneck & Wurzinger, J. Phys. Chem., 92, 6278-6283, (1988)   
+Snowpack properties are set manually in subroutine setsnw.f
+There are no other changes since V4.3
+______
+10 October 2005, S. Madronich
+Version 4.3 uses the new acetone (CH3COCH3) quantum yields from:
+* 4:  Blitz, M. A., D. E. Heard, M. J. Pilling, S. R. Arnold, and M. P. Chipperfield 
+*       (2004), Pressure and temperature-dependent quantum yields for the 
+*       photodissociation of acetone between 279 and 327.5 nm, Geophys. 
+*       Res. Lett., 31, L06111, doi:10.1029/2003GL018793.
+This was already implemented in version 4.2 on May 4 2004.  However, earlier versions of tuv4.2 may
+use the older data from McKeen et al.
+______
+10 October 2005, S. Madronich
+Version 4.3 corrects an error existing in version 4.2.  The error concerns
+the option to shift between in-vacuum and in-air wavelengths.  This option 
+is enabled by setting the logical variable lrefr=.TRUE. in the driver 
+program, TUV.f.  The error was in subroutine wshift.f, and applied the 
+shift in the wrong direction.  The correct eqations
+(used in version 4.3) are:
+
+      IF(mrefr .EQ. 1) THEN
+         DO i = 1, n
+            w(i) = w(i) * refrac(w(i),airden)
+         ENDDO
+      ELSEIF(mrefr .EQ. -1) THEN
+         DO i = 1, n
+            w(i) = w(i) / refrac(w(i),airden)
+         ENDDO
+      ENDIF
+
+and replace the incorrect equations (in version 4.2)
+
+      IF(mrefr .EQ. 1) THEN
+         DO i = 1, n
+            w(i) = w(i) * refrac(w(i),airden)  !! INCORRECT
+         ENDDO
+      ELSEIF(mrefr .EQ. -1) THEN
+         DO i = 1, n
+            w(i) = w(i) / refrac(w(i),airden)  !! INCORRECT
+         ENDDO
+      ENDIF
+
+* Thanks to Joe Michalsky (NOAA) for catching this error.
+

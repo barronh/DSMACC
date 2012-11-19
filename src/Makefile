@@ -1,5 +1,5 @@
-F90     = gfortran -x f95-cpp-input -arch i386 -m32 -O3
-FC     = gfortran -x f95-cpp-input -arch i386 -m32 -O3
+F90     = gfortran -x f95-cpp-input -arch i386 -m32
+FC     = gfortran -x f95-cpp-input -arch i386 -m32
 LD     = gfortran -arch i386 -m32 
 F90FLAGS   = -I/usr/local/include -fbounds-check -fimplicit-none -fno-automatic 
 ##############################################################################
@@ -8,7 +8,7 @@ PROG = ../bin/dsmacc
 
 # complete list of all f90 source files
 SRCS1 = $(wildcard dsmacc_*.f90)
-SRCS2 = $(wildcard ../tuv_old/*.f)
+SRCS2 = $(wildcard ../tuv_new/*.f)
 SRCS3 = constants.f90 
 
 # the object files are the same as the source files but with suffix ".o"
@@ -31,7 +31,7 @@ $(PROG): dsmacc_Main.f90 $(MAKEFILE_INC) $(OBJS) dsmacc_Main.f90
 
 # update file dependencies
 depend $(MAKEFILE_INC): $(SRCS1) $(SRCS2) $(SRCS3) dsmacc_Main.f90
-	$(F_makedepend) dsmacc_*.f90 constants.f90 tuv_old/*.f
+	$(F_makedepend) dsmacc_*.f90 constants.f90 tuv_new/*.f
 
 clean:
 	rm -f $(OBJS) *.mod *.log *~ depend.mk.old $(SRCS1) Makefile_dsmacc dsmacc.map tuvlog.txt ../bin/dsmacc test/*_1.dat.diurnal test/*_1.dat.timeseries
@@ -47,7 +47,7 @@ distclean: clean
 %.o: %.f90
 	$(F90) $(F90FLAGS) $(LINCLUDES) -c $<
 
-tuv_old/%.o: %.f
+tuv_new/%.o: %.f
 	$(F90) $(F90FLAGS) $(LINCLUDES) -c $<
 
 # list of dependencies (via USE statements)

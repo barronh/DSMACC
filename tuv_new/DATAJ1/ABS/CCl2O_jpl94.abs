@@ -1,0 +1,61 @@
+40 22         # first data record, number of data records
+Reference: JPL Publication 94-26
+           Chemical Kinetics and Photochemical Data for Use in Stratospheric
+           Modeling
+           Evaluation Number 11
+           December 15, 1994
+           page 153
+
+CCl2O + hv -> Products
+
+"The recommended absorption cross sections are listed in Table 43, as averages
+over the 500 cm-1 intervals commonly employed for atmospheric modeling (the
+wavelength given in the table is the center of the interval).  The values for
+CCl2O are based on the work of Gillotay et al. [572], who measured the cross
+sections between 170 and 320 nm at temperatures ranging from 210 to 295K;  the
+temperature effect is significant only at wavelengths longer than 250 nm.
+These cross section values are in good agreement with those recommended
+earlier, which were based on the data of Chou et al. [298].  For CClFO the
+recommended values are based on this latter work between 184 and 199 nm, and
+they are taken from the work of Noelle et al. [1195] at the longer wavelengths.
+These workers measured the cross sections at temperatures ranging from 223 to
+298 K;  the temperature effect is not important for atmospheric
+photodissociation calculations, as is the case with CCl2O.  For CF2O the cross
+section values are taken from Molina and Molina [1103] between 184 and 199 nm,
+and from Noelle et al. [1196] at the longer wavelengths;  these authors
+measured the cross sections at 296K between 200 and 230 nm.
+
+The photodissociation quantum yield for CCl2O is unity (Calvert and Pitts
+[241]);  the spectrum is a continuum.  Similarly, the quantum yield for CClFO
+is taken as unity;  the spectrum shows little structue.  In contrast, the CF2O
+spectrum is highly structured;  nevertheless, its photodissociation quantum
+yield is also taken as unity, as reported by Noelle et al. [1196].  The self
+reaction of the CFO photodissociation product regenerates CF2O, and hence the
+apparent quantum yield is less than unity."
+
+Table 43.  Absorption Cross Sections of CCl2O
+-------------------------------------------------------------------------
+lambda (nm)		1E20 sigma (cm^2)
+-------------------------------------------------------------------------
+184.4			234
+186.0			186
+187.8			146
+189.6			116
+191.4			90.3
+193.2			71.5
+195.1			52.4
+197.0			39.3
+199.0			31.2
+201.0			25.2
+203.0			20.9
+205.1			17.9
+207.3			15.8
+209.4			14.3
+211.6			13.3
+213.9			12.6
+216.2			12.3
+218.6			12.2
+221.0			12.2 
+223.5			12.4
+225.7			12.7
+228.6			13.1

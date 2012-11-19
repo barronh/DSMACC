@@ -1,0 +1,13 @@
+This directory contains some sample output files, generated
+with the TUV model.  Three different cases are given, using
+different default input files:
+
+INPUT :  OUTPUT   LOG
+________________________
+defin1:  usrout1  tuvlog1
+defin2:  usrout2  tuvlog2
+defin3:  usrout3  tuvlog3
+defin4:  usrout4  tuvlog4
+___________________________________________________________
+Last build:  6 April 2009
+by S. Madronich

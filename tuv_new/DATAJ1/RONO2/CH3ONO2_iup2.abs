@@ -1,0 +1,11 @@
+CH3ONO2 cross section, IUPAC97
+formula:  sigma(wavelength, T) = sig0 * 10**(B*T)
+nm	sig0    B
+	1e-21cm2	1e-3 K-1
+270	8.91	1.41
+280	4.92	1.7
+290	2.18	2
+300	0.62	2.58
+310	0.129	3.23
+320	0.0035	6.56
+330	0.0004	7.38

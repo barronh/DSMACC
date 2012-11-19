@@ -1,0 +1,97 @@
+ICE DATA from website:
+*http://omlc.ogi.edu/spectra/water/abs/index.html
+ORIGINAL DATA HEADER:
+*S. G. Warren, "Optical constants of ice from the ultraviolet to the
+*microwave," Appl. Opt., 23, 1026--1225, (1984).
+*This data is based on the revised 1995 data of Warren.
+*It was revised from the original data in the 1984
+*paper to account for misinterpretations of data by others.
+*It also includes new data from Kou.
+COMMENT ADDED BY JMLT:
+*We quote a subset of Warren's compilation here.
+*Warren's compilation uses data of:
+*Grenfell and Perovich, J. Geophys. Res., 86, 7447-7450 (1981) [400-1400nm],
+*Perovich and Govoni, Geophys. Res. Lett.,18(7),1233-1235 (1991) [250-400nm]
+*-----------------------------------------------
+lambda coefficient
+(nm)   (cm-1)
+200.4	2.351e-2
+204.2	1.942e-2
+208.2	1.627e-2
+212.2	1.397e-2
+216.3	1.236e-2
+220.4	1.118e-2
+224.7	1.002e-2
+229	9.051e-3
+233.4	8.268e-3
+237.9	7.700e-3
+242.5	7.249e-3
+247.2	6.872e-3
+252	6.623e-3
+256.8	6.473e-3
+261.8	6.318e-3
+266.8	6.151e-3
+272	5.968e-3
+277.2	5.760e-3
+282.6	5.508e-3
+288	5.214e-3
+293.6	4.923e-3
+299.3	4.643e-3
+305	4.923e-3
+310.9	3.710e-3
+316.9	3.391e-3
+323	3.136e-3
+329.2	2.936e-3
+335.6	2.725e-3
+342.1	2.503e-3
+348.7	2.255e-3
+355.4	1.964e-3
+362.2	1.686e-3
+369.2	1.428e-3
+376.4	1.225e-3
+383.6	1.085e-3
+391	9.924e-4
+398.6	9.021e-4
+406.2	8.109e-4
+414.1	7.296e-4
+422.1	6.614e-4
+430.2	6.065e-4
+438.5	5.543e-4
+447	4.621e-4
+455.6	4.232e-4
+464.4	4.164e-4
+473.3	4.194e-4
+482.4	4.359e-4
+491.8	4.606e-4
+501.2	4.857e-4
+510.9	5.290e-4
+520.8	5.503e-4
+530.8	6.083e-4
+541	6.848e-4
+551.5	7.146e-4
+562.1	7.461e-4
+573	8.043e-4
+584	9.380e-4
+595.3	1.121e-3
+606.7	1.344e-3
+618.4	1.685e-3
+630.4	2.086e-3
+642.5	2.485e-3
+654.9	2.954e-3
+667.6	3.447e-3
+680.4	3.883e-3
+693.6	4.653e-3
+706.9	5.804e-3
+720.6	7.054e-3
+734.5	7.815e-3
+748.6	9.619e-3
+763.1	1.237e-2
+777.8	1.586e-2
+792.8	1.938e-2
+808.1	2.159e-2
+823.7	2.193e-2
+839.5	2.256e-2
+855.7	2.948e-2
+872.2	4.025e-2
+889.1	5.461e-2
+

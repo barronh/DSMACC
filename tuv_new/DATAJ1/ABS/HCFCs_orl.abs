@@ -1,0 +1,38 @@
+25             # line number of first data record
+
+Reference:  
+
+Orlando, J.J., J.B.Burkholder, S.A.McKeen, and A.R.Ravishankara, Atmospheric 
+Fate of Several Hydrofluoroethanes and Hydrochloroethanes:  2. UV Absorption 
+Cross Sections and Atmospheric Lifetimes, J.Geophys.Res., 96(D3), pg 5013-5023,
+1991.
+
+Table 4:  Parameterization of Absorption Cross-Section Data,
+                4      3
+                __     __        _  j-1               ______  i-1
+    ln(sigma) = >   (  >  a   (T-T)     ) * (lambda - lambda)
+                --     --  ij
+                i=1    j=1
+
+                                                     ______
+Notes, Units: sigma(cm^2 molec-1); T(K); lambda(nm); lambda = 206.214 nm
+
+-------------------------------------------------------------------------------
+		_
+HCFC		T	i	a		a		a       
+                                 i,j=1		 i,j=2		 i,j=3
+-------------------------------------------------------------------------------
+ 123		245.4 	1	-4.500E+01	3.529E-03	-4.181E-08
+			2	-1.985E-01	6.826E-05	1.555E-06
+			3	-2.802E-04	-1.018E-05	4.037E-08
+			4	6.312E-05	-3.055E-07	-2.473E-09
+
+ 124		251.7	1	-4.967E+01	6.562E-03	1.735E-05
+			2	-2.025E-01	2.788E-04	-3.974E-06
+			3	6.839E-04	5.523E-06	-3.092E-07
+			4	1.275E-04	-2.959E-07	-1.182E-08
+
+ 142b		245.4	1	-4.973E+01	9.077E-03	-4.651E-05
+			2	-2.175E-01	4.712E-04	-1.005E-05
+			3	4.133E-04	-6.432E-05	1.141E-06
+			4	7.145E-05	-5.396E-06	1.187E-07

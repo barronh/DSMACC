@@ -2,11 +2,11 @@ PROGRAM driver
     
     USE dsmacc_global
     USE dsmacc_Parameters  !ONLY: IND_*
-    USE dsmacc_Rates,       ONLY: Update_SUN, Update_RCONST
+    USE dsmacc_Rates,       ONLY: Update_SUN, Update_RCONST, J
     USE dsmacc_integrator,  ONLY: integrate!, IERR_NAMES
     USE dsmacc_monitor,     ONLY: spc_names, MONITOR
     USE dsmacc_Util
-    USE constants
+!    USE constants
     
     IMPLICIT NONE
     REAL(dp) :: ENDSTATE(NVAR), total, RATIO, TNOX, TNOX_OLD
@@ -20,15 +20,15 @@ PROGRAM driver
     ! Photolysis calculation variables
     REAL(dp) :: Alta
     
-    INTEGER  :: Daycounter, CONSTNOXSPEC, JK,counter
+    INTEGER  :: i, Daycounter, CONSTNOXSPEC, JK,counter
     
     REAL(dp) :: NOXRATIO, NEW_TIME
     REAL(dp) :: Fracdiff, SpeedRatio, oldfracdiff, FRACCOUNT
     
     STEPMIN = 0.0_dp
     STEPMAX = 0.0_dp
-    RTOL(:) = 1.0e-5_dp
-    ATOL(:) = 1.0_dp
+    RTOL(1:NSPEC) = 1.0e-5_dp
+    ATOL(1:NSPEC) = 1.0_dp
     counter=0
     LAST_POINT=.FALSE.
     
@@ -37,7 +37,7 @@ PROGRAM driver
     CONSTRAIN_NOX=.FALSE.
     
     !  If we are running a constrained run we want one file with the final points calculated
-    IF (CONSTRAIN_RUN .EQV. .TRUE. .AND. OUTPUT_LAST .EQV. .FALSE.) THEN 
+    IF ((CONSTRAIN_RUN .EQV. .TRUE.) .AND. (OUTPUT_LAST .EQV. .TRUE.)) THEN 
     CALL newinitsavedata(1)
     ENDIF
     
@@ -51,11 +51,6 @@ PROGRAM driver
     do counter=1,LINECOUNT-3
 !100 counter=counter+1
 
-! If we are running a non-constrained run then we want one file per input in the Init_cons.dat file
-        IF (CONSTRAIN_RUN .EQV. .FALSE. .OR. OUTPUT_LAST .EQV. .TRUE.) THEN 
-            CALL NEWINITSAVEDATA(COUNTER)
-        ENDIF
-   
 ! Read in the next initial conditions
         WRITE(OUTPUT_UNIT,*) 'Reading in point', counter
 !$OMP CRITICAL
@@ -98,7 +93,7 @@ PROGRAM driver
         WRITE(OUTPUT_UNIT,*) 'Latitude =', Lat
         WRITE(OUTPUT_UNIT,*) 'Lon =', Lon
         WRITE(OUTPUT_UNIT,*) 'Local Time =', Tstart/(60.*60.)
-        WRITE(OUTPUT_UNIT,*) 'SZA =',ZENANG(int(jday),Tstart/(60.*60.),lat)*180./(4*ATAN(1.))
+!        WRITE(OUTPUT_UNIT,*) 'SZA =',ZENANG(int(jday),Tstart/(60.*60.),lat)*180./(4*ATAN(1.))
         if (o3col .eq. 0) then 
            o3col=260.
            WRITE(OUTPUT_UNIT,*) 'Ozone column not specified using 260 Dobsons'
@@ -114,14 +109,14 @@ PROGRAM driver
         ENDIF       
 !    Calculate the photolysis rates for the run
 !$OMP CRITICAL 
-        IF (JREPEAT .EQ. 0 .OR. COUNTER .EQ. 1) THEN 
-            CALL set_up_photol(O3col,Albedo, alta, temp, bs,cs,ds,szas,svj_tj)
-        ELSE
-            WRITE(OUTPUT_UNIT,*) 'Using previously calculated photolysis params'
-        ENDIF
+!        IF (JREPEAT .EQ. 0 .OR. COUNTER .EQ. 1) THEN 
+!            CALL set_up_photol(O3col,Albedo, alta, temp, bs,cs,ds,szas,svj_tj)
+!        ELSE
+!            WRITE(OUTPUT_UNIT,*) 'Using previously calculated photolysis params'
+!        ENDIF
 !$OMP END CRITICAL
-        WRITE(OUTPUT_UNIT,*) 'Photolysis rates calculated'
-        WRITE(OUTPUT_UNIT,*) 'hvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhv'
+!        WRITE(OUTPUT_UNIT,*) 'Photolysis rates calculated'
+!        WRITE(OUTPUT_UNIT,*) 'hvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhv'
         time = tstart
 
 
@@ -170,6 +165,12 @@ PROGRAM driver
         ENDIF
         
         WRITE(OUTPUT_UNIT,*) 'Correction JO1D and JNO2 by', JFACTO1D,JFACTNO2
+
+! If we are running a non-constrained run then we want one file per input in the Init_cons.dat file
+        IF ((CONSTRAIN_RUN .EQV. .FALSE.) .OR. (OUTPUT_LAST .EQV. .FALSE.)) THEN 
+            CALL NEWINITSAVEDATA(COUNTER)
+        ENDIF
+   
 
 ! If we are running a free running model output the initial condition so T=0 of the output file gives the initial condition
         IF (CONSTRAIN_RUN .EQV. .FALSE.) THEN 
@@ -359,16 +360,16 @@ PROGRAM driver
         ENDDO time_loop
 
 
-1000    IF (CONSTRAIN_RUN .EQV. .TRUE. .AND. OUTPUT_LAST .EQV. .FALSE.) THEN 
+1000    IF ((CONSTRAIN_RUN .EQV. .TRUE.) .AND. (OUTPUT_LAST .EQV. .FALSE.)) THEN 
             CALL newsavedata()
         ENDIF
 
         IF (OUTPUT_LAST .EQV. .TRUE.) THEN 
             DO I=1,DAYCOUNTER
                 NEW_TIME=I*DT
-                WRITE (10,999) NEW_TIME,LAT, LON, PRESS, TEMP,H2O, CFACTOR, RO2, &
+                WRITE (SPEC_UNIT,999) NEW_TIME,LAT, LON, PRESS, TEMP,H2O, CFACTOR, RO2, &
                    (DIURNAL_NEW(JK,I),JK=1,NVAR)
-                WRITE (12,999) NEW_TIME,LAT, LON, PRESS, TEMP,H2O, CFACTOR,& 
+                WRITE (RATE_UNIT,999) NEW_TIME,LAT, LON, PRESS, TEMP,H2O, CFACTOR,& 
                    (DIURNAL_RATES(JK,I),JK=1,NREACT)
             ENDDO
 999         FORMAT(E24.16,100000(1X,E24.16))
