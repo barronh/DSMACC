@@ -11,7 +11,7 @@ PROGRAM driver
     IMPLICIT NONE
     REAL(dp) :: ENDSTATE(NVAR), total, RATIO, TNOX, TNOX_OLD
     REAL(dp) :: STARTSTATE(NVAR), TIMESCALE
-    REAL(dp) :: RH
+    REAL(dp) :: RH, CALCJO1D, CALCJNO2
     REAL(dp) :: RSTATE(20)
     REAL(dp) :: DIURNAL_OLD(NVAR,3000), DIURNAL_NEW(NVAR,3000)
     REAL(dp) :: DIURNAL_RATES(NREACT, 3000)
@@ -145,14 +145,17 @@ PROGRAM driver
 ! Update the rate constants
         CALL Update_RCONST()
 
-        WRITE(OUTPUT_UNIT,*) 'JO1D Calc=', J(1)
+        CALCJO1D = J(1)
+        CALCJNO2 = J(4)
+        
+        WRITE(OUTPUT_UNIT,*) 'JO1D Calc=', CALCJO1D
         WRITE(OUTPUT_UNIT,*) 'JO1D Measre =', JO1D
 ! Calcualte correction factors for the model photolysis rates
-        IF (JO1D .NE. 0. .AND. J(1) .GT. 0.) THEN
+        IF (JO1D .NE. 0. .AND. CALCJO1D .GT. 0.) THEN
             JFACTO1D=JO1D/J(1)
         ENDIF
         
-        IF (JNO2 .NE. 0. .AND. J(4) .GT. 0.) THEN
+        IF (JNO2 .NE. 0. .AND. CALCJNO2 .GT. 0.) THEN
             JFACTNO2=JNO2/J(4)
         ENDIF
         

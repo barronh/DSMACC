@@ -9,18 +9,20 @@
       DATA IMN /31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31/
       SAVE IMN
       IYEAR = INT(JDAY / 1000.)
+      IDAY = INT(MOD(JDAY, 1000.)) ! Temporary day
+      GMT = MOD(JDAY, 1.) * 24.
       IF ( MOD( IYEAR, 4 ) .EQ. 0 ) THEN
          IMN( 2 ) = 29
       ELSE
          IMN( 2 ) = 28
       END IF
-      GMT = MOD(JDAY, 1.) * 24.
-      IDAY = INT(MOD(JDAY, REAL(IYEAR))) ! Temporary day
+      print *, IYEAR, IDAY, GMT
       IMTH = 1
-      DO WHILE (SUM(IMN(1:IMTH+1)) .LT. IDAY)
+      DO WHILE (SUM(IMN(1:IMTH)) .LT. IDAY)
         IMTH = IMTH + 1
       ENDDO
-      IDAY = IDAY - SUM(IMN(1:IMTH))
+      IDAY = IDAY - SUM(IMN(1:IMTH-1))
+      print *, IYEAR, IMTH, IDAY, GMT
       GREGDATETIME(1) = DBLE(IYEAR)      
       GREGDATETIME(2) = DBLE(IMTH)      
       GREGDATETIME(3) = DBLE(IDAY)      
@@ -268,7 +270,7 @@
      !    First calculate pressure altitude from altitude
      IJDAY = INT(JDAY)
      IF ((OLD_TEMP .eq. -9999._dp) .or. &
-        & (((OLD_TEMP + 1.) .lt. TEMP) .or. ((OLD_TEMP - 1.) .gt. TEMP))) THEN
+        &(ABS(TEMP - OLD_TEMP) .gt. 1.)) THEN
      IF (OLD_M .ne. M .or. &
   &        OLD_LAT .ne. LAT .or. &
   &        OLD_LON .ne. LON .or. &
@@ -307,60 +309,59 @@
   REAL(kind=dp) FUNCTION J(IJ)
     USE dsmacc_Global, ONLY : THETA
     TYPE JMAP
-       CHARACTER(25) :: label 
+       CHARACTER(50) :: label 
        INTEGER       :: tuvj
        INTEGER       :: mcmj
        REAL(dp)          :: factor
     END TYPE JMAP
     INTEGER i, IJ, mcmi
-    INTEGER, PARAMETER :: NMCMJ = 43
+    INTEGER, PARAMETER :: NMCMJ = 42
 !      JMAP(label                      , tuvj, mcmj, fac)
     TYPE( JMAP ), SAVE :: JMAPPING( NMCMJ ) = (/&
-     & JMAP('O3->O1D                  ',    2,    1, 1.00),&  ! O3->O1D
-     & JMAP('O3->O3P                  ',    3,    2, 1.00),&  ! O3->O3P
-     & JMAP('H2O2->2*OH               ',   11,    3, 1.00),&  ! H2O2->2*OH
-     & JMAP('NO2->NO+O3P              ',    4,    4, 1.00),&  ! NO2->NO+O3P
-     & JMAP('NO3->NO+O2               ',    5,    5, 1.00),&  ! NO3->NO+O2
-     & JMAP('NO3->NO2+O3P             ',    6,    6, 1.00),&  ! NO3->NO2+O3P
-     & JMAP('HNO2->OH+NO              ',   12,    7, 1.00),&  ! HNO2->OH+NO
-     & JMAP('HNO3->NO2+OH             ',   13,    8, 1.00),&  ! HNO3->NO2+OH
-     & JMAP('                         ',   14, 1300, 1.00),&
-     & JMAP('                         ',   15,   11, 1.00),&
-     & JMAP('                         ',   16,   12, 1.00),&
-     & JMAP('                         ',   17,   13, 1.00),&
-     & JMAP('                         ',   20,   14, 1.00),&
-     & JMAP('                         ',   75,   15, 1.00),&
-     & JMAP('                         ',   76,   16, 1.00),&
-     & JMAP('                         ',   77,   17, 1.00),&
-     & JMAP('                         ',   62,   18, 0.50),&
-     & JMAP('                         ',   62,   19, 0.50),&
-     & JMAP('                         ',   25,   21, 1.00),&
-     & JMAP('                         ',   87,   22, 1.00),&
-     & JMAP('                         ',   61,   23, 0.50),&
-     & JMAP('                         ',   61,   24, 0.50),&
-     & JMAP('                         ',   21,   31, 1.00),&
-     & JMAP('                         ',   23,   32, 1.00),&
-     & JMAP('                         ',   22,   33, 1.00),&
-     & JMAP('                         ',   24,   34, 1.00),&
-     & JMAP('                         ',   60,   35, 1.00),&
-     & JMAP('                         ',   26,   41, 1.00),&
-     & JMAP('                         ',   27,   51, 1.00),&
-     & JMAP('                         ',   64,   52, 1.00),&
-     & JMAP('                         ',   91,   53, 1.00),&
-     & JMAP('                         ',   64,   54, 1.00),&
-     & JMAP('                         ',   94,   55, 1.00),&
-     & JMAP('                         ',   67,   56, 0.75),&
-     & JMAP('                         ',   67,   57, 0.25),&
-     & JMAP('HOBr                     ',   72, 1001, 1.00),&  ! HOBr
-     & JMAP('BrO                      ',   73, 1002, 1.00),&  ! BrO
-     & JMAP('Br2                      ',   74, 1003, 1.00),&  ! Br2
-     & JMAP('BrNO3->Br+NO3            ',   50, 1004, 1.00),&  ! BrNO3->Br+NO3
-     & JMAP('BrNO3->BrO+NO2           ',   51, 1005, 1.00),&  !,&  ! BrNO3->BrO+NO2
-     & JMAP('ClNO3->Cl+NO3            ',   30, 1006, 1.00),&  ! ClNO3->Cl+NO3
-     & JMAP('ClNO3->ClO+NO2           ',   31, 1007, 1.00),&  ! ClNO3->ClO+NO2
-     & JMAP('Cl2->2Cl                 ',   58, 1008, 1.00)&  ! Cl2->2Cl
+     & JMAP('O3->O1D                                           ',    2,    1, 1.00),&
+     & JMAP('O3->O3P                                           ',    3,    2, 1.00),&
+     & JMAP('H2O2->2*OH                                        ',    5,    3, 1.00),&
+     & JMAP('NO2->NO+O3P                                       ',    6,    4, 1.00),&
+     & JMAP('NO3->NO+O2                                        ',    7,    5, 1.00),&
+     & JMAP('NO3->NO2+O3P                                      ',    8,    6, 1.00),&
+     & JMAP('HNO2->OH+NO                                       ',   12,    7, 1.00),&
+     & JMAP('HNO3->NO2+OH                                      ',   13,    8, 1.00),&
+     & JMAP('CH2O -> H + HCO                                   ',   17,   11, 1.00),&
+     & JMAP('CH2O -> H2 + CO                                   ',   18,   12, 1.00),&
+     & JMAP('CH3CHO -> CH3 + HCO                               ',   19,   13, 1.00),&
+     & JMAP('C2H5CHO -> C2H5 + HCO                             ',   22,   14, 1.00),&
+     & JMAP('nC3H7CHO -> nC3H7 + HCO                           ',   84,   15, 1.00),&
+     & JMAP('nC3H7CHO -> C2H4 + CH3CHO                         ',   85,   16, 1.00),&
+     & JMAP('iC3H7CHO -> iC3H7 + HCO                           ',   86,   17, 1.00),&
+     & JMAP('CH2=C(CH3)CHO -> Products                         ',   25,   18, 0.50),&
+     & JMAP('CH2=C(CH3)CHO -> Products                         ',   25,   19, 0.50),&
+     & JMAP('CH3COCH3 -> CH3CO + CH3                           ',   26,   21, 1.00),&
+     & JMAP('CH3COC2H5 -> C2H5 + CH3CO                         ',   96,   22, 1.00),&
+     & JMAP('CH3COCHCH2 -> Products                            ',   27,   23, 0.50),&
+     & JMAP('CH3COCHCH2 -> Products                            ',   27,   24, 0.50),&
+     & JMAP('CHOCHO -> 2CO + H2                                ',   44,   31, 1.00),&
+     & JMAP('CHOCHO -> CH2O + CO                               ',   46,   32, 1.00),&
+     & JMAP('CHOCHO -> HCO + HCO                               ',   45,   33, 1.00),&
+     & JMAP('CH3COCHO -> CH3CO + HCO                           ',   47,   34, 1.00),&
+     & JMAP('CH3COCOCH3 -> Products                            ',   48,   35, 1.00),&
+     & JMAP('ClONO2 -> ClO + NO2                               ',   54,   41, 1.00),&
+     & JMAP('CH3ONO2 -> CH3O + NO2                             ',   34,   51, 1.00),&
+     & JMAP('CH3CH2ONO2 -> CH3CH2O + NO2                       ',   35,   52, 1.00),&
+     & JMAP('nC3H7ONO2 -> nC3H7O + NO2                         ',  100,   53, 1.00),&
+     & JMAP('CH3CH2ONO2 -> CH3CH2O + NO2                       ',   35,   54, 1.00),&
+     & JMAP('2-C4H9ONO2 -> 2-C4H9O + NO2                       ',  103,   55, 1.00),&
+     & JMAP('CH3COCH2(ONO2) -> CH3COCH2(O.) + NO2              ',   38,   56, 0.75),&
+     & JMAP('CH3COCH2(ONO2) -> CH3COCH2(O.) + NO2              ',   38,   57, 0.25),&
+     & JMAP('HOBr                                              ',   57, 1001, 1.00),&
+     & JMAP('BrO                                               ',   56, 1002, 1.00),&
+     & JMAP('Br2                                               ',   55, 1003, 1.00),&
+     & JMAP('BrONO2 -> Br + NO3                                ',   59, 1004, 1.00),&
+     & JMAP('BrONO2 -> BrO + NO2                               ',   58, 1005, 1.00),&
+     & JMAP('ClONO2 -> Cl + NO3                                ',   53, 1006, 1.00),&
+     & JMAP('ClONO2 -> ClO + NO2                               ',   54, 1007, 1.00),&
+     & JMAP('Cl2 -> Cl + Cl                                    ',   50, 1008, 1.00)&
     /)
-    
+    J = 0._dp    
     DO i=1,NMCMJ
       mcmi = JMAPPING(i)%%%%mcmj
       IF (mcmi .eq. IJ) THEN

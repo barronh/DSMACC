@@ -17,12 +17,15 @@ def check(check_path, test_path):
     print 'Species'.ljust(16) + ' Pass'
     checks = []
     for key, refvals in spec_ref.iteritems():
-        checkvals = spec_test.get(key, [-9999. for i in refvals])
-        diffs = [checkval - refval for checkval, refval in zip(checkvals, refvals)]
-        allowables = [abs(refval) * rel_tol + abs_tol for refval in refvals]
-        check = all([diff <= allowable for diff, allowable in zip(map(abs, diffs), allowables)])
+        if key in spec_test:
+            checkvals = spec_test[key]
+            diffs = [checkval - refval for checkval, refval in zip(checkvals, refvals)]
+            allowables = [abs(refval) * rel_tol + abs_tol for refval in refvals]
+            check = all([diff <= allowable for diff, allowable in zip(map(abs, diffs), allowables)])
+        else:
+            check = 0
         checks.append(check)
-        print key.ljust(16), check
+        print str(check).ljust(5), key.ljust(16)
     
     sum_checks = sum(checks)
     len_checks = len(checks)

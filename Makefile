@@ -8,7 +8,7 @@ export KPP_HOME=$(PWD)/kpp
 
 all: check
 
-source src/dsmacc_Main.f90: dsmacc.kpp global.inc rate.inc util.inc driver.f90 kpp/bin/kpp
+source src/dsmacc_Main.f90: dsmacc.kpp global.inc rate.inc util.inc driver.f90 photolysis.inc kpp/bin/kpp
 	cd src && rm -f depend.mk && ../kpp/bin/kpp ../dsmacc.kpp dsmacc
 
 bin/dsmacc: src/dsmacc_Main.f90
@@ -21,7 +21,7 @@ check: bin/dsmacc
 	cd test && make
 
 clean:
-	cd src && make -i clean
+	cd src && make -i distclean
 	cd test && make -i clean
 	cd kpp && make clean
 

@@ -1,9 +1,9 @@
 TUV inputs:
 ==================================================================
-inpfil =        arr3   outfil =      arrout   nstr =             1 
-lat =          0.000   lon =          0.000   tmzone =         0.0
-iyear =         2005   imonth =           7   iday =             1
-zstart =       0.000   zstop =       80.000   nz =               9
+inpfil =        arr3   outfil =      arrout   nstr =             4 
+lat =         45.000   lon =          0.000   tmzone =         0.0
+iyear =         1984   imonth =           7   iday =             1
+zstart =       0.000   zstop =       20.000   nz =              21
 wstart =     120.000   wstop =      735.000   nwint =         -156
 tstart =       0.000   tstop =       90.000   nt =              19
 lzenit =           T   alsurf =       0.100   psurf =       -999.0
@@ -18,23 +18,23 @@ ljvals =           T   ijfix =            0   nmj =             54
 iwfix =            0   itfix =            0   izfix =            0
 ==================================================================
 ===== Available spectral weighting functions:
-T  1 UV-B, 280-315 nm                                  
+F  1 UV-B, 280-315 nm                                  
 F  2 UV-B*, 280-320 nm                                 
-T  3 UV-A, 315-400 nm                                  
+F  3 UV-A, 315-400 nm                                  
 F  4 vis+, > 400 nm                                    
 F  5 Gaussian, 305 nm, 10 nm FWHM                      
-T  6 Gaussian, 320 nm, 10 nm FWHM                      
+F  6 Gaussian, 320 nm, 10 nm FWHM                      
 F  7 Gaussian, 340 nm, 10 nm FWHM                      
 F  8 Gaussian, 380 nm, 10 nm FWHM                      
-T  9 RB Meter, model 501                               
+F  9 RB Meter, model 501                               
 F 10 Eppley UV Photometer                              
 F 11 PAR, 400-700 nm, umol m-2 s-1                     
 F 12 Exponential decay, 14 nm/10                       
-T 13 DNA damage, in vitro (Setlow, 1974)               
+F 13 DNA damage, in vitro (Setlow, 1974)               
 F 14 SCUP-mice (de Gruijl et al., 1993)                
 F 15 SCUP-human (de Gruijl and van der Leun, 1994)     
 F 16 CIE human erythema (McKinlay and Diffey, 1987)    
-T 17 UV index (WMO, 1994)                              
+F 17 UV index (WMO, 1994)                              
 F 18 Erythema, humans (Anders et al., 1995)            
 F 19 Occupational TLV (ACGIH, 1992)                    
 F 20 Phytoplankton (Boucher et al., 1994)              
@@ -43,7 +43,7 @@ F 22 Phytoplankton, proro (Cullen et al., 1992)
 F 23 Cataract, pig (Oriowo et al., 2001)               
 F 24 Plant damage (Caldwell, 1971)                     
 F 25 Plant damage (Flint & Caldwell, 2003)             
-T 26 Previtamin-D3 (CIE 2006)                          
+F 26 Previtamin-D3 (CIE 2006)                          
 F 27 NMSC (CIE 2006)                                   
 ===== Available photolysis reactions
 F  1 O2 -> O + O                                       
@@ -85,8 +85,8 @@ F 36 CH3CHONO2CH3 -> CH3CHOCH3 + NO2
 F 37 CH2(OH)CH2(ONO2) -> CH2(OH)CH2(O.) + NO2          
 F 38 CH3COCH2(ONO2) -> CH3COCH2(O.) + NO2              
 F 39 C(CH3)3(ONO2) -> C(CH3)3(O.) + NO2                
-F 40 CH3CO(OONO2) -> CH3CO(OO) + NO2                   
-F 41 CH3CO(OONO2) -> CH3CO(O) + NO3                    
+T 40 CH3CO(OONO2) -> CH3CO(OO) + NO2                   
+T 41 CH3CO(OONO2) -> CH3CO(O) + NO3                    
 F 42 CH3CH2CO(OONO2) -> CH3CH2CO(OO) + NO2             
 F 43 CH3CH2CO(OONO2) -> CH3CH2CO(O) + NO3              
 F 44 CHOCHO -> 2CO + H2                                

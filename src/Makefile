@@ -1,7 +1,8 @@
-F90     = gfortran -x f95-cpp-input -arch i386 -m32
-FC     = gfortran -x f95-cpp-input -arch i386 -m32
-LD     = gfortran -arch i386 -m32 
-F90FLAGS   = -I/usr/local/include -fbounds-check -fimplicit-none -fno-automatic 
+F90     = gfortran -x f95-cpp-input -arch i386 -m32 -O3
+FC     = gfortran -x f95-cpp-input -arch i386 -m32 -O3
+LD     = gfortran -arch i386 -m32  -ggdb
+F90FLAGS   = -I/usr/local/include -fcheck=all -fimplicit-none -fno-automatic 
+TUVF90FLAGS   = -I/usr/local/include -fcheck=all -fno-automatic 
 ##############################################################################
 
 PROG = ../bin/dsmacc 
@@ -34,22 +35,22 @@ depend $(MAKEFILE_INC): $(SRCS1) $(SRCS2) $(SRCS3) dsmacc_Main.f90
 	$(F_makedepend) dsmacc_*.f90 constants.f90 tuv_new/*.f
 
 clean:
-	rm -f $(OBJS) *.mod *.log *~ depend.mk.old $(SRCS1) Makefile_dsmacc dsmacc.map tuvlog.txt ../bin/dsmacc test/*_1.dat.diurnal test/*_1.dat.timeseries
+	rm -f $(OBJS) *.mod *.log *~ depend.mk.old
 
 distclean: clean
 	rm -f $(PROG)
 	rm -f depend.mk* 
 	rm -f *.nc
 	rm -f *.dat
+	rm -f $(SRCS1) Makefile_dsmacc dsmacc.map tuvlog.txt ../bin/dsmacc
 
 # all object files *.o depend on their source files *.f90
 # the object files are created with the "-c" compiler option
 %.o: %.f90
 	$(F90) $(F90FLAGS) $(LINCLUDES) -c $<
 
-tuv_new/%.o: %.f
-	$(F90) $(F90FLAGS) $(LINCLUDES) -c $<
+../tuv_new/%.o: ../tuv_new/%.f
+	$(F90) $(TUVF90FLAGS) $(LINCLUDES) -o $@ -c $<
 
 # list of dependencies (via USE statements)
 include depend.mk
-

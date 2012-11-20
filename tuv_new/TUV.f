@@ -58,7 +58,8 @@
 * Solar zenith angle and azimuth
 * slant pathlengths in spherical geometry
 
-      REAL sza(kt), zen
+      REAL sza(kt)
+      REAL zen
       INTEGER nid(0:kz)
       REAL dsdh(0:kz,kz)
 
@@ -416,7 +417,6 @@ c      izfix = 0
       if(izfix .gt. 0) izout = izfix
 
 * time/zenith (creates time/zenith angle grid, starting at tstart)
-
       CALL gridt(lat, lon, tmzone,
      $     iyear, imonth, iday,
      $     lzenit, tstart, tstop,
@@ -775,6 +775,8 @@ c       STOP
          CALL saver2(it,itfix, nz,izout, ns,isfix,ims, nj,ijfix,imj,
      $        rate, valj,
      $        svr_zs, svj_zj, svr_zt, svj_zt, svr_ts, svj_tj)
+*BHH: I don't know why, but sza is reseting itself through the saver2 routine
+*         sza(it) = zen
 
  20   CONTINUE
 
@@ -819,7 +821,7 @@ C     $     svi_zw, svi_tw, svi_zt )
 
       CLOSE(iout)
       CLOSE(kout)
-      END
+      END SUBROUTINE tuv
 
       subroutine spline (n, x, y, b, c, d)
 c======================================================================
@@ -1005,18 +1007,23 @@ c----------------------------------------------------------
         real*8 b(19),c(19),d(19)
         real*8 bs(19,kj), cs(19,kj), ds(19,kj)
         REAL*8 O3col, ralt, box_temp, rlat, rlon, raird
+        REAL*4 sO3col, sralt, sbox_temp, srlat, srlon, sraird
         REAL*8 y,dy,x
         integer i, n, j, iyear, imonth, iday
         real svj_tj(kt,kj), sza(kt) 
         real*8 temp2(19), temp(19)
         character*50 jlabels(kj)
 
-       
-       
-        call tuv(iyear, imonth, iday, real(o3col), real(ralt), 
-     &    real(rlat), real(rlon), real(box_temp), real(raird),
+               
+        so3col = real(o3col)
+        sralt = real(ralt)
+        srlat = real(rlat)
+        srlon = real(rlon)
+        sbox_temp = real(box_temp)
+        sraird = real(raird)
+        call tuv(iyear, imonth, iday, so3col, sralt, 
+     &    srlat, srlon, sbox_temp, sraird,
      &    sza, svj_tj, jlabels)
-
         do j=1,kj
           do i=1,19 
             temp(i)=sza(i)
@@ -1034,4 +1041,3 @@ c----------------------------------------------------------
      
         return 
       end
-
