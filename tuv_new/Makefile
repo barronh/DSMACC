@@ -37,20 +37,28 @@ FC = gfortran
 # FFLAGS : command line options to compiler call (if not set, default is
 #          probably some basic optimization level)
 # FFLAGS = 
-FFLAGS =  -x f77-cpp-input -DACETONEQY=BLITZ2004QY -fbounds-check -fno-automatic -ffixed-line-length-72
-
+#FFLAGS =  -x f77-cpp-input -DACETONEQY=BLITZ2004QY -fbounds-check -fno-automatic -ffixed-line-length-72
+#FFLAGS   = -m32 -x f77-cpp-input -DACETONEQY=BLITZ2004QY -I/usr/local/include -fcheck=all -fno-automatic 
+TUVF90FLAGS   = -m32 -I/Users/barronh/include -fbounds-check -O3
 # LIBS  : libraries required
 # LIBS =  
 
 #----------
 
-$(EXC):		$(FOBJS) $(USE_INCL)
-		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LIBS) -o $@
+$(EXC):		$(FOBJS) $(USE_INCL) main.o
+		$(FC) -m32 -DACETONEQY=BLITZ2004QY -I/usr/local/include $(FOBJS) main.o  $(USE_INCL) $(LIBS) -o $@
+
+lib:	$(FOBJS) $(USE_INCL)
+
+$(USE_INCL) $(LIBS) -o $@
 
 $(USE_INCL):	$(INCLUDES)
 
 .f.o:
-		$(FC) $(FFLAGS) -c $*.f
+	$(FC) $(FFLAGS) -c $*.f
+
+swchem.o: swchem.f
+	$(FC) $(FFLAGS) -DVERBOSE=1 -c $< 
 
 clean:		
-		rm -f core $(EXC) $(USE_INCL) $(FOBJS)
+		rm -f core $(EXC) $(USE_INCL) $(FOBJS) main.o
