@@ -53,7 +53,7 @@
       REAL sq(kj,kz,kw)
 
 * input/output:
-      INTEGER j
+      INTEGER j,i
 
 * local:
       REAL wc(kw)
@@ -396,7 +396,11 @@
 * CH3O2NO2 -> CH3O + NO3
       CALL rm147(nw,wl,wc,nz,tlev,airden,j,sq,jlabel)     
 ****************************************************************
-
+#ifdef VERBOSE
+      DO i=1,kj
+        print *, i, jlabel(i)
+      ENDDO
+#endif
       IF (j .GT. kj) STOP '1002'
       RETURN
       END
