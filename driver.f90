@@ -27,8 +27,8 @@ PROGRAM driver
     
     STEPMIN = 0.0_dp
     STEPMAX = 0.0_dp
-    RTOL(1:NSPEC) = 1.0e-5_dp
-    ATOL(1:NSPEC) = 1.0_dp
+    RTOL(1:NVAR) = 1.0e-5_dp
+    ATOL(1:NVAR) = 1.0_dp
     counter=0
     LAST_POINT=.FALSE.
     
