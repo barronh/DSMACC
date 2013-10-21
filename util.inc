@@ -345,11 +345,11 @@
         open(RATE_UNIT, file=filename)
 
         WRITE(SPEC_UNIT,'(100000(a25,"!"))') 'TIME','LAT','LON','PRESS','TEMP','H2O', &
-                'CFACTOR', 'M', 'N2', 'O3', 'JNO2FACT','JO1DFACT','RO2',&
+                'CFACTOR', 'M', 'N2', 'O2', 'JNO2FACT','JO1DFACT','RO2',&
                 (SPC_NAMES(LOOKAT(i)), i=1,NLOOKAT)
 
         WRITE(RATE_UNIT,'(100000(a50,"!"))') 'TIME','LAT','LON','PRESS','TEMP','H2O', &
-                'CFACTOR', 'M', 'N2', 'O3', 'JNO2FACT','JO1DFACT','RO2',&
+                'CFACTOR', 'M', 'N2', 'O2', 'JNO2FACT','JO1DFACT','RO2',&
                                               EQN_NAMES
 
     END SUBROUTINE NewInitSaveData
