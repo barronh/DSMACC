@@ -3528,7 +3528,7 @@ c     .. Array Arguments ..
 c     ..
 c     .. Local Scalars ..
 
-      INTEGER   IQ, IU, K, LC, LU
+      INTEGER   IQ, IU, K, LC, LU, I
       REAL      ABSCUT, ABSTAU, F
 
       REAL      R1MACH
@@ -4809,8 +4809,8 @@ c     .. Array Arguments ..
 
 *bm   Variables for instability fix
       
-      INTEGER UAGAIN, DAGAIN
-      REAL MINRCOND, ADD, UADD, DADD, SSA, DSSA, FACTOR
+      INTEGER UAGAIN, DAGAIN, K
+      REAL MINRCOND, ADD, UADD, DADD, SSA, DSSA, FACTOR, R1MACH
       REAL GLSAVE( 0:MXCMU ), DGL( 0:MXCMU )
       
       LOGICAL  DONE, NOUP, NODN, DEBUG, INSTAB
@@ -6506,6 +6506,7 @@ C          INCX  SPACING OF VECTOR ELEMENTS IN 'SX'
 C --OUTPUT-- SASUM   SUM FROM 0 TO N-1 OF  ABS(SX(1+I*INCX))
 
 	REAL SX(*)
+	INTEGER N, INCX, I, M
 
 
 	SASUM = 0.0
@@ -6554,7 +6555,7 @@ C                     = (-INCX)*N  IF INCX .LT. 0
 C            AND LY IS DEFINED IN A SIMILAR WAY USING INCY.
 
 	REAL SX(*), SY(*), SA
-
+	INTEGER N, INCX, INCY, I, IX, IY, M
 
 	IF( N.LE.0 .OR. SA.EQ.0.0 ) RETURN
 
@@ -6617,6 +6618,7 @@ C                      = (-INCX)*N  IF INCX .LT. 0,
 C            AND LY IS DEFINED IN A SIMILAR WAY USING INCY.
 
 	REAL SX(*), SY(*)
+	INTEGER N, INCX, INCY, IX, IY, I, M
 
 
 	SDOT = 0.0
@@ -6675,7 +6677,7 @@ C --OUTPUT-- SX  REPLACE  SX(1+I*INCX)  WITH  SA * SX(1+I*INCX)
 C                FOR I = 0 TO N-1
 
 	REAL SA, SX(*)
-
+	INTEGER N, INCX, M, I
 
 	IF( N.LE.0 ) RETURN
 
@@ -6729,6 +6731,7 @@ C              = (-INCX)*N  IF INCX .LT. 0
 C     AND LY IS DEFINED IN A SIMILAR WAY USING INCY.
 
 	REAL SX(*), SY(*), STEMP1, STEMP2, STEMP3
+	INTEGER N, INCX, INCY, IX, IY, I, M
 
 
 	IF( N.LE.0 ) RETURN
@@ -6795,7 +6798,7 @@ C --OUTPUT-- ISAMAX   FIRST I, I = 1 TO N, TO MAXIMIZE
 C                         ABS(SX(1+(I-1)*INCX))
 
 	REAL SX(*), SMAX, XMAG
-
+	INTEGER N, INCX, I, II
 
 	IF( N.LE.0 ) THEN
 	   ISAMAX = 0
@@ -7078,7 +7081,7 @@ C---------- LAST CARD OF T665D ----------
       END
 
 
-      FUNCTION R1MACH(i)
+      REAL FUNCTION R1MACH(i)
 
 *-----------------------------------------------------------------------------*
 *= PURPOSE:                                                                  =*
@@ -7109,7 +7112,6 @@ C---------- LAST CARD OF T665D ----------
 *=  (see routine T665R for more information on different constants)          =*
 *-----------------------------------------------------------------------------*
 
-      REAL r1mach
       INTEGER i
    
       LOGICAL doinit
@@ -7118,7 +7120,7 @@ C---------- LAST CARD OF T665D ----------
 
       REAL rmach(4) 
       SAVE rmach
-
+      r1mach = 0.
       IF (( i .GE. 1 ) .AND. ( i .LE. 4 )) THEN
 * compute constants at first call only
         IF (doinit) THEN
@@ -7127,10 +7129,10 @@ C---------- LAST CARD OF T665D ----------
         ENDIF
         r1mach = rmach(i)
       ELSE
+        
         WRITE(0,*) '>>> ERROR (R1MACH) <<<  invalid argument'
         STOP
       ENDIF
-
       END
 
 

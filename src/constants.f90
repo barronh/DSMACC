@@ -485,7 +485,7 @@ CONTAINS
         V2=3*R*TEMP/MASS
         V=(8*V2/(3*3.1415))**0.5
 
-        UPTAKE=(((RP/DG)+(4/(GAMMA*V)))**-1)*AREA
+        UPTAKE=(((RP/DG)+(4/(GAMMA*V)))**(-1))*AREA
         
   !      UPTAKE=v*AREA*GAMMA/4
 

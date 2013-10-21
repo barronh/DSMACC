@@ -1,8 +1,8 @@
-F90     = gfortran -x f95-cpp-input -arch i386 -m32 -O3
-FC     = gfortran -x f95-cpp-input -arch i386 -m32 -O3
-LD     = gfortran -arch i386 -m32  -ggdb
+F90     = gfortran -x f95-cpp-input
+FC     = gfortran -x f95-cpp-input
+LD     = gfortran 
 F90FLAGS   = -I/usr/local/include -fcheck=all -fimplicit-none -fno-automatic 
-TUVF90FLAGS   = -I/usr/local/include -fcheck=all -fno-automatic 
+TUVF90FLAGS   = -I/usr/local/include -fcheck=all -fno-automatic -fimplicit-none 
 ##############################################################################
 
 PROG = ../bin/dsmacc 
