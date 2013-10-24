@@ -1,24 +1,35 @@
+export KPP_HOME=$(PWD)/../kpp
 check: ../bin/dsmacc
-	make check_timeseries
-	make check_diurnal
+	make cri.check
+	make geos.check
+
+%.check:
+	make $*.check.timeseries.log
 	@echo "Timeseries"
-	@tail -n 1 timeseries.log
+	@tail -n 1 $*.timeseries.log
+	make $*.check.diurnal.log
 	@echo "Diurnal"
-	@tail -n 1 diurnal.log
+	@tail -n 1 $*.check.diurnal.log
 
-check_diurnal: ../bin/dsmacc Spec_1.dat.diurnal
-	@python check.py Spec_1.dat.diurnal.check Spec_1.dat.diurnal >> diurnal.log
+%.check.diurnal.log: %.Spec_1.dat.diurnal
+	@python check.py check.$*.Spec_1.dat.diurnal %.Spec_1.dat.diurnal >> $@
 
-check_timeseries: Spec_1.dat.timeseries
-	@python check.py Spec_1.dat.timeseries.check Spec_1.dat.timeseries >> timeseries.log
+%.check.timeseries.log: %.Spec_1.dat.timeseries
+	@python check.py check.$*.Spec_1.dat.timeseries $*.Spec_1.dat.timeseries >> $@
 
-Spec_1.dat.diurnal: ../bin/dsmacc Init_cons.dat.diurnal
-	ln -fs Init_cons.dat.diurnal Init_cons.dat && \
-	../bin/dsmacc >& diurnal.log && mv Spec_1.dat Spec_1.dat.diurnal && mv Rate_1.dat Rate_1.dat.diurnal
+%.Spec_1.dat.diurnal: % %.Init_cons.dat.diurnal
+	ln -fs $*.Init_cons.dat.diurnal Init_cons.dat && \
+	./$* >& $*.diurnal.log && mv Spec_1.dat $*.Spec_1.dat.diurnal && mv Rate_1.dat $*.Rate_1.dat.diurnal
 
-Spec_1.dat.timeseries: ../bin/dsmacc Init_cons.dat.timeseries
-	ln -fs Init_cons.dat.timeseries Init_cons.dat && \
-	../bin/dsmacc >& timeseries.log && mv Spec_1.dat Spec_1.dat.timeseries && mv Rate_1.dat Rate_1.dat.timeseries
-	
+%.Spec_1.dat.timeseries: % %.Init_cons.dat.timeseries
+	ln -fs $*.Init_cons.dat.timeseries Init_cons.dat && \
+	./$* >& $*.timeseries.log && mv Spec_1.dat $*.Spec_1.dat.timeseries && mv Rate_1.dat $*.Rate_1.dat.timeseries
+
+cri: ../dsmacc.kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.inc ../kpp/bin/kpp
+	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../test/cri.kpp dsmacc && make && mv ../bin/dsmacc ../test/cri
+
+geos: ../dsmacc.kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.inc ../kpp/bin/kpp
+	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../test/geos.kpp dsmacc && make && mv ../bin/dsmacc ../test/geos
+
 clean:
-	rm -f Spec_1.dat.diurnal Rate_1.dat.diurnal Spec_1.dat.timeseries Rate_1.dat.timeseries timeseries.log diurnal.log
+	rm -f cri.Spec_1.dat.diurnal cri.Rate_1.dat.diurnal geos.Spec_1.dat.diurnal geos.Rate_1.dat.diurnal *.diurnal.log *.timeseries.log
