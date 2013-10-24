@@ -6,7 +6,7 @@ F90FLAGS   = -I/usr/local/include -fbounds-check -fimplicit-none -fno-automatic
 
 export KPP_HOME=$(PWD)/kpp
 
-all: check
+all: check bin/dsmacc
 
 source src/dsmacc_Main.f90: dsmacc.kpp global.inc rate.inc util.inc driver.f90 photolysis.inc kpp/bin/kpp
 	cd src && rm -f depend.mk && ../kpp/bin/kpp ../dsmacc.kpp dsmacc
@@ -17,7 +17,7 @@ bin/dsmacc: src/dsmacc_Main.f90
 kpp/bin/kpp:
 	cd kpp && make
 
-check: bin/dsmacc
+check:
 	cd test && make
 
 clean:
