@@ -15,24 +15,27 @@ echo "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}:${FC}:$
 case "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}:${FC}:${FORTRAN_VERSION}" in
 
     *:Linux:*:*:ifort*:*) # For Linux machines
-        echo "F90    = ifort -fpp -O3" 1>&5;
-        echo "FC     = ifort -fpp -O3" 1>&5;
+        echo "F90    = ifort -fpp" 1>&5;
+        echo "FC     = ifort -fpp" 1>&5;
         echo "LD     = ifort" 1>&5;
-        echo "F90FLAGS   = -I/usr/local/include -check all -implicitnone -noautomatic" 1>&5;
-        echo "TUVF90FLAGS   = -I/usr/local/include -check all -noautomatic" 1>&5;
+        echo "F90FLAGS   = -O3 -I/usr/local/include -check all -implicitnone -noautomatic" 1>&5;
+        echo "TUVF90FLAGS   = -O3 -I/usr/local/include -check all -noautomatic" 1>&5;
         echo " " 1>&5; exit 0 ;;
 
-    *:Darwin:*:*:gfortran:*) # this is the default case, for gcc
+    *:*:*:*:gfortran:*4.4*) # this is the default case, for gcc
+        echo "F90     = gfortran -x f95-cpp-input" 1>&5;
+        echo "FC      = gfortran -x f95-cpp-input" 1>&5;
+        echo "LD      = gfortran " 1>&5;
+        echo "F90FLAGS   = -O3 -I/usr/local/include -fbounds-check -fcheck-array-temporaries -fimplicit-none -fno-automatic" 1>&5;
+        echo "TUVF90FLAGS   = -O3 -I/usr/local/include -fbounds-check -fcheck-array-temporaries -fno-automatic -fimplicit-none " 1>&5;
+        echo " " 1>&5; exit 0 ;;
+
+    *:*:*:*:gfortran:*) # this is the default case, for gcc
         echo "F90     = gfortran -x f95-cpp-input" 1>&5;
         echo "FC      = gfortran -x f95-cpp-input" 1>&5;
         echo "LD      = gfortran " 1>&5;
         echo "F90FLAGS   = -O3 -I/usr/local/include -fcheck=all -fimplicit-none -fno-automatic" 1>&5;
         echo "TUVF90FLAGS   = -O3 -I/usr/local/include -fcheck=all -fno-automatic -fimplicit-none " 1>&5;
-        echo " " 1>&5; exit 0 ;;
-
-    *:Darwin:*:*:gfortran:*4.4*) # this is the default case, for gcc
-        echo "F90FLAGS   = -O3 -I/usr/local/include -fbounds-check -fcheck-array-temporaries -fimplicit-none -fno-automatic" 1>&5;
-        echo "TUVF90FLAGS   = -O3 -I/usr/local/include -fbounds-check -fcheck-array-temporaries -fno-automatic -fimplicit-none " 1>&5;
         echo " " 1>&5; exit 0 ;;
 
     *:*:*:*:gcc*) # this is the default case, for gcc
