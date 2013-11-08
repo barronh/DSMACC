@@ -84,7 +84,8 @@ results with a set of archived results.
 2.  Open a terminal and navigate to folder where the code was downloaded
 3.  type `unzip DSMACC-master.zip`
 4.  type `cd DSMACC-master`
-5.  type `make check`
+5.  type `./configure`
+6.  type `make check`
 
 This may take some time, but will give you a list of pass/fails for a
 diurnal constrained steady state run.
