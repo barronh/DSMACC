@@ -1,3 +1,4 @@
+endc = '\033[0m'
 def readfile(path):
     lines = file(path, 'r').read().strip().split('\n')
     header = lines.pop(0)
@@ -27,29 +28,36 @@ def check(check_path, test_path):
         else:
             check = 0
         checks.append(check)
-        print str(check).ljust(5), key.ljust(16)
+        beginc = '\033[92m'
+        if not check:
+            beginc = '\033[91m'
+
+        print beginc + str('PASS' if check else 'FAIL').ljust(5), key.ljust(16) + endc
         if check == False:
             ti = 0
-            print 'Faild , Total , Pct', len(refvals) - sum(tests), ',', len(refvals), ',', round((1-sum(tests)/float(len(refvals)))*100, 1), '%'
+            print beginc + 'Total , Failed , Pct', len(refvals), ',', len(refvals) - sum(tests), ',', round((1-sum(tests)/float(len(refvals)))*100, 1), '%' + endc
             for r, c, d, a, t in zip(refvals, checkvals, diffs, allowables, tests):
                 if not t:
                     ti += 1
-                    print '  Fail:', ti
-                    print '  Ref    :', r
-                    print '  Check  :', c
-                    print '  Diff   :', d
-                    print '  Allowed:', copysign(a, d)
+                    print beginc + '  Fail: %s' % ti + endc
+                    print beginc + '  Ref    : %s' % r + endc
+                    print beginc + '  Check  : %s' % c + endc
+                    print beginc + '  Diff   : %s' % d + endc
+                    print beginc + '  Allowed: %s' % copysign(a, d) + endc
                     print
     
     sum_checks = sum(checks)
     len_checks = len(checks)
-    print '-'*25
-    print 'Passed'.ljust(16), '%d/%d' % (sum_checks, len_checks)
+    counts = ' %5d/%d' % (sum_checks, len_checks)
+    failed = len_checks > sum_checks
     
-    if len_checks > sum_checks:
-        print '!!!!Failed:', len_checks - sum_checks
-    else:
-        print ''    
+    
+    
+    if failed:
+        beginc = '\033[91m'
+    print beginc + '-'*30 + endc
+    print '\033[92m' + 'Passed'.ljust(16) + counts + endc
+    print  beginc + 'Failed'.ljust(16) + ' %5d/%d' % ((len_checks - sum_checks), len_checks) + endc
     print ''    
     
     return checks
