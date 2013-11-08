@@ -11,6 +11,8 @@ Spec_*.dat
 tuvlog.txt
 Makefile_dsmacc
 .DS_Store
+src/fflags
+kpp/cflags
 kpp/bin
 kpp/src/lex.yy.c
 kpp/src/y.tab.c
