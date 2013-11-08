@@ -2104,7 +2104,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 test -z $FCFLAGS && FCFLAGS="-O3"
-test -z $CFLAGS && CFLAGS="-I/usr/include/sys"
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -3593,6 +3592,16 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking System" >&5
+$as_echo_n "checking System... " >&6; }
+UNAME_SYSTEM=`(uname -s) 2>/dev/null` || UNAME_SYSTEM=unknown
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${UNAME_SYSTEM}" >&5
+$as_echo "${UNAME_SYSTEM}" >&6; }
+case ${UNAME_SYSTEM} in
+Darwin)
+  CFLAGS="$CFLAGS -I/usr/include/sys"
+  ;;
+esac
 case $CC in
 gcc)
   CFLAGS="$CFLAGS -m32"

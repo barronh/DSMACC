@@ -1,8 +1,15 @@
 AC_INIT(DSMACC, 0.1)
 test -z $FCFLAGS && FCFLAGS="-O3"
-test -z $CFLAGS && CFLAGS="-I/usr/include/sys"
 AC_PROG_LEX()
 AC_PROG_CC()
+AC_MSG_CHECKING([System])
+UNAME_SYSTEM=`(uname -s) 2>/dev/null` || UNAME_SYSTEM=unknown
+AC_MSG_RESULT([${UNAME_SYSTEM}])
+case ${UNAME_SYSTEM} in
+Darwin)
+  CFLAGS="$CFLAGS -I/usr/include/sys"
+  ;;
+esac
 case $CC in 
 gcc)
   CFLAGS="$CFLAGS -m32"
