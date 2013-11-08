@@ -1,15 +1,23 @@
 export KPP_HOME=$(PWD)/../kpp
+all:
+	make check
+
 check:
 	make cri.check
 	make geos.check
+	make cri.show
+	make geos.show
+
+%.show:
+	@echo "$* Timeseries Check"
+	@tail -n 3 $*.check.timeseries.log
+	@echo "$* Diurnal Check"
+	@tail -n 3 $*.check.diurnal.log
 
 %.check:
 	make $*.check.timeseries.log
 	make $*.check.diurnal.log
-	@echo "Timeseries"
-	@tail -n 3 $*.check.timeseries.log
-	@echo "Diurnal"
-	@tail -n 3 $*.check.diurnal.log
+	make $*.show
 
 .SECONDARY: cri geos geos.Spec_1.dat.diurnal geos.Spec_1.dat.timeseries cri.Spec_1.dat.diurnal cri.Spec_1.dat.timeseries
 %.check.diurnal.log: %.Spec_1.dat.diurnal check.py
