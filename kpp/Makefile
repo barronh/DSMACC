@@ -29,7 +29,7 @@
 #
 #######################################################################################
 
-include Makefile.defs
+include ../Makefile.defs
 
 all: setup kpp
 

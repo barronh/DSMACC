@@ -1,0 +1,43 @@
+#!/bin/sh
+UNAME_MACHINE=`(uname -m) 2>/dev/null` || UNAME_MACHINE=unknown
+UNAME_RELEASE=`(uname -r) 2>/dev/null` || UNAME_RELEASE=unknown
+UNAME_SYSTEM=`(uname -s) 2>/dev/null` || UNAME_SYSTEM=unknown
+UNAME_VERSION=`(uname -v) 2>/dev/null` || UNAME_VERSION=unknown
+FC=gfortran
+FORTRAN_VERSION=`(${FC} --version | head -n 1 ) 2>/dev/null` || FORTRAN_VERSION=unknown
+if [ x$1 != x ]; then CC=$1; fi
+
+exec 5>./fflags
+
+# Note: order is significant - the case branches are not exclusive.
+echo "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}:${FC}:${FORTRAN_VERSION}"
+
+case "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}:${FC}:${FORTRAN_VERSION}" in
+
+    *:Linux:*:*:ifort*:*) # For Linux machines
+        echo "F90    = ifort -fpp -O3" 1>&5;
+        echo "FC     = ifort -fpp -O3" 1>&5;
+        echo "LD     = ifort" 1>&5;
+        echo "F90FLAGS   = -I/usr/local/include -check all -implicitnone -noautomatic" 1>&5;
+        echo "TUVF90FLAGS   = -I/usr/local/include -check all -noautomatic" 1>&5;
+        echo " " 1>&5; exit 0 ;;
+
+    *:Darwin:*:*:gfortran:*) # this is the default case, for gcc
+        echo "F90     = gfortran -x f95-cpp-input" 1>&5;
+        echo "FC      = gfortran -x f95-cpp-input" 1>&5;
+        echo "LD      = gfortran " 1>&5;
+        echo "F90FLAGS   = -O3 -I/usr/local/include -fcheck=all -fimplicit-none -fno-automatic" 1>&5;
+        echo "TUVF90FLAGS   = -O3 -I/usr/local/include -fcheck=all -fno-automatic -fimplicit-none " 1>&5;
+        echo " " 1>&5; exit 0 ;;
+
+    *:Darwin:*:*:gfortran:*4.4*) # this is the default case, for gcc
+        echo "F90FLAGS   = -O3 -I/usr/local/include -fbounds-check -fcheck-array-temporaries -fimplicit-none -fno-automatic" 1>&5;
+        echo "TUVF90FLAGS   = -O3 -I/usr/local/include -fbounds-check -fcheck-array-temporaries -fno-automatic -fimplicit-none " 1>&5;
+        echo " " 1>&5; exit 0 ;;
+
+    *:*:*:*:gcc*) # this is the default case, for gcc
+        echo " " 1>&5; exit 0 ;;
+
+    *:*:*:*:*) # this is the default case
+        echo " " 1>&5; exit 0 ;;
+esac

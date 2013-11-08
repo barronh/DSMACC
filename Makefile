@@ -1,7 +1,3 @@
-F90     = gfortran -x f95-cpp-input -arch i386 -m32 -O3
-FC     = gfortran -x f95-cpp-input -arch i386 -m32 -O3
-LD     = gfortran -arch i386 -m32 
-F90FLAGS   = -I/usr/local/include -fbounds-check -fimplicit-none -fno-automatic 
 ##############################################################################
 
 export KPP_HOME=$(PWD)/kpp

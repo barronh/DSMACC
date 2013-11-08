@@ -61,4 +61,12 @@ FLEX_LIB_DIR=/usr/lib
 
 #CC_FLAGS=-O
 
-##############################################################################
+# 5. The name of the fortran compiler you want to use. Normaly this 
+#    is either GNU Fortran compiler (gfortran), the Intel Fortran
+#    compiler (ifort), or the Portland Group Compiler.
+#    For GNU C compiler use:
+#      FC=gfortran
+#    For the Intel compiler use:
+#      FC=ifort
+
+FC=gfortran

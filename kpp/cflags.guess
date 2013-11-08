@@ -32,7 +32,7 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}:${CC}" 
         echo " Please use gcc compiler on SUN machines."; exit 1 ;;
 
     *:Darwin:*:*:gcc) # this is the default case, for gcc
-        echo "-I/usr/include/sys -fbounds-check -arch i386" 1>&5; exit 0 ;;
+        echo "-I/usr/include/sys -fbounds-check" 1>&5; exit 0 ;;
 
     *:*:*:*:gcc*) # this is the default case, for gcc
         echo " " 1>&5; exit 0 ;;
