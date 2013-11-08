@@ -1,8 +1,6 @@
-F90     = gfortran -x f95-cpp-input
-FC     = gfortran -x f95-cpp-input
-LD     = gfortran 
-F90FLAGS   = -I/usr/local/include -fcheck=all -fimplicit-none -fno-automatic 
-TUVF90FLAGS   = -I/usr/local/include -fcheck=all -fno-automatic -fimplicit-none 
+include ../Makefile.defs
+include fflags
+
 ##############################################################################
 
 PROG = ../bin/dsmacc 
@@ -30,6 +28,9 @@ $(PROG): dsmacc_Main.f90 $(MAKEFILE_INC) $(OBJS) dsmacc_Main.f90
 	@mkdir -p ../bin
 	$(LD) $(F90FLAGS) $(OBJS) -o $@
 
+fflags: ../Makefile.defs fflags.guess
+	@./fflags.guess $(FC)
+
 # update file dependencies
 depend $(MAKEFILE_INC): $(SRCS1) $(SRCS2) $(SRCS3) dsmacc_Main.f90
 	$(F_makedepend) dsmacc_*.f90 constants.f90 tuv_new/*.f
@@ -43,6 +44,7 @@ distclean: clean
 	rm -f *.nc
 	rm -f *.dat
 	rm -f $(SRCS1) Makefile_dsmacc dsmacc.map tuvlog.txt ../bin/dsmacc
+	rm -f fflags
 
 # all object files *.o depend on their source files *.f90
 # the object files are created with the "-c" compiler option
