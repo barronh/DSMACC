@@ -11,10 +11,10 @@ check:
 	@echo "Diurnal"
 	@tail -n 1 $*.check.diurnal.log
 
-%.check.diurnal.log: %.Spec_1.dat.diurnal
+%.check.diurnal.log: %.Spec_1.dat.diurnal check.py
 	@python check.py check.$*.Spec_1.dat.diurnal $*.Spec_1.dat.diurnal >> $@
 
-%.check.timeseries.log: %.Spec_1.dat.timeseries
+%.check.timeseries.log: %.Spec_1.dat.timeseries check.py
 	@python check.py check.$*.Spec_1.dat.timeseries $*.Spec_1.dat.timeseries >> $@
 
 %.Spec_1.dat.diurnal: % %.Init_cons.dat.diurnal

@@ -12,7 +12,7 @@ def check(check_path, test_path):
     spec_ref = readfile(check_path)
     spec_test = readfile(test_path)
     
-    abs_tol = 1e-25
+    abs_tol = 1e-5
     rel_tol = 1e-5
     print 'Species'.ljust(16) + ' Pass'
     checks = []
