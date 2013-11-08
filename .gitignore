@@ -36,3 +36,7 @@ test/geos.check.diurnal.log
 test/geos.check.timeseries.log
 test/cri
 test/geos
+
+config.log
+
+config.status
