@@ -620,7 +620,7 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
-FCFLAGS_f95
+FCFLAGS_f90
 EGREP
 GREP
 ac_ct_FC
@@ -4235,21 +4235,21 @@ ac_ext=${ac_fc_srcext-f}
 ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
 ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_fc_compiler_gnu
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for Fortran flag to compile preprocessed .f95 files" >&5
-$as_echo_n "checking for Fortran flag to compile preprocessed .f95 files... " >&6; }
-if ${ac_cv_fc_pp_srcext_f95+:} false; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for Fortran flag to compile preprocessed .f90 files" >&5
+$as_echo_n "checking for Fortran flag to compile preprocessed .f90 files... " >&6; }
+if ${ac_cv_fc_pp_srcext_f90+:} false; then :
   $as_echo_n "(cached) " >&6
 else
-  ac_ext=f95
+  ac_ext=f90
 ac_fcflags_pp_srcext_save=$ac_fcflags_srcext
 ac_fcflags_srcext=
-ac_cv_fc_pp_srcext_f95=unknown
+ac_cv_fc_pp_srcext_f90=unknown
 case $ac_ext in #(
   [fF]77) ac_try=f77-cpp-input;; #(
   *) ac_try=f95-cpp-input;;
 esac
 for ac_flag in none -ftpp -fpp -Tf "-fpp -Tf" -xpp=fpp -Mpreprocess "-e Z" \
-               -cpp -xpp=cpp -qsuffix=cpp=f95 "-x $ac_try" +cpp -Cpp; do
+               -cpp -xpp=cpp -qsuffix=cpp=f90 "-x $ac_try" +cpp -Cpp; do
   test "x$ac_flag" != xnone && ac_fcflags_srcext="$ac_flag"
   cat > conftest.$ac_ext <<_ACEOF
       program main
@@ -4273,28 +4273,28 @@ _ACEOF
 if ac_fn_fc_try_compile "$LINENO"; then :
 
 else
-  ac_cv_fc_pp_srcext_f95=$ac_flag; break
+  ac_cv_fc_pp_srcext_f90=$ac_flag; break
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 done
-rm -f conftest.$ac_objext conftest.f95
+rm -f conftest.$ac_objext conftest.f90
 ac_fcflags_srcext=$ac_fcflags_pp_srcext_save
 
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_fc_pp_srcext_f95" >&5
-$as_echo "$ac_cv_fc_pp_srcext_f95" >&6; }
-if test "x$ac_cv_fc_pp_srcext_f95" = xunknown; then
-  as_fn_error $? "Fortran could not compile preprocessed .f95 files" "$LINENO" 5
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_fc_pp_srcext_f90" >&5
+$as_echo "$ac_cv_fc_pp_srcext_f90" >&6; }
+if test "x$ac_cv_fc_pp_srcext_f90" = xunknown; then
+  as_fn_error $? "Fortran could not compile preprocessed .f90 files" "$LINENO" 5
 else
-  ac_fc_srcext=f95
-  if test "x$ac_cv_fc_pp_srcext_f95" = xnone; then
+  ac_fc_srcext=f90
+  if test "x$ac_cv_fc_pp_srcext_f90" = xnone; then
     ac_fcflags_srcext=""
-    FCFLAGS_f95=""
+    FCFLAGS_f90=""
   else
-    ac_fcflags_srcext=$ac_cv_fc_pp_srcext_f95
-    FCFLAGS_f95=$ac_cv_fc_pp_srcext_f95
+    ac_fcflags_srcext=$ac_cv_fc_pp_srcext_f90
+    FCFLAGS_f90=$ac_cv_fc_pp_srcext_f90
   fi
 
 
