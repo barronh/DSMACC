@@ -18,8 +18,17 @@ icc)
   CFLAGS="$CFLAGS -mia32"
   ;;
 esac
-AC_PROG_CPP()
+
 AC_PROG_FC()
+
+case $FC in 
+gfortran)
+  FCFLAGS="$FCFLAGS -fno-automatic"
+  ;;
+ifort)
+  FCFLAGS="$FCFLAGS -noautomatic"
+  ;;
+esac
 AC_CHECK_HEADERS([malloc.h])
 AC_FC_PP_SRCEXT(f90)
 AC_FC_CHECK_BOUNDS()
