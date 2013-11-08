@@ -22,5 +22,6 @@ clean:
 	cd kpp && make clean
 
 distclean: clean
-	rm -f bin/dsmacc
+	@rm -f bin/dsmacc
 	cd kpp && make -i distclean
+	@rm -rf autom4te.cache config.status config.log Makefile.deps
