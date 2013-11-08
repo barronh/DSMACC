@@ -7,15 +7,15 @@ check:
 	make $*.check.timeseries.log
 	make $*.check.diurnal.log
 	@echo "Timeseries"
-	@tail -n 1 $*.check.timeseries.log
+	@tail -n 3 $*.check.timeseries.log
 	@echo "Diurnal"
-	@tail -n 1 $*.check.diurnal.log
+	@tail -n 3 $*.check.diurnal.log
 
 %.check.diurnal.log: %.Spec_1.dat.diurnal check.py
-	@python check.py check.$*.Spec_1.dat.diurnal $*.Spec_1.dat.diurnal >> $@
+	@python check.py check.$*.Spec_1.dat.diurnal $*.Spec_1.dat.diurnal > $@
 
 %.check.timeseries.log: %.Spec_1.dat.timeseries check.py
-	@python check.py check.$*.Spec_1.dat.timeseries $*.Spec_1.dat.timeseries >> $@
+	@python check.py check.$*.Spec_1.dat.timeseries $*.Spec_1.dat.timeseries > $@
 
 %.Spec_1.dat.diurnal: % %.Init_cons.dat.diurnal
 	ln -fs $*.Init_cons.dat.diurnal Init_cons.dat && \
