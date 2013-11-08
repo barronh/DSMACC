@@ -13,6 +13,7 @@
       REAL(kind=dp) :: oldvar(10000)
       LOGICAL :: SPECIAL
       INTEGER :: COUNT_NOX_CONSTRAINTS, IOSTAT
+      SAVE SPECIAL
     
     ! Open the file with the info
     
@@ -76,8 +77,8 @@
          ENDIF
     
          IF (SPECIAL .EQV. .TRUE.) THEN
-            WRITE (6,*) 'Negative Integration Time'
-            WRITE (6,*) 'But not a special case'
+            WRITE (6,*) 'Negative Integration Time', INTTIME
+            WRITE (6,*) 'But not a special case', SPECIAL
             STOP
          ENDIF
     
