@@ -3,9 +3,8 @@ UNAME_MACHINE=`(uname -m) 2>/dev/null` || UNAME_MACHINE=unknown
 UNAME_RELEASE=`(uname -r) 2>/dev/null` || UNAME_RELEASE=unknown
 UNAME_SYSTEM=`(uname -s) 2>/dev/null` || UNAME_SYSTEM=unknown
 UNAME_VERSION=`(uname -v) 2>/dev/null` || UNAME_VERSION=unknown
-FC=gfortran
+if [ x$1 != x ]; then FC=$1; fi
 FORTRAN_VERSION=`(${FC} --version | head -n 1 ) 2>/dev/null` || FORTRAN_VERSION=unknown
-if [ x$1 != x ]; then CC=$1; fi
 
 exec 5>./fflags
 
