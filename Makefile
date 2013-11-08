@@ -7,13 +7,13 @@ all: check bin/dsmacc
 source src/dsmacc_Main.f90: dsmacc.kpp global.inc rate.inc util.inc driver.f90 photolysis.inc kpp/bin/kpp
 	cd src && rm -f depend.mk && ../kpp/bin/kpp ../dsmacc.kpp dsmacc
 
-bin/dsmacc: src/dsmacc_Main.f90
+bin/dsmacc: src/dsmacc_Main.f90 Makefile.defs
 	cd src && make
 
-kpp/bin/kpp:
+kpp/bin/kpp: Makefile.defs
 	cd kpp && make
 
-check:
+check: kpp/bin/kpp
 	cd test && make
 
 clean:
