@@ -988,7 +988,8 @@ c
 c----------------------------------------------------------
 c service program for fintr
 c----------------------------------------------------------
-        implicit real*8 (a-h,o-z), integer *4 (i-n)
+        real*8 a, al, f, x, r
+        integer*4 i, j, n
         dimension f(n),a(n)
         r=0.0
         do 1 j=1,n
