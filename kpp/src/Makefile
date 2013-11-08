@@ -30,7 +30,7 @@
 #
 #######################################################################################
 
-include ../Makefile.defs
+include ../../Makefile.defs
 
 BISON=bison -d 
 CFLAGS=`cat ../cflags`
