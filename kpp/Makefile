@@ -29,12 +29,9 @@
 #
 #######################################################################################
 
-include ../Makefile.defs
+-include ../Makefile.defs
 
-all: setup kpp
-
-setup:
-	@./cflags.guess $(CC)
+all: kpp
 
 kpp:
 	@cd src;make;cd ..

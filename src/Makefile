@@ -1,5 +1,4 @@
-include ../Makefile.defs
-include fflags
+-include ../Makefile.defs
 
 ##############################################################################
 
@@ -26,13 +25,10 @@ F_makedepend = ../sfmakedepend --file=$(MAKEFILE_INC)
 # the executable is created by linking all objects
 $(PROG): dsmacc_Main.f90 $(MAKEFILE_INC) $(OBJS) dsmacc_Main.f90
 	@mkdir -p ../bin
-	$(LD) $(F90FLAGS) $(OBJS) -o $@
-
-fflags: ../Makefile.defs fflags.guess
-	@./fflags.guess $(FC)
+	$(FC) $(F90FLAGS) $(OBJS) -o $@
 
 # update file dependencies
-depend $(MAKEFILE_INC): $(SRCS1) $(SRCS2) $(SRCS3) dsmacc_Main.f90
+depend $(MAKEFILE_INC): $(SRCS1) $(SRCS2) $(SRCS3)
 	$(F_makedepend) dsmacc_*.f90 constants.f90 tuv_new/*.f
 
 clean:
@@ -49,10 +45,10 @@ distclean: clean
 # all object files *.o depend on their source files *.f90
 # the object files are created with the "-c" compiler option
 %.o: %.f90
-	$(F90) $(F90FLAGS) $(LINCLUDES) -c $<
+	$(FC) $(F90FLAGS) $(LINCLUDES) -c $<
 
 ../tuv_new/%.o: ../tuv_new/%.f
-	$(F90) $(TUVF90FLAGS) $(LINCLUDES) -o $@ -c $<
+	$(FC) $(F90FLAGS) $(LINCLUDES) -o $@ -c $<
 
 # list of dependencies (via USE statements)
 include depend.mk

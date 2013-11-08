@@ -1,5 +1,5 @@
 ##############################################################################
-
+-include Makefile.defs
 export KPP_HOME=$(PWD)/kpp
 
 all: check bin/dsmacc

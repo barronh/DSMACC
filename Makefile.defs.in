@@ -41,21 +41,21 @@
 #    For the native compiler use:
 #      CC=cc
 
-CC=gcc
-CFLAGS=-I/usr/include/sys -m32
-CPPFLAGS=
+CC=@CC@
+CFLAGS=@CFLAGS@
+CPPFLAGS=@CPPFLAGS@
 
 # 2. The name of your lexical analizer. KPP requires FLEX to be used.
 #    FLEX is a public domain lexical analizer and you can download it from
 #    http://www.gnu.org/software/flex/ or any other mirror site. If flex
 #    directory is not included in your path use the complete pathname.
 
-FLEX=flex
+FLEX=@LEX@
 
 # 3. The complete pathname of the FLEX library (libfl.a).
 #    On many systems this is: /usr/local/util/lib/flex
 
-FLEX_LIB=-lfl
+FLEX_LIB=@LEXLIB@
 
 # 4. Platform independent C compiler flags. By default "-O" is used which 
 #    turns on optimisation. If you are experiencing problems you may try 
@@ -71,6 +71,6 @@ FLEX_LIB=-lfl
 #    For the Intel compiler use:
 #      FC=ifort
 
-FC=gfortran
-F90FLAGS=-cpp -O3 -fcheck=bounds -fimplicit-none
-TUVF90FLAGS=-cpp -O3 -fcheck=bounds -fimplicit-none
+FC=@FC@
+F90FLAGS=@FCFLAGS_f95@ @FCFLAGS@
+TUVF90FLAGS=@FCFLAGS_f95@ @FCFLAGS@

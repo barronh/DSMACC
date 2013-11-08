@@ -30,10 +30,9 @@
 #
 #######################################################################################
 
-include ../../Makefile.defs
+-include ../../Makefile.defs
 
 BISON=bison -d 
-CFLAGS=`cat ../cflags`
 
 all: kpp
 
@@ -57,12 +56,12 @@ OBJS  = \
 
 kpp:    $(OBJS)
 	@echo "  "$(CC) $(CC_FLAGS) $(CFLAGS) $(OBJS) -L$(FLEX_LIB_DIR) -lfl -o kpp
-	@$(CC) $(CC_FLAGS) $(CFLAGS) $(OBJS) -L$(FLEX_LIB_DIR) -lfl -o kpp
+	@$(CC) $(CC_FLAGS) $(CFLAGS) $(OBJS) $(FLEX_LIB) -o kpp
 	@mkdir -p ../bin
 	@mv kpp ../bin/
 
 clean:  
-	@rm -f *~ *.o cflags 
+	@rm -f *~ *.o
 
 maintainer-clean: clean
 	@rm -f lex.yy.c y.tab.c y.tab.h
