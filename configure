@@ -2103,7 +2103,17 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-test -z $FCFLAGS && FCFLAGS="-O3"
+if test -z $FCFLAGS; then
+     FCFLAGS="-O3"
+     fflags_update=1
+else
+     fflags_update=0
+fi
+if test -z $CFLAGS; then
+     cflags_update=1
+else
+     cflags_update=0
+fi
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -3603,10 +3613,10 @@ case ${UNAME_SYSTEM} in
 Darwin)
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking Adding include path for Mac where malloc.h is in /usr/include/sys" >&5
 $as_echo_n "checking Adding include path for Mac where malloc.h is in /usr/include/sys... " >&6; }
-  CFLAGS="$CFLAGS -I/usr/include/sys"
+  test $cflags_update -gt 0 && CFLAGS="$CFLAGS -I/usr/include/sys"
   ;;
 esac
-
+if test $cflags_update -gt 0; then
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking Adding 32-bit option for KPP compilation" >&5
 $as_echo_n "checking Adding 32-bit option for KPP compilation... " >&6; }
 case $CC in
@@ -3620,7 +3630,7 @@ pgc*)
   CFLAGS="$CFLAGS -pc 32"
   ;;
 esac
-
+fi
 ac_ext=${ac_fc_srcext-f}
 ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
 ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
@@ -3834,6 +3844,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 # Adding compiler specific flags that have no macros in autoconf
+if test $fflags_update -gt 0; then
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking Adding no automatic for $FC" >&5
 $as_echo_n "checking Adding no automatic for $FC... " >&6; }
 case $FC in
@@ -3847,7 +3858,7 @@ pgf*)
   FCFLAGS="$FCFLAGS -save"
   ;;
 esac
-
+fi
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'

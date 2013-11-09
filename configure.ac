@@ -1,5 +1,15 @@
 AC_INIT(DSMACC, 0.1)
-test -z $FCFLAGS && FCFLAGS="-O3"
+if test -z $FCFLAGS; then
+     FCFLAGS="-O3"
+     fflags_update=1
+else
+     fflags_update=0
+fi
+if test -z $CFLAGS; then
+     cflags_update=1
+else
+     cflags_update=0
+fi
 AC_PROG_LEX()
 AC_PROG_CC()
 AC_MSG_CHECKING([System])
@@ -10,10 +20,10 @@ AC_MSG_RESULT([${UNAME_SYSTEM}])
 case ${UNAME_SYSTEM} in
 Darwin)
   AC_MSG_CHECKING([Adding include path for Mac where malloc.h is in /usr/include/sys])
-  CFLAGS="$CFLAGS -I/usr/include/sys"
+  test $cflags_update -gt 0 && CFLAGS="$CFLAGS -I/usr/include/sys"
   ;;
 esac
-
+if test $cflags_update -gt 0; then
 AC_MSG_CHECKING([Adding 32-bit option for KPP compilation])
 case $CC in 
 gcc)
@@ -26,10 +36,11 @@ pgc*)
   CFLAGS="$CFLAGS -pc 32"
   ;;
 esac
-
+fi
 AC_PROG_FC()
 
 # Adding compiler specific flags that have no macros in autoconf
+if test $fflags_update -gt 0; then
 AC_MSG_CHECKING([Adding no automatic for $FC])
 case $FC in 
 gfortran)
@@ -42,7 +53,7 @@ pgf*)
   FCFLAGS="$FCFLAGS -save"
   ;;
 esac
-
+fi
 AC_CHECK_HEADERS([malloc.h])
 AC_FC_PP_SRCEXT(f90)
 AC_FC_CHECK_BOUNDS()
