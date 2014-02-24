@@ -1,0 +1,6 @@
+#INCLUDE ./mz4.spc
+#INCLUDE ./mz4.eqn
+#INCLUDE ./mz4Functions.inc
+#INLINE F90_GLOBAL
+    REAL(dp) :: M, O2, N2, H2O, H2, RO2
+#ENDINLINE
