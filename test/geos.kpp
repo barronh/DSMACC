@@ -2,7 +2,7 @@
 // and chemical equations
 
 //#INCLUDE ./mcm_subset.kpp 
-#INCLUDE geos_chem.def
+#INCLUDE geoschem-08-02-03.def
 
 
 #INCLUDE ../global.inc

@@ -1,5 +1,5 @@
-#INCLUDE ./geos_chem.spc
-#INCLUDE ./geos_chem.eqn
+#INCLUDE ./geoschem-08-02-03.spc
+#INCLUDE ./geoschem-08-02-03.eqn
 #INCLUDE ./GEOSFunctions.inc
 #INLINE F90_GLOBAL
     REAL(dp) :: M, O2, N2, H2O, H2, RO2
