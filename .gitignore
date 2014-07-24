@@ -18,10 +18,6 @@ kpp/src/lex.yy.c
 kpp/src/y.tab.c
 kpp/src/y.tab.h
 test/Init_cons.dat
-test/geos.Rate_1.dat.diurnal
-test/geos.Rate_1.dat.timeseries
-test/geos.Spec_1.dat.diurnal
-test/geos.Spec_1.dat.timeseries
 test/*.Rate_1.dat.diurnal
 test/*.Rate_1.dat.timeseries
 test/*.Spec_1.dat.diurnal
@@ -32,6 +28,7 @@ test/*.check.diurnal.log
 test/*.check.timeseries.log
 test/cri
 test/geos
+test/geoschem-09-02
 test/mz4
 config.log
 config.status
