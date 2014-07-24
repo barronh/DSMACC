@@ -167,14 +167,27 @@
   !---------------------------------------------------------------------------
 
   REAL(kind=dp) FUNCTION GEOS_JO3(O3J)
-    REAL(kind=dp) O3J, T3I
+    REAL(kind=dp) O3J, T3I, RO1DplH2O, RO1DplH2, RO1DplN2, RO1DplO2, RO1D
     T3I = 1.0_dp/TEMP
-    GEOS_JO3 = O3J * &
-               1.45d-10 * EXP( 89.0_dp * T3I) * H2O / &
-               ( 1.45d-10 * EXP( 89.0_dp * T3I) * H2O + &
-                 2.14d-11 * EXP(110.0_dp * T3I) * N2 + &
-                 3.20d-11 * EXP( 70.0_dp * T3I) * O2 &
-               )
+    RO1DplH2O = 1.63d-10 * EXP( 60.d0 * T3I) * H2O
+    RO1DplH2 = 1.2e-10 * H2
+    RO1DplN2 = 2.15d-11 * EXP(110.d0 * T3I) * N2
+    RO1DplO2 = 3.30d-11 * EXP( 55.d0 * T3I) * O2
+    RO1D = RO1DplH2O + RO1DplH2 + RO1DplN2 + RO1DplO2
+    GEOS_JO3 = O3J * RO1DplH2O / RO1D
+  END FUNCTION
+  
+  !---------------------------------------------------------------------------
+
+  REAL(kind=dp) FUNCTION GEOS_JO3_2(O3J)
+    REAL(kind=dp) O3J, T3I, RO1DplH2O, RO1DplH2, RO1DplN2, RO1DplO2, RO1D
+    T3I = 1.0_dp/TEMP
+    RO1DplH2O = 1.63d-10 * EXP( 60.d0 * T3I) * H2O
+    RO1DplH2 = 1.2e-10 * H2
+    RO1DplN2 = 2.15d-11 * EXP(110.d0 * T3I) * N2
+    RO1DplO2 = 3.30d-11 * EXP( 55.d0 * T3I) * O2
+    RO1D = RO1DplH2O + RO1DplH2 + RO1DplN2 + RO1DplO2
+    GEOS_JO3_2 = O3J * RO1DplH2 / RO1D
   END FUNCTION
   
   !---------------------------------------------------------------------------
@@ -199,4 +212,63 @@
     
   END FUNCTION
 
+! I have to add a bunch of new reactions here(jmao, 07/21/2014):
+
+  !---------------------------------------------------------------------------
+
+   REAL(kind=dp) FUNCTION GEOS_F(A0, B0, C0)
+     REAL A0, B0, C0
+     REAL(kind=dp) FRAC
+!     HAC + OH
+      FRAC=1-23.7*exp(-1./(60*TEMP))
+      IF (FRAC<0d0) FRAC=0.01d0
+      GEOS_F=GEOS_STD(A0, B0, C0)*FRAC
+
+   END FUNCTION
+
+
+  !---------------------------------------------------------------------------
+
+   REAL(kind=dp) FUNCTION GEOS_L(A0, B0, C0)
+     REAL A0, B0, C0
+     REAL(kind=dp) FRAC
+!     HAC + OH
+      FRAC=1-23.7*exp(-1./(60*TEMP))
+      IF (FRAC<0d0) FRAC=0.01d0
+      GEOS_L=GEOS_STD(A0, B0, C0)*(1.0_dp-FRAC)      
+   END FUNCTION
+   
+   REAL(kind=dp) FUNCTION GEOS_N(A0, B0, C0)
+     REAL A0, B0, C0
+     REAL(kind=dp) FRAC
+!        GLYC+OH
+!FRAC=1!>11.0729*exp(!>1/73T),Butkovskaya 2006
+      FRAC=1-11.0729*exp(-1./(73.*TEMP))
+      IF (FRAC<0d0) FRAC=0.01d0
+      GEOS_N=GEOS_STD(A0, B0, C0)*FRAC
+
+   END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+
+   REAL(kind=dp) FUNCTION GEOS_O(A0, B0, C0)
+     REAL A0, B0, C0
+     REAL(kind=dp) FRAC
+!  GLYC+OH
+!  FRAC=1!>11.0729*exp(!>1/73T),Butkovskaya 2006
+      FRAC=1-11.0729*exp(-1./(73.*TEMP))
+      IF (FRAC<0d0) FRAC=0.01d0
+      GEOS_O=GEOS_STD(A0, B0, C0)*(1.0_dp-FRAC)      
+
+   END FUNCTION
+
+  !---------------------------------------------------------------------------
+
+   REAL(kind=dp) FUNCTION GEOS_HR(A0, B0, C0, A1, B1, C1 )
+      REAL A0, B0, C0, A1, B1, C1
+      REAL(kind=dp) FRAC
+      FRAC = 1.-EXP(-0.245*A1)
+      GEOS_HR = GEOS_STD(A0, B0, C0)*FRAC
+   END FUNCTION
 #ENDINLINE

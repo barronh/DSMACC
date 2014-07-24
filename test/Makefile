@@ -43,6 +43,9 @@ cri: cri.kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.i
 geos: geos.kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.inc ../kpp/bin/kpp
 	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../test/geos.kpp dsmacc && make && mv ../bin/dsmacc ../test/geos
 
+geoschem-09-02: geoschem-09-02.kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.inc ../kpp/bin/kpp
+	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../test/geoschem-09-02.kpp dsmacc && make && mv ../bin/dsmacc ../test/geoschem-09-02
+
 mz4: mz4.kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.inc ../kpp/bin/kpp
 	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../test/mz4.kpp dsmacc && make && mv ../bin/dsmacc ../test/mz4
 
