@@ -15,6 +15,7 @@ PROGRAM driver
     REAL(dp) :: RSTATE(20)
     REAL(dp) :: DIURNAL_OLD(NVAR,3000), DIURNAL_NEW(NVAR,3000)
     REAL(dp) :: DIURNAL_RATES(NREACT, 3000)
+    REAL(dp) :: BASE_JDAY
     INTEGER  :: ERROR, IJ
     LOGICAL :: SCREWED
     ! Photolysis calculation variables
@@ -69,7 +70,7 @@ PROGRAM driver
 
 ! convert tstart to local time
         tstart = tstart+LON/360.*24*60*60.
-
+        BASE_JDAY = JDAY - tstart / 24. /60./60.
 ! tend is the end time. IntTime is determined from the Init_cons.dat file
         tend = tstart + IntTime    
 
@@ -230,6 +231,7 @@ PROGRAM driver
             ENDIF
 ! Update the time to reflect the integration has taken place and 
             time = RSTATE(1)
+            JDAY = BASE_JDAY + time / 24. /60./60.
             Daycounter=Daycounter+1
 
 ! If we are constraining NOx then:
