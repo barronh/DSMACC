@@ -231,13 +231,18 @@ PROGRAM driver
             ENDIF
 ! Update the time to reflect the integration has taken place and 
             time = RSTATE(1)
-            JDAY = BASE_JDAY + time / 24. /60./60.
+            IF (CONSTRAIN_RUN .EQV. .FALSE.) THEN 
+                jday = base_jday + time / 24d0 / 60d0 / 60d0
+            ENDIF
+            IF (CONSTRAIN_RUN .EQV. .TRUE.) THEN 
+                jday = base_jday + MOD(time,86400d0)/24d0/60d0/60d0
+            ENDIF
             Daycounter=Daycounter+1
 
 ! If we are constraining NOx then:
             IF (CONSTRAIN_NOX) THEN 
             
-! Calcualte the total NOx in the box
+! Calculate the total NOx in the box
                 TNOX=0
                 DO I=1,NVAR
                     IF (NOX(I) .NE. 0) THEN 
@@ -253,7 +258,7 @@ PROGRAM driver
                 ENDDO
             ENDIF
 
-! If constrain species concentALrations if necessary
+! If constrain species concentrations if necessary
             DO I=1,NVAR
                 IF (CONSTRAIN(I) .GT. 0) THEN             
                     C(I)=CONSTRAIN(I)
