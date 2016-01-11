@@ -104,11 +104,9 @@
                IF (TRIM(SPEC_NAME(I)) .EQ. TRIM(SPC_NAMES(J))) THEN 
                   FOUND=1
                   VAR(J)=CONCS(I)
-                  IF (const_method(i) .EQ. 1) THEN 
-                             CONSTRAIN(J)=CONCS(I)
+                  IF (const_method(i) .EQ. 1) CONSTRAIN(J)=CONCS(I)
                   IF (SPEC_NAME(I) .EQ. 'CH4') SPEC_CH4=.TRUE.
                   IF (SPEC_NAME(I) .EQ. 'H2') SPEC_H2=.TRUE.
-                  ENDIF
                ENDIF
             ENDDO
     
