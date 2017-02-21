@@ -48,7 +48,7 @@ Overview
 This descibes the steps necessary to run the model. These instructions
 assume basic knowledge of Linux Bash or C-Shell.
 
-1.  [Install prerequisites](Install%20Prerequisites)
+1.  [Install prerequisites](#install-prerequisites)
 2.  [Run the test case](Test%20Case)
 3.  [Modifying the model chemistry scheme
     (optional)](Chemistry%20Configuration)
