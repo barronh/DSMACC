@@ -117,8 +117,21 @@ Go to
 chemistry of by selecting the check boxes associated with each species.
 Once all the VOC's have been selected click 'Added Selection to Marked
 List.' Then click on 'Extract' from the menu at the top of the page.
-Select KPP, experimental KPP format. Click on Extract Save the generated
-page as organic.kpp
+Select KPP, experimental KPP format. Click on Extract. Save the generated
+page as organic.kpp.
+
+The organic.kpp file contains both dos and unix line-endings, which will break kpp.
+To fix the file run the following command on any machine with vi installed.
+
+```
+   vi +':e ++ff=dos' +':wq ++ff=unix' organic.kpp
+```
+
+If vi is not installed, you can use python.
+
+```
+    python -c "txt = open('organic.kpp', 'rU').read(); open('organic.kpp', 'w').write(txt);"
+```
 
 #### Using the GEOS-Chem globchem.dat file
 
