@@ -49,16 +49,16 @@ This descibes the steps necessary to run the model. These instructions
 assume basic knowledge of Linux Bash or C-Shell.
 
 1.  [Install prerequisites](#install-prerequisites)
-2.  [Run the test case](Test%20Case)
+2.  [Run the test case](#test-case)
 3.  [Modifying the model chemistry scheme
-    (optional)](Chemistry%20Configuration)
+    (optional)](#chemistry-configuration)
 4.  [Re-compiling and compiling the model
-    (optional)](Compilation%20Instructions)
+    (optional)](#compilation-instructions)
 5.  [Creating your own the model
-    inputs](Inputs%20and%20Initial%20Conditions)
-6.  [Running the model](Running%20the%20model)
+    inputs](#inputs-and-initial-conditions)
+6.  [Running the model](#running-the-model)
 
-### <a id="Install%20Prerequisites"/>Install prerequisites
+### Install prerequisites
 
 DSMACC has relatively few requirements and all can be obtained free of
 charge. DSMACC itself requires a basic linux development environment.
@@ -72,7 +72,7 @@ and a lexer.
 3.  [Bison](http://www.gnu.org/software/bison/)
 4.  [FLEX](www.gnu.org/software/flex/)
 
-### <a id="Test%20Case"/>Test Case
+### Test Case
 
 The test case assumes that you have KPP installed with kpp in your PATH
 and the KPP\_HOME environment variable set. (if not see [KPP
@@ -90,7 +90,7 @@ results with a set of archived results.
 This may take some time, but will give you a list of pass/fails for a
 diurnal constrained steady state run.
 
-### <a id="Compilation%20Instructions"/>Compilation Instructions
+### Compilation Instructions
 #### Standard KPP input
 
 Which chemistry scheme you are going to run in the model is described by
@@ -155,7 +155,7 @@ chemistry scheme you have requested.
 To make the model as an executable type `make`. The model will be
 constructed and named model.
 
-### <a id="Inputs%20and%20Initial%20Conditions"/> Input and Initial Conditions
+### Input and Initial Conditions
 
 The model initial condition and control information are contained in a
 file called *Init\_cons.dat*. It looks like a spreadsheet with columns
