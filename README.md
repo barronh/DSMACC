@@ -17,7 +17,7 @@ assume basic knowledge of Linux Bash or C-Shell.
 1.  [Install prerequisites](#install-prerequisites)
 2.  [Run the test case](#test-case)
 3.  [Modifying the model chemistry scheme
-    (optional)](#chemistry-configuration)
+    (optional)](#chemistry-options)
 4.  [Re-compiling and compiling the model
     (optional)](#compilation-instructions)
 5.  [Creating your own the model
