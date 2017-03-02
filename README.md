@@ -71,7 +71,7 @@ manual.
 
 Using MCM is easiest using a single extracted subset that includes both inorganic and organic chemistry.
 
-To make a new mcm_subset. kpp, go to http://mcm.leeds.ac.uk/MCM/roots.htt . Then select the base VOCs that you would like to simulate the chemistry of by selecting the check boxes associated with each species. Once all the VOC's have been selected click 'Added Selection to Marked List.' Then click on 'Extract' from the menu at the top of the page. Select "KPP, experimental KPP format". It is good practice to select "Include generic rate coefficients" and "Include inorganic reactions." and " Then, Click on Extract.
+To make a new mcm_subset.kpp, go to http://mcm.leeds.ac.uk/MCM/roots.htt . Then select the base VOCs that you would like to simulate the chemistry of by selecting the check boxes associated with each species. Once all the VOC's have been selected click 'Added Selection to Marked List.' Then click on 'Extract' from the menu at the top of the page. Select "KPP, experimental KPP format". It is good practice to select "Include generic rate coefficients" and "Include inorganic reactions." and " Then, Click on Extract.
 
 By default, the extract will be called mcm_subset.kpp that needs two updates: *line endings* and *mcm_constants* call.
 First, it has mixed line endings that will not work. Second, the mcm_constants call is set to overwrite generic rate
