@@ -91,6 +91,19 @@ If vi is not installed, you can use python.
 
 To fix the mcm_constants call, delete the line `CALL mcm_constants(time, temp, M, N2, O2, RO2, H2O)` from the mcm_subset.kpp.
 
+Next, ffind and replace all "= :" with "= DUMMY :" in any reactions and replace the line " = IGNORE;" with "DUMMY = IGNORE;" in the DEFVAR list.
+
+To fix the file run the following command on any machine with vi installed.
+
+```
+   vi +':%s/= :/= DUMMY :/g' +':%s/^ = IGNORE/DUMMY = IGNORE/ +':wq' mcm_subset.kpp
+```
+
+If vi is not available, you can use python.
+```
+    python -c "txt = open('mcm_subset.kpp', 'rU').read(); open('mcm_subset.kpp', 'w').write(txt.replace('= :', '= DUMMY :').replace('\n = IGNORE', 'DUMMY = IGNORE'));"
+```
+
 Now make a master kpp file. The easiest approach is to copy the test/cri.kpp file and rename it to mcm.kpp. Replace the line `#INCLUDE CRI_subset.kpp` with `#INCLUDE mcm_subset.kpp`. Then follow the [compilation instructions](#compilation-instructions)
 
 ### Using the GEOS-Chem globchem.dat file
