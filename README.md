@@ -85,7 +85,7 @@ For `vi`:
    vi +':e ++ff=dos' +':wq ++ff=unix' mcm_subset.kpp
    vi +':%s/^\s*CALL mcm_constants/! CALL mcm_constants/' +':wq' mcm_subset.kpp
    vi +':%s/= :/= DUMMY :/g' +':wq' mcm_subset.kpp
-   vi +':%s/^ = IGNORE/DUMMY = IGNORE/ +':wq' mcm_subset.kpp
+   vi +':%s/^ = IGNORE/DUMMY = IGNORE/' +':wq' mcm_subset.kpp
 ```
 
 For `python`:
