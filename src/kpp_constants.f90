@@ -66,6 +66,9 @@ MODULE constants
   ! variables for calculation of kmt17
   REAL(dp) kmt17
   REAL(dp) kmt18
+  ! variables for kfppn and kbppn
+  REAL(dp) KBPPN, FPPN
+  REAL(dp) FCPPN, K14ISOM1, KPPN0, KPPNI, KRPPN, NCPPN
   ! variables for calculation of photolysis reaction rates
   REAL(dp)  l(61), mm(61), nn(61), j(61)
   INTEGER k
