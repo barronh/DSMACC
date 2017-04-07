@@ -65,6 +65,9 @@ MODULE constants
   ! variables for calculation of kmt17
   REAL(dp) kmt17
   REAL(dp) kmt18
+  ! variables for kfppn and kbppn
+  REAL(dp) KBPPN, FPPN
+  REAL(dp) FCPPN, K14ISOM1, KPPN0, KPPNI, KRPPN, NCPPN
   ! variables for calculation of photolysis reaction rates
   ! J increased to 1100. Upto 1000 for inorganics/organics, 1000 onwards halogens
   ! GEOS_CHEM paramterization
