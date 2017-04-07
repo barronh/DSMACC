@@ -74,37 +74,32 @@ Using MCM is easiest using a single extracted subset that includes both inorgani
 To make a new mcm_subset.kpp, go to http://mcm.leeds.ac.uk/MCM/roots.htt . Then select the base VOCs that you would like to simulate the chemistry of by selecting the check boxes associated with each species. Once all the VOC's have been selected click 'Added Selection to Marked List.' Then click on 'Extract' from the menu at the top of the page. Select "KPP, experimental KPP format". It is good practice to select "Include generic rate coefficients" and "Include inorganic reactions." and " Then, Click on Extract.
 
 By default, the extract will be called mcm_subset.kpp that needs two updates: *line endings* and *mcm_constants* call.
-First, it has mixed line endings that will not work. Second, the mcm_constants call is set to overwrite generic rate
-coefficients, which is not desirable.
+First, it has mixed line endings that will not work. Second, reactions with no products need a DUMMY species. Third, 
+the mcm_constants call is set to overwrite generic rate coefficients, which is not desirable. 
 
-To fix the file run the following command on any machine with vi installed.
+These can be fixed by (1) using consistent line endings, (2) commenting out mcm_constants call, (3) adding DUMMY as a product, and (4) fixing DUMMY definition in VARDEF. Each of the four steps is shown a separate command for `vi` and `python`.
+
+For `vi`:
 
 ```
    vi +':e ++ff=dos' +':wq ++ff=unix' mcm_subset.kpp
+   vi +':%s/^\s*CALL mcm_constants/! CALL mcm_constants/' +':wq' mcm_subset.kpp
+   vi +':%s/= :/= DUMMY :/g' +':wq' mcm_subset.kpp
+   vi +':%s/^ = IGNORE/DUMMY = IGNORE/ +':wq' mcm_subset.kpp
 ```
 
-If vi is not installed, you can use python.
+For `python`:
 
 ```
-    python -c "txt = open('mcm_subset.kpp', 'rU').read(); open('mcm_subset.kpp', 'w').write(txt);"
+    python -c "txt = open('mcm_subset.kpp', 'rU').read(); # implicit line ending fix
+    txt = txt.replace('CALL mcm_constants', '! CALL mcm_constants'); # comment out mcm_constants
+    txt = txt.replace('= :', '= DUMMY :'); # add DUMMY to productless reactions
+    txt = txt.replace('\n = IGNORE', 'DUMMY = IGNORE') # fix DUMMY species definition
+    open('mcm_subset.kpp', 'w').write(txt);"
 ```
 
-To fix the mcm_constants call, delete the line `CALL mcm_constants(time, temp, M, N2, O2, RO2, H2O)` from the mcm_subset.kpp.
-
-Next, ffind and replace all "= :" with "= DUMMY :" in any reactions and replace the line " = IGNORE;" with "DUMMY = IGNORE;" in the DEFVAR list.
-
-To fix the file run the following command on any machine with vi installed.
-
-```
-   vi +':%s/= :/= DUMMY :/g' +':%s/^ = IGNORE/DUMMY = IGNORE/ +':wq' mcm_subset.kpp
-```
-
-If vi is not available, you can use python.
-```
-    python -c "txt = open('mcm_subset.kpp', 'rU').read(); open('mcm_subset.kpp', 'w').write(txt.replace('= :', '= DUMMY :').replace('\n = IGNORE', 'DUMMY = IGNORE'));"
-```
-
-Now make a master kpp file. The easiest approach is to copy the test/cri.kpp file and rename it to mcm.kpp. Replace the line `#INCLUDE CRI_subset.kpp` with `#INCLUDE mcm_subset.kpp`. Then follow the [compilation instructions](#compilation-instructions)
+Now make a master kpp file. The easiest approach is to copy the test/cri.kpp file and rename it to mcm.kpp. 
+Replace the line `#INCLUDE CRI_subset.kpp` with `#INCLUDE mcm_subset.kpp`. Then follow the [compilation instructions](#compilation-instructions)
 
 ### Using the GEOS-Chem globchem.dat file
 
