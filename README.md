@@ -133,6 +133,7 @@ third word must be dsmacc.
 
 ```
 export KPP_HOME=/path/to/DSMACC/kpp/
+export PATH=${KPP_HOME}/bin:${PATH}
 kpp dsmacc.kpp dsmacc
 ```
 
