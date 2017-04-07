@@ -62,7 +62,7 @@
   REAL(dp) kr17, nc, nc1, nc10, nc12, nc13, nc14
   REAL(dp) nc15, nc16, nc17, nc2
   REAL(dp) nc3, nc4, nc7, nc8, nc9, ncd
+  ! variables for calculation of KBPPN an FPPN
+  REAL(dp) KBPPN, FPPN
+  REAL(dp) FCPPN, K14ISOM1, KPPN0, KPPNI, KRPPN, NCPPN
 #ENDINLINE
-#INLINE F90_RCONST
-  THETA = DBLE( ZENITH ( REAL(LAT), -REAL(LON), JDAY))
-#ENDINLINE F90_RCONST
