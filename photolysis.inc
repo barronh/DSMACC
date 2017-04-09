@@ -3,8 +3,9 @@
 #ENDINLINE F90_RCONST
 #INLINE F90_RATES
   FUNCTION GREGDATETIME(JDAY)
+      ! RETURNS YEAR, MONTH, DAY and TIME in seconds from 0 UTC
       IMPLICIT NONE
-      REAL(dp), DIMENSION(4) :: GREGDATETIME
+      INTEGER, DIMENSION(4) :: GREGDATETIME
       REAL(dp), INTENT(IN) :: JDAY
       INTEGER IYEAR, IMTH, IDAY
       REAL(dp) GMT
@@ -26,10 +27,10 @@
       ENDDO
       IDAY = IDAY - SUM(IMN(1:IMTH-1))
       print *, IYEAR, IMTH, IDAY, GMT
-      GREGDATETIME(1) = DBLE(IYEAR)      
-      GREGDATETIME(2) = DBLE(IMTH)      
-      GREGDATETIME(3) = DBLE(IDAY)      
-      GREGDATETIME(4) = GMT
+      GREGDATETIME(1) = IYEAR
+      GREGDATETIME(2) = IMTH
+      GREGDATETIME(3) = IDAY
+      GREGDATETIME(4) = INT(GMT * 3600)
       
   END FUNCTION GREGDATETIME
 
@@ -267,7 +268,7 @@
      REAL(dp) :: OLD_TEMP = -9999 ! Temperature (K)
      REAL(dp) :: OLD_lat = -9999, OLD_lon = -9999 ! Latitude and Longitude (Decimal degrees)
      REAL(dp) :: OLD_M = -9999! Constants for concentrations that are not in the mechanism (molecule cm**-3); provided by input file
-     REAL(dp), DIMENSION(4) :: tdate
+     INTEGER, DIMENSION(4) :: tdate
      SAVE OLD_M, OLD_LAT, OLD_LON, OLD_PRESS, OLD_O3COL, OLD_JDAY, OLD_TEMP
      !    Set up the photolysis rates
      !    First calculate pressure altitude from altitude
@@ -294,8 +295,7 @@
            
     !    Calculate the photolysis rates for the run
          tdate = GREGDATETIME(JDAY)
-         write(6,*) int(tdate(1)), int(tdate(2)), int(tdate(3))
-         call set_up_photol(int(tdate(1)), int(tdate(2)), int(tdate(3)),&
+         call set_up_photol(tdate(1), tdate(2), tdate(3),&
                             O3col, alta, lat, lon, temp, M, bs,cs,ds,szas,svj_tj)
          WRITE (6,*) 'Photolysis rates calculated'
          WRITE (6,*) 'hvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhv'
