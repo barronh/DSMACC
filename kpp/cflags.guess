@@ -4,6 +4,7 @@ UNAME_RELEASE=`(uname -r) 2>/dev/null` || UNAME_RELEASE=unknown
 UNAME_SYSTEM=`(uname -s) 2>/dev/null` || UNAME_SYSTEM=unknown
 UNAME_VERSION=`(uname -v) 2>/dev/null` || UNAME_VERSION=unknown
 echo "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}:${CC}"
+exit
 CC=cc
 if [ x$1 != x ]; then CC=$1; fi
 
@@ -30,6 +31,9 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}:${CC}" 
 
     *:SunOS:*:*:cc*) # For SUN machines
         echo " Please use gcc compiler on SUN machines."; exit 1 ;;
+
+    *:Darwin*:15*:*:gcc) # this is the default case, for gcc
+        echo "-I/usr/include -I/usr/include/sys -fbounds-check -arch i386" 1>&5; exit 0 ;;
 
     *:Darwin:*:*:gcc) # this is the default case, for gcc
         echo "-I/usr/include/sys -fbounds-check -arch i386" 1>&5; exit 0 ;;
