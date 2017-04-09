@@ -14,9 +14,6 @@ Makefile_dsmacc
 src/fflags
 kpp/cflags
 kpp/bin
-kpp/src/lex.yy.c
-kpp/src/y.tab.c
-kpp/src/y.tab.h
 test/Init_cons.dat
 test/*.Rate_1.dat.diurnal
 test/*.Rate_1.dat.timeseries
