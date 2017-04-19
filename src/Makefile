@@ -48,7 +48,7 @@ distclean: clean
 	$(FC) $(F90FLAGS) $(LINCLUDES) -c $<
 
 ../tuv_new/%.o: ../tuv_new/%.f
-	$(FC) $(F90FLAGS) $(LINCLUDES) -o $@ -c $<
+	$(FC) $(TUVF90FLAGS) $(LINCLUDES) -o $@ -c $<
 
 # list of dependencies (via USE statements)
 include depend.mk
