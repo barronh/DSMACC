@@ -7,6 +7,7 @@
     LOGICAL :: SPEC_CH4, SPEC_H2
     INTEGER :: IntTime
     LOGICAL :: JDAYISGMT = .true.
+    LOGICAL :: DEBUG = .true.
     LOGICAL :: CONSTRAIN_NOX
     LOGICAL :: CONSTRAIN_RUN = .false., LAST_POINT = .false., OUTPUT_LAST = .false.
     CHARACTER(LEN=15) :: spec_name(10000)
