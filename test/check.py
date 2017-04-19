@@ -3,10 +3,10 @@ endc = '\033[0m'
 def readfile(path):
     lines = open(path, 'r').read().strip().split('\n')
     header = lines.pop(0)
-    header = map(str.strip, header.split('!')[:-1])
+    header = [hv.strip() for hv in header.split('!')[:-1]]
     data = dict([(h, []) for h in header])
     for line in lines:
-        for k, v in zip(header, map(float, line.split('!')[:-1])):
+        for k, v in zip(header, [float(lv) for lv in line.split('!')[:-1]]):
             data[k].append(v)
     return data
 
@@ -24,7 +24,7 @@ def check(check_path, test_path):
             checkvals = spec_test[key]
             diffs = [checkval - refval for checkval, refval in zip(checkvals, refvals)]
             allowables = [abs(refval) * rel_tol + abs_tol for refval in refvals]
-            tests = [diff <= allowable for diff, allowable in zip(map(abs, diffs), allowables)]
+            tests = [diff <= allowable for diff, allowable in zip([abs(d) for d in diffs], allowables)]
             check = all(tests)
         else:
             check = 0
