@@ -114,13 +114,13 @@ if ($#ARGV + 1 > 0) {
     @flist = @ARGV
 }
 else {
-    foreach $dir (@hsrcdirs,".") {
+    foreach $dir (@hsrcdirs) {
 	opendir(DIR,$dir) ; @hlist =  readdir(DIR) ; closedir(DIR);
-	@hsrcs = grep (/\.(f90|f|F|f95)$/, @hlist) ;
+	@hsrcs = grep (/\.(f90|f|F||F90|f95)$/, @hlist) ;
 	### # exclude F*.f files
 	### @srcs  = grep (!/F.*\.f/, @hsrcs) ;
 	# exclude F*.f* files
-	@srcs  = grep (!/F.*\.f.*/, @hsrcs) ;
+	@srcs  = grep (!/^F.*\.f.*/, @hsrcs) ;
 	# prepend directory
         if ($dir ne ".") {
 	    foreach $i (0 .. $#srcs) { $srcs[$i] = $dir."/".$srcs[$i]} } ;
@@ -427,11 +427,14 @@ sub find_mods {
 sub print {
     my $self = shift;
     my $source = $self->{'Source_File'};
+    my $filepath = $self->{'filepath'};
     my $compile_string = "\t" . '$(F90) $(F90FLAGS) -c';
-    my($base, $object, $modname, $flag, $target, $ftarget);
-
-    $base = main::basename($source, @main::suffixes);
-    $target = $base . "." . $main::obj_ext;
+    my($base, $object, $modname, $flag, $target, $ftarget,$basedir,$basesuf);
+    $base = main::basename($filepath, @main::suffixes);
+    $basedir = main::dirname($filepath);
+    #print($basedir);
+#   BHH
+    $target = $basedir . "/" . $base . "." . $main::obj_ext;
     if ($main::cpp) {
 	$ftarget = $base . "." . $main::ext;
     }
