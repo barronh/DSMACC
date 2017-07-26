@@ -1,0 +1,360 @@
+! ---------- JX72e_notes.f90   (2/2016)
+
+No corrections to code, but the FJX_spec.dat data set has been corrected twice.
+      v 6.8d (5/2015) fixed Acetaldehyde (3 pressures now)
+      v 6.8e (2/2016) fixed the XO3 and QO1D, which were inconsistent in T
+            main shift is -1% in J-O3total,
+                          +2% (0-3 km) to +4% (6-20km) in J-O3=>O1D increase
+         Current XO3 and Q1D codes are fully consistent with JPL-2010 and
+            supplied in the new "Add X" package.
+
+! ---------- JX72_notes.f90   (2/2015)
+
+!  JX72-f90 = cloud-JX a fuly new 'wrapper' around fast-JX for fractional cloud cover
+
+!  JX71C is same as JX70d except that test for solar flux = 0 so that can run 200 nm data set
+!  the 2200 nm data set cuts all J's at exactly 200 nm - used to combien with WACCM tables
+!  to allow J's above 60 km, including Lyman-alpha
+
+!  JX70d version has the corrected acetaldehyde Xsects - use FJX_spce.dat ver 6.8d (6/2014)
+!
+! MAIN program
+! USES:
+!      USE CMN_FJX_MOD
+!      USE FJX_SUB_MOD
+!      USE FJX_INIT_MOD
+!      USE CLD_SUB_MOD, ONLY : CLOUD_JX
+! CALL sequence
+!      call INIT_FJX (TITLJXX,JVN_,NJXX)
+!      call ACLIM_FJX (YLAT, MONTH, PPP,TTT,ZZZ,DDD,OOO, L1_)
+!      call SOLAR_JX(PHOTAU,IDAY,YGRD,XGRD, SZA,U0,SOLF)
+!      call CLOUD_JX (U0,SZA,REFLB,SOLF,FG0,LPRTJ,PPP,ZZZ,TTT, &
+!             DDD,RRR,OOO,   LWP,IWP,REFFL,REFFI,     CLF,CWC,   &
+!             AERSP,NDXAER,L1_,AN_,VALJXX,JVN_,   &
+!             CLDFLAG,NRANDO,IRAN,L3RG,NICA,JCOUNT)
+!
+!   CLOUD_JX calls PHOTO_JX with the came sequence except for logical LDARK(out)
+!      this allows for JCOUNT, a counter of the number of FJX real calculations.
+!
+!
+! derived from JX71-f90 with some changes needed for clouds and other minor fixes.
+!  should be compatible (identical) to JX71 when the clouds&aerosols are the same.
+!
+! Comparison of different fractional cloud schemes for computing avg J's
+!     Uses a typical UCI CTM atmosphere, sample aerosols,
+!     and clouds from 64 different tropical ECMWF T319 atmospheres.
+!
+! CLOUD_JX:   different cloud schemes (4:8 require max-ran overlap algorithm)
+!     CLDFLAG = 1  :  Clear sky J's
+!     CLDFLAG = 2  :  Averaged cloud cover
+!     CLDFLAG = 3  :  cloud-fract**3/2, then average cloud cover
+!     CLDFLAG = 4  :  Average direct solar beam over all ICAs, invert to get clouds
+!     CLDFLAG = 5  :  Random select NRANDO ICA's from all(Independent Column Atmos.)
+!     CLDFLAG = 6  :  Use all (up to 4) quadrature cloud cover QCAs (mid-pts of bin)
+!     CLDFLAG = 7  :  Use all (up to 4) QCAs (average clouds within each Q-bin)
+!     CLDFLAG = 8  :  Calculate J's for ALL ICAs (up to 20,000 per cell!)
+!
+! Max-Ran cloud overlap algorithm:
+!     L3RG = 0   break max overlap groups at cloud fraction = 0
+!     L3RG.ne.0  used fixed layer breaks (1:9, 9:last LWcloud, LWclud+1:LTOP)
+!
+! [3Grp]  Uses fixed 3 random cloud groups by layer (low, medium, ice-only)
+!
+!
+!
+! -----FJX version 7.1 - f90 notes
+!  same as JX70b except that test for solar flux = 0 so that can run 200 nm data set
+!  the 2200 nm data set cuts all J's at exactly 200 nm - used to combien with WACCM tables
+!  to allow J's above 60 km, including Lyman-alpha
+!
+! ----subroutines and calls:
+!       main standalone
+!   >>>   call INIT_FJX (TITLJXX,NJX_,NJXX)
+!         call RD_JS_JX(9,'FJX_j2j.dat', TITLJXX,NJXX)
+!         call SOLAR_JX(GMTAU,IDAY,YGRD,XGRD, SZA,U0,SOLF)
+!         call ACLIM_FJX (YLAT, MONTH, PPP,TTT,ZZZ,DDD,OOO, L1_)
+!         call JP_ATM0(PPP,TTT,DDD,OOO,ZZZ, L_)
+!   >>>   call PHOTO_JX(U0,SZA,REFLB,SOLF, LPRTJ,  PPP,ZZZ,TTT,DDD,RRR,OOO,
+!                 LWP,IWP,REFFL,REFFI, AERSP,NDXAER,L1U,ANU,  VALJXX,NJXU)
+!
+! ----notes:   >>> = only two essential fast-JX calls are denoted above with >>>
+!
+!   >>> INIT_FJX (TITLJXX,NJX_,NJXX)
+!          called once to read in data files, returns thru calling sequence:
+!             TITLJXX(1:NJX_) the char*6 title for each fast-JX J-value
+!             NJXX the actual number of J-values that fast-JX will compute.
+!
+!       RD_JS_JX(9,'FJX_j2j.dat', TITLJXX,NJXX)
+!           called once after INIT_FJX to map the CTM J's onto the fast-JX J's
+!           this is an example, see the data faile 'FJX_j2j.dat'
+!
+!   >>> PHOTO_JX(U0,SZA,REFLB,SOLF, LPRTJ,  PPP,ZZZ,TTT,DDD,RRR,OOO,
+!                  CLDWP,AERSP,NDXCLD,NDXAER,L1_,AN_,    VALJXX,NJX_)
+!          called every time for each Indep. Colm. Atmos. (ICA) to compute J's
+!          all the information is passed through the calling sequence:
+!     ----------------------------------------------------------------------------
+!      L1_    CTM has layers 1:L_, for JX must add top-of-atmos layer, L1_ = L_+1
+!      AN_    dimension of max number of aerosol types given to JX
+!      U0     cosine of the solar zenith angle
+!      SZA    solar zenith angle (degrees)
+!      REFLB  Lambertian reflectance of lower boundary
+!        (NB JX could be adapted to add lower layers for canopy/snow scatt/abs)
+!      SOLF   Solar radiation factor, correcting for sun-earth distance
+!        (NB JX could be modified for solar cycle, but needs link to internal data)
+!      LPRTJ  logical to produce internal printout (stdout) of fast-JX J's, fluxes,
+!         absorption, etc.  This information is now only internal to PHOTO_JX
+!      PPP(1:L1_+1)   edge press (hPa)
+!      ZZZ(1:L1_+1)   edge altitude (cm)
+!      TTT(1:L1_)     mid-layer temp (K)
+!      DDD(1:L1_)     layer dens-path (# molec /cm2)
+!      RRR(1:L1_)     mid-layer relative humidity (0.0 to 1.0)
+!      OOO(1:L1_)     layer O3 path (# O3 /cm2)
+!      CLDWP(1:L1_)   layer cloud water path (kg/m2), liquid and ice
+!      AERSP(1:L1_,1:AN_)  aerosol path (g/m2)
+!      NDXCLD(1:L1_)  layer cloud index (type)
+!          only a single cloud type is allowed for optical properties, pick
+!          the dominant one in terms of optical depth,
+!          see notes on cloud types allowed in fast-JX: 'FJX_scatt-cld.dat'
+!      NDXAER(1:L1_,1:AN_) aerosol index (type)
+!          sample aerosol types are in 'FJX_scat-aer.dat' and 'FJX_scat-UMa.dat'
+!          the UMa data allows for relative humidity to be included
+!          other aerosol types can be added.
+!     ----------------------------------------------------------------------------
+!      VALJXX(1:,NJX_,1:L) & NJX_ (first dimension of VALJXX) are returned
+!          VALJXX is the array of fast-JX J's, the second dimension is not given
+!             but is large enough to accommodate the CTM layers 1:L1_
+!          the main code must use the information calcualted by RD_JS_JX to
+!             re-map the VALJXX onto the CTM J's.  A useful example is given.
+!     ----------------------------------------------------------------------------
+!
+!       SOLAR_JX calculates solar zenith angle & distance correction (if needed)
+!
+!       ACLIM_FJX fills in T & O3 from a climatology
+!             may be needed for the layer above the CTM to account for O3 & O2
+!
+!       JP_ATM0 does a simple printout (stdout) of the atmosphere
+!
+!
+! ---------- fjx70sub.f  fast-JX core routines ver 7.0+ (10/2012, mjp)
+!
+! ----subroutines and calls:  >>> only subroutines called from outside >>>
+!      one include 'cmn_FJX.f' is common to several and has parameters, etc.
+!      only other connection with CTM code is in call sequence and noted above.
+!
+!   >>> subroutine INIT_FJX (TITLEJXX,NJXU,NJXX)
+!         call RD_XXX(JXUNIT,'FJX_spec.dat')
+!         call RD_MIE(JXUNIT,'FJX_scat.dat')
+!         call RD_UM (JXUNIT,'FJX_UMaer.dat')
+!         call RD_PROF(JXUNIT,'atmos_std.dat')
+!       subroutine RD_XXX(NJ1,NAMFIL)
+!       subroutine RD_MIE(NJ1,NAMFIL)
+!       subroutine RD_UM(NJ1,NAMFIL)
+!       subroutine RD_PROF(NJ2,NAMFIL)
+!       subroutine EXITC(T_EXIT)
+!   >>> subroutine SOLAR_JX(GMTIME,NDAY,YGRDJ,XGRDI, SZA,COSSZA,SOLFX)
+!   >>> subroutine ACLIM_FJX (YLATD, MONTH, PPP,TTT,ZZZ,DDD,OOO, L1U)
+!   >>> subroutine PHOTO_JX(U0,SZA,REFLB,SOLF,LPRTJ, PPP,ZZZ,TTT,DDD,RRR,OOO,
+!                          CLDWP,AERSP,NDXCLD,NDXAER,L1U,ANU,  VALJXX,NJXU)
+!         call SPHERE2 (U0,RAD,ZZJ,ZZHT,AMF2, L1U,JXL1_)
+!         call OPTICL (OPTX,SSAX,SLEGX,  ODCLD,NDCLD)
+!         call OPTICA (OPTX,SSAX,SLEGX,  PATH,RH, NAER)
+!         call OPTICM (OPTX,SSAX,SLEGX,  PATH,RH,-NAER)
+!         call EXTRAL(OD600,L1U,L2U,N_,JTAUMX,ATAU,ATAU0, JXTRA)
+!         call X_interp (TTTX,XQO2, TQQ(1,1),QO2(K,1), TQQ(2,1),QO2(K,2),.,,)
+!         call X_interp (TTTX,XQO3, TQQ(1,2),QO3(K,1), TQQ(2,2),QO3(K,2),,,,)
+!         call OPMIE (DTAUX,POMEGAX,U0,RFL,AMF2,JXTRA,
+!                          FJACT,FJTOP,FJBOT,FSBOT,FJFLX,FLXD,FLXD0, LU)
+!         call JRATET(PPJ,TTJ,FFF, VALJXX, LU,NJXU)
+!         call JP_ATM(PPJ,TTJ,DDJ,OOJ,ZZJ,DTAU600,POMG600,JXTRA, LU)
+!       subroutine OPMIE (DTAUX,POMEGAX,U0,RFL,AMF2,JXTRA,
+!                          FJACT,FJTOP,FJBOT,FSBOT,FJFLX,FLXD,FLXD0, LU)
+!         call MIESCT(FJ,FJT,FJB,POMEGA,FZ,ZTAU,ZFLUX,RFL,U0,ND)
+!       subroutine MIESCT(FJ,FJT,FJB, POMEGA,FZ,ZTAU,ZFLUX,RFL,U0,ND)
+!         call LEGND0 (EMU(I),PM0,M2_)
+!         call LEGND0 (-U0,PM0,M2_)
+!         call BLKSLV(FJ,POMEGA,FZ,ZTAU,ZFLUX,RFL,PM,PM0,FJT,FJB, ND)
+!       subroutine LEGND0 (X,PL,N)
+!       subroutine BLKSLV(FJ,POMEGA,FZ,ZTAU,ZFLUX,RFL,PM,PM0,FJTOP,FJBOT,ND)
+!         call GEN_ID (POMEGA(1,1,K),FZ(1,K),ZTAU(1,K),ZFLUX(K),RFL(K),PM,PM0,
+!              B(1,1,1,K),CC(1,1,1,K),AA(1,1,1,K),A(1,1,K),H(1,1,K),C(1,1,K),ND)
+!       subroutine GEN_ID(POMEGA,FZ,ZTAU,ZFLUX,RFL,PM,PM0,B,CC,AA,A,H,C,ND)
+!       subroutine OPTICL (OPTD,SSALB,SLEG, ODCLD,NDCLD)
+!       subroutine OPTICA (OPTD,SSALB,SLEG, PATH,RELH,L)
+!       subroutine OPTICM (OPTD,SSALB,SLEG, PATH,RELH,L)
+!       subroutine JRATET(PPJ,TTJ,FFF, VALJL,LU,NJXU)
+!         call X_interp (TT,QO2TOT, TQQ(1,1),QO2(K,1),...)
+!         call X_interp (TT,QO3TOT, TQQ(1,2),QO3(K,1),...)
+!         call X_interp (TT,QO31DY, TQQ(1,3),Q1D(K,1),...)
+!         call X_interp (PP,QQQT, TQQ(1,J),QQQ(K,1,J),...)
+!         call X_interp (TT,QQQT, TQQ(1,J),QQQ(K,1,J),...)
+!       subroutine X_interp (TINT,XINT, T1,X1, T2,X2, T3,X3, L123)
+!       subroutine JP_ATM(PPJ,TTJ,DDJ,OOJ,ZZJ,DTAU6,POMEG6,JXTRA,LU)
+!   >>> subroutine JP_ATM0(PPJ,TTJ,DDJ,OOJ,ZZJ, LU)
+!       subroutine SPHERE2(U0,RAD,ZHL,ZZHT,AMF2, L1U,LJX1U)
+!       subroutine EXTRAL(DTAUX,L1X,L2X,NX,JTAUMX,ATAU,ATAU0, JXTRA)
+! note - the calls to EXITC are not listed here
+!       e.g.,  call EXITC(' INIT_JX: invalid no. wavelengths')
+!
+!
+!
+!  >>>>>>>>>>>>>>>>current code revised to JX ver 7.0+ (10/12)<<<<<<<<<<<<
+!
+!  fastJX version 7.0+ (f90) - Prather notes (Jan 2013)
+!
+!---calculation of cloud optical depth in FJX-70b !!!
+!---    assumes that clouds are 100% if in layer
+!
+!   IWP = ice water path (in layer, in cloud) in g/m**2
+!   LWP = liquid water path (in layer, in cloud) in g/m**2
+!   REFFI = effective radius of ice cloud (microns)
+!   REFFL = effective radius of liquid cloud (microns)
+!
+!>>>>method for calculating cloud OD (in layer) used by FJX core or outside
+!>>>>FJX core needs only the _WP and the REFF_
+!>>>> note that FJX can use correct Q's and density updates if need be.
+!   ODL = LWP * 0.75 * 2.10 / REFFL
+!   ODI = IWP * 0.75 * 2.00 / (REFFI * 0.917)
+!
+!>>>R-effective determined by main code, not FJX
+!   REFF determined by user - some recommendations below (from Neu & Prather)
+!       REFFI is a simple function of ice water content IWC (g/m3, 0.0001 to 0.1)
+!          IWC = IWP / delta-Z (of layer in m, approx OK)
+!          REFFI = 50. * (1. + 8.333 * IWC)
+!   prefer Heymsfield++ 2003 JAM, log-log fit ext(/m) vs. IWC, Fig B1a, p.1389
+!              EXT (/m) = 1.7e-3 * (IWC/0.1)**0.77
+!          REFFI = 164. * IWC**0.23     (33 microns at 0.001 --- 164 at 1.0)
+!
+!          REFFL is a simple function of pressure (PCLD):
+!            FACTOR = (PCLD - 610.) / 200.
+!            FACTOR = min(1.0, max(0.0, FACTOR))
+!          REFFL = 9.60*FACTOR + 12.68*(1.-FACTOR)
+!
+!>>>indices for cloud scattering determined by FJX core, not main code.
+!   NDX = cloud scattering index based on REFFL or TCLD(for ice cloud)
+!          NDXI = 6  ! ice hexag (cold)
+!             if (TCLD .ge. 233.15) then
+!          NDXI = 7  ! ice irreg
+!             endif
+!          NDXC = 1
+!             do I=2,4
+!             if (REFFL .gt. 0.5*(RCC(I-1)+RCC(I))) then
+!          NDXC = I
+!             endif
+!             enddo
+!
+!
+! version 7.0
+!       New modular structure:
+!           Designed for .f90 and CAM5
+!           All set up routines grouped into one super-call
+!           Separate interface with CTM and ICAs calls PHOT_J
+!           PHOT_JX only sees a single column atmosphere (or ICA) thru calling params
+!
+! version 6.8
+!       New layout and formatting of FJX_spec.dat (required)
+!              allows 1,2, or 3 T's (or P's) for all X-sects
+!       VOCs mostly use Pressure interp.
+!
+! version 6.7  (should output same J-values as ver 6.6 EXCEPT for VOCs)   (3/12)
+!       New JPL-2010 update complete through all VOCs (see notes in FJX_spec.dat)
+!           Most important change is incorporation of Stern-Volmer pressure-dependent
+!           and wavelength-dependent quantum yields into the Temperature interpolation.
+!           Acetone now has only one pair of X sections for each pathway.
+!       Redo of mapping of (external) chemical model J's onto fastJX J's
+!           see examples of splitting a J with fixed branching q-yields
+!           see how chem model labels are not tied by the cross section labels in fastJX
+!       Changes in FX_spec.dat make it incompatible with earlier versions, although
+!           all of the Xsection data have the same format.
+!       Now the number of X sections read in equals the number of J's that fast-JX calculates.
+!       As before, all J's except for O2, O3, O3(1D) have only pairs of data at different T.
+!
+! version 6.6x
+!       N.B. SPECIAL FIX of tropospheric bin 11 used in FULL(W_=18) and TROP-ONLY(W_=12)
+!            Attenuation of this bin is too weak since it mixes 218 nm and 288 nm
+!            Thus it allows a low level of J-O2 (and related 218 nm Xsects) thru-out trop.
+!            The attenuation in strat (1e-4) is OK, but must zero out in trop (>100 hPa)
+!            The TROP-QUICK (W_=8) does not use bin#11 and is unaffected.
+!       Redo of the 4x4 matrix inversions from subroutine to inline code (faster)
+!       FJX_spec.dat:  includes new JPL2010 and solar flux, but J-VOC unchanged (a to-do).
+!           The J-O2 and O3 steady-state are improved, but the NOy:N2O is too small.
+!           The J-NO appears too large based on both photocomp2008 & NOy values.
+!             Possibly lack of thermopsheric NO absorption, or correlation with S-R bands.
+!           ACTION: J-NO X-sections multiplied by 0.6 in new FJX_spec.dat
+!
+! version 6.5
+!      J-values are now averaged over CTM layer (and not just mid-layer point)
+!        This is important when cloud optical depth is large (~1).
+!
+! version 6.4
+!     allows for shortened, speeded up troposphere versions<<<<<<
+!     STD:           W_=18
+!        identical results to v-6.2 if cloud OD is consistent
+!     TROP-ONLY:     W_=12
+!        collapses the wavelength bins from 18 to 12 (5-6-7-8 & 11-18)
+!        drops many 'stratospheric' cross-sections (denoted by 'x' in 2nd title)
+!        allows use of single standard spectral data set:  FJX_spec.dat
+!        results close to W_=18, largest difference is J-O2 (<1% in 13-18 km!!)
+!        This is recommended as accurate for troposphere only calculations.
+!     TROP-QUICK:    W_=8
+!        reverts to original fast-J 7-bins (12-18) plus 1 scaled UV (5) for J-O2
+!        errors in 12-18 km range for J-O2, high sun are 10%, worse above.
+!     ***Photolysis of O2 in the upper tropical troposphere is an important
+!        source of O3.  It needs to be included in tropospheric runs.
+!        TROP-ONLY is recommended, W_=8 is a quick fix if speed essential.
+!
+!     Major rewrite of code to minimize calls and allow better vector-type ops.
+!     loop over wavelengths internal to Mie soln.
+!     Driven by profiling of CTM code, may still need optimization.
+!     Wavelengths can be contracted to W_=12 (trop only) and strat-only
+!        X-sections are dropped.  With parm W_=18, the std fast-JX is retrieved.
+!     Many call eliminated and summations in BLKSLV and GEN_ID are explicit
+!     GEN_ID replaces GEN and calculates all matrix coeff's (1:L_) at once
+!     RD_XXX changed to collapse wavelengths & x-sections to Trop-only:
+!           WX_ = 18 (parm_CTM.f) should match the JX_spec.dat wavelengths
+!           W_ = 12 (Trop-only) or 18 (std) is set in (parm_MIE.f).
+!       if W_=12 then drop strat wavels, and drop x-sects (e.g. N2O, ...)
+!
+! version 6.3
+!     revise cloud/aerosol OD & wavelength properties for CTM link:
+!         OPTICL is new sub for cloud optical properties, but it
+!              now starts with cloud OD @ 600 nm and cloud NDX
+!              fast-JX now uses cloud NDX to scale OD to other wavelengths
+!         OPTICA & OPTICM are new subs to convert aerosol path (g/m2) to OD
+!              A is std UCI scat data
+!              M is U Michigan data tables for aerosols, includes Rel Hum effect
+!     drop sub GAUSSP and put into Parameter statement (parm_MIE.f)
+!
+! version 6.2
+!     corrects a long-standing problem at SZA > 89 degrees.
+!     In prior versions the ray-tracing of the path (and air-mass functions)
+!     back to the sun was done at the edges of the CTM layers (it was developed
+!     for the grid-point J-value code at Harvard/GISS/UCI).  This left the
+!     interpolation to the mid-layer (needed for J's) open.  The prior method
+!     gave irregular fluctuations in the direct solar beam at mid-layer for
+!     large SZA > 88.  This is now corrected with exact ray-tracing from
+!     the mid-pt of each CTM layer.  For small SZA, there is no effective
+!     difference, for large SZA, results could be erratic.
+!   v-6.2 fix should be easy if you have migrated to v6.1, else some minor
+!      caution may be needed:
+!      replace sub SPHERE with SPHERE2, AMF2 report factors for mid and egdes.
+!      replace sub OPMIE with new OPMIE, this uses the new AMF2 correctly.
+!      replace sub PHOTOJ with new PHOTOJ, this just hands off AMF2 from
+!            SPHERE2 to OPMIE.
+!
+! version 6.1 adds
+!      6.1b simplifies calling sequences feeds solar factor, albedo, to PHOTOJ
+!         and read LAT, LNG directly.  No substantive changes.
+!      new read-in of scat data for clouds/aerosols to allow for UMich data
+!      This has required substantial rewrite of some of the core subroutines:
+!         OPMIE is now called for each wavelength and without aersol/cloud data
+!              all subs below OPMIE are unchanged
+!         OPTICD & OPTICM are new subs to convert path (g/m2) to OD and phase fn
+!              D is std UCI scat data (re-ordered for clouds 1st)
+!              M is U Michigan data tables for aerosols, includes Rel Hum effect
+!         PHOTOJ now assembles the aerosol data (better for CTM implementation)
+!      This version can reproduce earlier versions exactly, but the test input
+!         is changed from OD and NDX to PATH (g/m2) and NDX.
+!
+! version 6.0 adds
+!      new 200-nm scattering data so that stratospheric aerosols can be done!
+! version 5.7

@@ -1,0 +1,24 @@
+program main
+     USE CMN_FJX_MOD
+     IMPLICIT NONE
+     real*8, parameter :: XLNG = 0., YLAT=30.,JDAY=2011180.5
+     real*8 :: PRESS=1013.25, TEMP = 290.
+     integer, parameter :: CLDFLAG=1
+     integer :: J
+     integer, parameter :: DEBUG = 0
+     real*8, dimension(JVN_) :: JVALUES
+     PRESS=1013.25
+     TEMP = 292.81
+     print*,'BHH',PRESS,TEMP
+     CALL DSMACC_FAST_JX(XLNG,YLAT,JDAY,PRESS,TEMP,CLDFLAG,JVALUES, DEBUG)
+     DO J=68,69 !1,NRATJ
+          WRITE(*,'(I2,x,A,x,A,x,e8.2,x,e8.2)') J,JLABEL(J),JVMAP(J),JFACTA(J),JVALUES(JIND(J))
+     ENDDO
+     PRESS=273.85
+     TEMP = 240.7
+     print*,'BHH',PRESS,TEMP
+     CALL DSMACC_FAST_JX(XLNG,YLAT,JDAY,PRESS,TEMP,CLDFLAG,JVALUES, DEBUG)
+     DO J=68,69 !1,NRATJ
+          WRITE(*,'(I2,x,A,x,A,x,e8.2,x,e8.2)') J,JLABEL(J),JVMAP(J),JFACTA(J),JVALUES(JIND(J))
+     ENDDO
+end program main

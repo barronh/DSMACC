@@ -1,0 +1,75 @@
+             Cloud-JX:   fast-JX version 7.2
+             (UC Irvine / Prather / Dec 2013)
+
+Comparison of different fractional cloud schemes for computing avg J's
+    Uses a typical UCI CTM atmosphere, sample aerosols,
+    and clouds from 64 different tropical ECMWF T319 atmospheres.
+
+CLOUD_JX:   different cloud schemes (4:8 require max-ran overlap algorithm)
+    CLDFLAG = 1  :  Clear sky J's
+    CLDFLAG = 2  :  Averaged cloud cover
+    CLDFLAG = 3  :  cloud-fract**3/2, then average cloud cover
+    CLDFLAG = 4  :  Average direct solar beam over all ICAs, invert to get clouds
+    CLDFLAG = 5  :  Random select NRANDO ICA's from all(Independent Column Atmos.)
+    CLDFLAG = 6  :  Use all (up to 4) quadrature cloud cover QCAs (mid-pts of bin)
+    CLDFLAG = 7  :  Use all (up to 4) QCAs (average clouds within each Q-bin)
+    CLDFLAG = 8  :  Calculate J's for ALL ICAs (up to 20,000 per cell!)
+
+Max-Ran cloud overlap algorithm:
+    L3RG = 0   break max overlap groups at cloud fraction = 0
+    L3RG.ne.0  used fixed layer breaks (1:9, 9:last LWcloud, LWclud+1:LTOP)
+
+[3Grp]  Uses fixed 3 random cloud groups by layer (low, medium, ice-only)
+
+          J(O3>O1D) J(NO2) J(NO3) J(HNO3)    O3>O1D) J(NO2) J(NO3) J(HNO3)
+ mean error (%)           L=1              &              L=34
+   clearsky    15.    13.    12.    15.          6.    11.    17.     6.
+   avgcloud    13.    10.    11.    12.          3.     6.    10.     3.
+   cldf^3/2     6.     7.    10.     6.          1.     2.     3.     1.
+   ICA-beam     3.     4.     8.     3.          0.     1.     2.     0.
+   ICAs-ran     4.     4.     4.     4.          1.     2.     3.     1.
+   QCAs-mid     5.     5.     5.     5.          1.     2.     3.     1.
+   QCAs-avg     1.     1.     1.     1.          0.     0.     1.     0.
+ RMS error (%)            L=1              &              L=34
+   clearsky   148.   115.    95.   137.         20.    76.   178.    19.
+   avgcloud   106.    70.    71.    90.          6.    25.    61.     6.
+   cldf^3/2    22.    35.    70.    23.          1.     2.     5.     1.
+   ICA-beam     4.    13.    37.     5.          0.     1.     3.     0.
+   ICAs-ran    10.     9.     9.     9.          0.     3.     7.     1.
+   QCAs-mid    15.    14.    17.    14.          1.     2.     4.     0.
+   QCAs-avg     1.     1.     1.     1.          0.     0.     0.     0.
+          J(O3>O1D) J(NO2) J(NO3) J(HNO3)    O3>O1D) J(NO2) J(NO3) J(HNO3)
+
+[CF=0] Chooses random goupds by cloud fraction  = 0
+
+
+          J(O3>O1D) J(NO2) J(NO3) J(HNO3)    O3>O1D) J(NO2) J(NO3) J(HNO3)
+ mean error (%)           L=1              &              L=34
+   clearsky    14.    12.    11.    13.          5.    10.    15.     5.
+   avgcloud    15.    12.    12.    14.          3.     8.    12.     4.
+   cldf^3/2     5.     6.     9.     5.          1.     2.     3.     1.
+   ICA-beam     3.     5.     8.     3.          0.     1.     2.     0.
+   ICAs-ran     4.     4.     4.     4.          1.     2.     3.     1.
+   QCAs-mid     5.     5.     5.     5.          1.     2.     2.     1.
+   QCAs-avg     1.     1.     1.     1.          0.     0.     1.     0.
+ RMS error (%)            L=1              &              L=34
+   clearsky   118.    88.    72.   108.         18.    62.   146.    17.
+   avgcloud   138.    95.    91.   120.          8.    37.    88.     8.
+   cldf^3/2    13.    23.    53.    14.          1.     3.     8.     1.
+   ICA-beam     5.    15.    45.     6.          0.     1.     4.     0.
+   ICAs-ran    10.    10.    10.    10.          1.     3.     7.     1.
+   QCAs-mid    18.    15.    15.    17.          1.     2.     4.     1.
+   QCAs-avg     0.     0.     1.     0.          0.     0.     0.     0.
+          J(O3>O1D) J(NO2) J(NO3) J(HNO3)    O3>O1D) J(NO2) J(NO3) J(HNO3)
+
+Recommendations:
+    The RMS error is probably the best criteria, the mean error can be close
+    to zero because of cancellation of errors for different cloud mixes.
+    This only looks at the surface (1000 hPa, L=1) and 100 hPa (L=34).
+
+    If you can afford about 3 calls to fast-JX per atmosphere (#5-7)
+        USE #7 (QCAs-avg) - it is excellent
+    If you can afford only 1 call per atmos.(#1-4)
+        USE #4 (ICA-beam), with #3 (cldf^3/2) as poorer backup.
+
+NO Recommendation for Max-Ran overlap scheme.
