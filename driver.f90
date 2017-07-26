@@ -2,7 +2,7 @@ PROGRAM driver
     
     USE dsmacc_global
     USE dsmacc_Parameters  !ONLY: IND_*
-    USE dsmacc_Rates,       ONLY: Update_SUN, Update_RCONST, J
+    USE dsmacc_Rates,       ONLY: Update_SUN, Update_RCONST, J, TUV_J
     USE dsmacc_integrator,  ONLY: integrate!, IERR_NAMES
     USE dsmacc_monitor,     ONLY: spc_names, MONITOR
     USE dsmacc_Util
@@ -15,7 +15,8 @@ PROGRAM driver
     REAL(dp) :: RSTATE(20)
     REAL(dp) :: DIURNAL_OLD(NVAR,3000), DIURNAL_NEW(NVAR,3000)
     REAL(dp) :: DIURNAL_RATES(NREACT, 3000)
-    REAL(dp) :: BASE_JDAY
+    REAL(dp) :: BASE_JDAY, BASE_JDAY_GMT, BASE_JDAY_LOCAL
+    REAL(dp) :: TZOFFSET_DAYS, TZOFFSET_HOURS, TZOFFSET_SECONDS
     INTEGER  :: ERROR, IJ
     LOGICAL :: SCREWED
     ! Photolysis calculation variables
@@ -69,8 +70,25 @@ PROGRAM driver
         tstart = (mod(jday,1.))*24.*60.*60.              ! time start
 
 ! convert tstart to local time
-        tstart = tstart+LON/360.*24*60*60.
-        BASE_JDAY = JDAY - tstart / 24. /60./60.
+        tzoffset_hours=LON/360.*24.
+        tzoffset_seconds = tzoffset_hours*60.*60.
+        tzoffset_days = tzoffset_hours/24.
+        IF (JDAYISGMT) THEN
+            JDAY_GMT = JDAY
+            JDAY_LOCAL = JDAY+tzoffset_days
+            tstart_gmt = tstart
+            tstart_local = tstart+tzoffset_seconds
+        ELSE
+            JDAY_GMT = JDAY
+            JDAY_LOCAL = JDAY-tzoffset_days
+            tstart_local = tstart
+            tstart_gmt = tstart-tzoffset_seconds
+        ENDIF
+        write(OUTPUT_UNIT,*) 'Fractional JDAY (INPUT,GMT,LST)', JDAY,JDAY_GMT,JDAY_LOCAL
+        write(OUTPUT_UNIT,*) 'Time since 0UTC on JDAY (INPUT,GMT,LST)', tstart,tstart_gmt,tstart_local
+        BASE_JDAY = JDAY - tstart / 3600. / 24
+        BASE_JDAY_GMT = JDAY_GMT - tstart / 3600. / 24
+        BASE_JDAY_LOCAL = JDAY_LOCAL - tstart / 3600. / 24
 ! tend is the end time. IntTime is determined from the Init_cons.dat file
         tend = tstart + IntTime    
 
@@ -151,6 +169,8 @@ PROGRAM driver
         
         WRITE(OUTPUT_UNIT,*) 'JO1D Calc=', CALCJO1D
         WRITE(OUTPUT_UNIT,*) 'JO1D Measre =', JO1D
+        WRITE(OUTPUT_UNIT,*) 'JNO2 Calc=', CALCJNO2
+        WRITE(OUTPUT_UNIT,*) 'JNO2 Measre =', JNO2
 ! Calcualte correction factors for the model photolysis rates
         IF (JO1D .NE. 0. .AND. CALCJO1D .GT. 0.) THEN
             JFACTO1D=JO1D/J(1)
@@ -231,11 +251,19 @@ PROGRAM driver
             ENDIF
 ! Update the time to reflect the integration has taken place and 
             time = RSTATE(1)
+            IF (DEBUG) THEN
+                write(OUTPU_UNIT,*) 'JDAY', JDAY, 'JDAY_GMT', JDAY_GMT 'JDAY_LOCAL', JDAY_LOCAL, 'TIME', TIME
+                write(OUTPU_UNIT,*) 'TEMP', TEMP, 'J(4) #NO2', J(4)
+            ENDIF
             IF (CONSTRAIN_RUN .EQV. .FALSE.) THEN 
-                jday = base_jday + time / 24d0 / 60d0 / 60d0
+                JDAY_GMT = BASE_JDAY_GMT + TIME / 24d0 / 60d0 / 60d0
+                JDAY_LOCAL = BASE_JDAY_LOCAL + TIME / 24d0 / 60d0 / 60d0
+                JDAY = BASE_JDAY + TIME / 24d0 / 60d0 / 60d0
             ENDIF
             IF (CONSTRAIN_RUN .EQV. .TRUE.) THEN 
-                jday = base_jday + MOD(time,86400d0)/24d0/60d0/60d0
+                JDAY_GMT = BASE_JDAY_GMT + MOD(TIME,86400d0)/24d0/60d0/60d0
+                JDAY_LOCAL = BASE_JDAY_LOCAL + MOD(TIME,86400d0)/24d0/60d0/60d0
+                JDAY = BASE_JDAY + MOD(TIME,86400d0)/24d0/60d0/60d0
             ENDIF
             Daycounter=Daycounter+1
 

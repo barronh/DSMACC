@@ -51,7 +51,7 @@ distclean: clean
 	$(FC) $(F90FLAGS) $(LINCLUDES) -c $<
 
 ../tuv_new/%.o: ../tuv_new/%.f
-	$(FC) $(F90FLAGS) $(LINCLUDES) -o $@ -c $<
+	$(FC) $(TUVF90FLAGS) $(LINCLUDES) -o $@ -c $<
 
 ../UCI_fastJX72e/%.o: ../UCI_fastJX72e/%.F90
 	$(FC) $(F90FLAGS) -J../UCI_fastJX72e $(LINCLUDES) -o $@ -c $<

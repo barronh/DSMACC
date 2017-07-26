@@ -1,5 +1,5 @@
 #INLINE F90_RCONST
-  THETA = DBLE( ZENITH ( REAL(LAT), -REAL(LON), JDAY))
+  THETA = DBLE( ZENITH ( REAL(LAT), -REAL(LON), JDAY_GMT))
 #ENDINLINE F90_RCONST
 #INLINE F90_RATES
   FUNCTION GREGDATETIME(JDAY)
@@ -296,7 +296,7 @@
     !    Calculate the photolysis rates for the run
          tdate = GREGDATETIME(JDAY)
          call set_up_photol(tdate(1), tdate(2), tdate(3),&
-                            O3col, alta, lat, lon, temp, M, bs,cs,ds,szas,svj_tj)
+                            O3col, alta, lat, lon, temp, M, bs,cs,ds,szas,svj_tj, .true.)
          WRITE (6,*) 'Photolysis rates calculated'
          WRITE (6,*) 'hvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhv'
         OLD_M = M

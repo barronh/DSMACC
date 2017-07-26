@@ -1003,7 +1003,7 @@ c----------------------------------------------------------
       end
 
       subroutine set_up_photol(iyear, imonth, iday, O3col, ralt, rlat,
-     &           rlon, box_temp, raird, bs, cs, ds, sza, svj_tj)
+     &           rlon, box_temp, raird, bs, cs, ds, sza, svj_tj, debug)
         incLude 'params'
         real*8 b(19),c(19),d(19)
         real*8 bs(19,kj), cs(19,kj), ds(19,kj)
@@ -1014,6 +1014,7 @@ c----------------------------------------------------------
         real svj_tj(kt,kj), sza(kt) 
         real*8 temp2(19), temp(19)
         character*50 jlabels(kj)
+        logical debug
 
                
         so3col = real(o3col)
@@ -1026,6 +1027,11 @@ c----------------------------------------------------------
      &    srlat, srlon, sbox_temp, sraird,
      &    sza, svj_tj, jlabels)
         do j=1,kj
+          if (debug) then
+               write(*,*) j,jlabels(j)
+               write(*,'(A4,x,19E11.3)') 'SZAS',sza(1:19)
+               write(*,'(A4,x,19E11.3)') 'JVAL',svj_tj(1:19,j)
+          endif
           do i=1,19 
             temp(i)=sza(i)
             temp2(i)=svj_tj(i,j)
