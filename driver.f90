@@ -252,8 +252,8 @@ PROGRAM driver
 ! Update the time to reflect the integration has taken place and 
             time = RSTATE(1)
             IF (DEBUG) THEN
-                write(OUTPU_UNIT,*) 'JDAY', JDAY, 'JDAY_GMT', JDAY_GMT 'JDAY_LOCAL', JDAY_LOCAL, 'TIME', TIME
-                write(OUTPU_UNIT,*) 'TEMP', TEMP, 'J(4) #NO2', J(4)
+                write(OUTPUT_UNIT,*) 'JDAY', JDAY, 'JDAY_GMT', JDAY_GMT, 'JDAY_LOCAL', JDAY_LOCAL, 'TIME', TIME
+                write(OUTPUT_UNIT,*) 'TEMP', TEMP, 'J(4) #NO2', J(4)
             ENDIF
             IF (CONSTRAIN_RUN .EQV. .FALSE.) THEN 
                 JDAY_GMT = BASE_JDAY_GMT + TIME / 24d0 / 60d0 / 60d0
