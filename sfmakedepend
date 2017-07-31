@@ -399,7 +399,7 @@ sub find_mods {
 		my $found = 0;
 		my $foundmod;
 		foreach $dir (@modsearch) {
-		    if ( -f "$dir/$modname.f90" ) {
+		    if ( -f "$dir/$modname.f90" or -f "$dir/$modname.F90" ) {
 			$found = 1;
 			$foundmod = "$dir/$modname.$mod_ext";
 		    }
