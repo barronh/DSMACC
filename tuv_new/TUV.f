@@ -1003,8 +1003,9 @@ c----------------------------------------------------------
       end
 
       subroutine set_up_photol(iyear, imonth, iday, O3col, ralt, rlat,
-     &           rlon, box_temp, raird, bs, cs, ds, sza, svj_tj, debug)
-        incLude 'params'
+     &           rlon, box_temp, raird, bs, cs, ds, sza, svj_tj, 
+     &           jlabels, debug)
+        include 'params'
         real*8 b(19),c(19),d(19)
         real*8 bs(19,kj), cs(19,kj), ds(19,kj)
         REAL*8 O3col, ralt, box_temp, rlat, rlon, raird
