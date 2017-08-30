@@ -111,7 +111,6 @@ PROGRAM driver
         WRITE(OUTPUT_UNIT,*) 'Temperature =', Temp
         WRITE(OUTPUT_UNIT,*) 'Latitude =', Lat
         WRITE(OUTPUT_UNIT,*) 'Lon =', Lon
-        WRITE(OUTPUT_UNIT,*) 'Local Time =', Tstart/(60.*60.)
 !        WRITE(OUTPUT_UNIT,*) 'SZA =',ZENANG(int(jday),Tstart/(60.*60.),lat)*180./(4*ATAN(1.))
         if (o3col .eq. 0) then 
            o3col=260.
@@ -252,8 +251,13 @@ PROGRAM driver
 ! Update the time to reflect the integration has taken place and 
             time = RSTATE(1)
             IF (DEBUG) THEN
-                write(OUTPUT_UNIT,*) 'JDAY', JDAY, 'JDAY_GMT', JDAY_GMT, 'JDAY_LOCAL', JDAY_LOCAL, 'TIME', TIME
-                write(OUTPUT_UNIT,*) 'TEMP', TEMP, 'J(4) #NO2', J(4)
+                WRITE(OUTPUT_UNIT,*) 'DEBUGGING @ TIME', TIME
+                write(OUTPUT_UNIT,*) 'JDAY_GMT', JDAY_GMT
+                write(OUTPUT_UNIT,*) 'JDAY_LOCAL', JDAY_LOCAL
+                write(OUTPUT_UNIT,*) 'TEMP', TEMP
+                write(OUTPUT_UNIT,*) 'SZA', THETA
+                write(OUTPUT_UNIT,*) JMAPPING(1)%LABEL, J(1)
+                write(OUTPUT_UNIT,*) JMAPPING(4)%LABEL, J(4)
             ENDIF
             IF (CONSTRAIN_RUN .EQV. .FALSE.) THEN 
                 JDAY_GMT = BASE_JDAY_GMT + TIME / 24d0 / 60d0 / 60d0
