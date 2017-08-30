@@ -4,18 +4,22 @@
 
 PROG = ../bin/dsmacc 
 
+all: libtuv libfastjx $(PROG)
+
+libtuv:
+	cd ../tuv_new; make
+
+libfastjx:
+	cd ../UCI_fastJX72e/; make
+
 # complete list of all f90 source files
 SRCS1 = $(wildcard ./dsmacc_*.f90)
-SRCS2 = $(wildcard ../tuv_new/*.f)
 SRCS3 = constants.f90 
-SRCS4 = $(wildcard ../UCI_fastJX72e/*.F90)
 
 # the object files are the same as the source files but with suffix ".o"
 OBJS1 := $(SRCS1:.f90=.o) 
-OBJS2 := $(SRCS2:.f=.o)
-OBJS3 := $(SRCS3:.f90=.o) 
-OBJS4 := $(SRCS4:.F90=.o) 
-OBJS := $(OBJS1) $(OBJS2) $(OBJS3) $(OBJS4)
+OBJS := $(OBJS1)
+LIBS = -L../tuv_new/ -ltuv -L../UCI_fastJX72e/ -lfastjx
 
 # If you don't have the perl script sfmakedepend, get it from:
 # http://www.arsc.edu/~kate/Perl
@@ -26,13 +30,11 @@ F_makedepend = ../sfmakedepend
 # the executable is created by linking all objects
 $(PROG): dsmacc_Main.f90 $(OBJS) dsmacc_Main.f90
 	@mkdir -p ../bin
-	$(FC) $(F90FLAGS) $(OBJS) -o $@
+	$(FC) $(F90FLAGS) $(OBJS) $(LIBS) -o $@
 
 # update file dependencies
-depend depend.mk depend.tuv depend.fjx: $(SRCS1) $(SRCS2) $(SRCS3)
+depend depend.mk: $(SRCS1) $(SRCS2) $(SRCS3)
 	../sfmakedepend --file=depend.mk --srcdir=. --moddir=.
-	../sfmakedepend --file=depend.tuv --srcdir=../tuv_new --moddir=../tuv_new
-	../sfmakedepend --file=depend.fjx --srcdir=../UCI_fastJX72e --moddir=../UCI_fastJX72e
 
 clean:
 	rm -f $(OBJS) *.mod *.log *~ depend.mk.old
@@ -57,6 +59,29 @@ distclean: clean
 	$(FC) $(F90FLAGS) -J../UCI_fastJX72e $(LINCLUDES) -o $@ -c $<
 
 # list of dependencies (via USE statements)
-include depend.mk
-include depend.tuv
-include depend.fjx
+#include depend.mk
+./constants.o: ../tuv_new/params
+./constants.o: ./dsmacc_Global.o ./dsmacc_Precision.o
+./dsmacc_Function.o: ./dsmacc_Parameters.o
+./dsmacc_Global.o: ../tuv_new/params
+./dsmacc_Global.o: ./dsmacc_Parameters.o
+./dsmacc_Initialize.o: ./dsmacc_Global.o ./dsmacc_Parameters.o ./dsmacc_Util.o
+./dsmacc_Integrator.o: ./dsmacc_Function.o ./dsmacc_Global.o
+./dsmacc_Integrator.o: ./dsmacc_Jacobian.o ./dsmacc_LinearAlgebra.o
+./dsmacc_Integrator.o: ./dsmacc_Parameters.o ./dsmacc_Rates.o
+./dsmacc_Jacobian.o: ./dsmacc_JacobianSP.o ./dsmacc_Parameters.o
+./dsmacc_LinearAlgebra.o: ./dsmacc_JacobianSP.o ./dsmacc_Parameters.o
+./dsmacc_Main.o: ./dsmacc_Global.o ./dsmacc_Integrator.o ./dsmacc_Monitor.o
+./dsmacc_Main.o: ./dsmacc_Parameters.o ./dsmacc_Rates.o ./dsmacc_Util.o
+./dsmacc_Model.o: ./dsmacc_Function.o ./dsmacc_Global.o ./dsmacc_Integrator.o
+./dsmacc_Model.o: ./dsmacc_Jacobian.o ./dsmacc_LinearAlgebra.o
+./dsmacc_Model.o: ./dsmacc_Monitor.o ./dsmacc_Parameters.o ./dsmacc_Precision.o
+./dsmacc_Model.o: ./dsmacc_Rates.o ./dsmacc_Stoichiom.o ./dsmacc_Util.o
+./dsmacc_Parameters.o: ./dsmacc_Precision.o
+./dsmacc_Rates.o: ./dsmacc_Global.o ./dsmacc_Parameters.o
+./dsmacc_Stoichiom.o: ./dsmacc_Parameters.o ./dsmacc_StoichiomSP.o
+./dsmacc_StoichiomSP.o: ./dsmacc_Precision.o
+./dsmacc_Util.o: ./dsmacc_Global.o ./dsmacc_Integrator.o ./dsmacc_Monitor.o
+./dsmacc_Util.o: ./dsmacc_Parameters.o
+constants.mod: kpp_constants.o
+
