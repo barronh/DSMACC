@@ -1,22 +1,27 @@
-# Makefile for JX
-#------------------------------------------------------------------------------
+include ../Makefile.defs
+PROG =	libfastjx.a
 
-OBJ   = cmn_fjx_mod.o fjx_sub_mod.o fjx_init_mod.o cld_sub_mod.o fjx72.o
-DOBJ   = cmn_fjx_mod.o fjx_sub_mod.o fjx_init_mod.o cld_sub_mod.o dsmacc_fjx72.o dsmacc_test.o
+SRCS =	dsmacc_fjx72.F90 cld_sub_mod.F90 fjx_init_mod.F90 fjx_sub_mod.F90  \
+	cmn_fjx_mod.F90 
 
-FC    = gfortran
-FCFLAGS = -O2 -fconvert=big-endian
+OBJS =	cld_sub_mod.o cmn_fjx_mod.o dsmacc_fjx72.o fjx_init_mod.o \
+	fjx_sub_mod.o
 
-%.o: %.F90
-	$(FC) $(FCFLAGS) -c $<
 
-JX70    : $(OBJ)
-	$(FC) $(FCFLAGS) -o $@ $^
+all: $(PROG)
 
-DSMACC_test: $(DOBJ)
-	$(FC) $(FCFLAGS) -o $@ $^
-#------------------------ Cleaning -----------------------------------
+$(PROG): $(OBJS)
+	ar -rcs $@ $(OBJS) $(LIBS)
 
-clean :
-	rm fort.* *.o *.s *.mod core
+clean:
+	rm -f $(PROG) $(OBJS) *.mod
 
+.SUFFIXES: $(SUFFIXES) .F90
+
+.F90.o:
+	$(FC) $(F90FLAGS) -c $<
+
+dsmacc_fjx72.o:  cmn_fjx_mod.o fjx_sub_mod.o fjx_init_mod.o cld_sub_mod.o
+cld_sub_mod.o:   cmn_fjx_mod.o fjx_sub_mod.o
+fjx_init_mod.o:  cmn_fjx_mod.o fjx_sub_mod.o
+fjx_sub_mod.o:   cmn_fjx_mod.o
