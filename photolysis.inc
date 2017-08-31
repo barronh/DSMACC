@@ -57,23 +57,23 @@
   THETA = ZENITH ()
 #ENDINLINE F90_RCONST
 #INLINE F90_RATES
-  FUNCTION GREGDATETIME(JDAY)
+  FUNCTION GREGDATETIME(JDAY_GMT)
       ! ARGUMENTS
-      ! - JDAY (YYYYJJJ.F where F is fractional day and time is in GMT)
+      ! - JDAY_GMT (YYYYJJJ.F where F is fractional day and time is in GMT)
       ! RETURNS
       ! - YEAR, MONTH, DAY and TIME in seconds from 0 UTC
       IMPLICIT NONE
       LOGICAL :: DEBUG = .false.
       INTEGER, DIMENSION(4) :: GREGDATETIME
-      REAL(dp), INTENT(IN) :: JDAY
+      REAL(dp), INTENT(IN) :: JDAY_GMT
       INTEGER IYEAR, IMTH, IDAY
       REAL(dp) GMT
       INTEGER      IMN( 12 )          ! number of days in each month
       DATA IMN /31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31/
       SAVE IMN
-      IYEAR = INT(JDAY / 1000.)
-      IDAY = INT(MOD(JDAY, 1000.)) ! Temporary day
-      GMT = MOD(JDAY, 1.) * 24.
+      IYEAR = INT(JDAY_GMT / 1000.)
+      IDAY = INT(MOD(JDAY_GMT, 1000.)) ! Temporary day
+      GMT = MOD(JDAY_GMT, 1.) * 24.
       IF ( MOD( IYEAR, 4 ) .EQ. 0 ) THEN
          IMN( 2 ) = 29
       ELSE
@@ -151,7 +151,7 @@
      SAVE OLD_M, OLD_LAT, OLD_LON, OLD_PRESS, OLD_O3COL, OLD_JDAY, OLD_TEMP
      !    Set up the photolysis rates
      !    First calculate pressure altitude from altitude
-     IJDAY = INT(JDAY)
+     IJDAY = INT(JDAY_GMT)
      IF ((OLD_TEMP .eq. -9999._dp) .or. &
         &(ABS(TEMP - OLD_TEMP) .gt. 1.)) THEN
      IF (OLD_M .ne. M .or. &

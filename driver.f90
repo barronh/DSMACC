@@ -15,7 +15,7 @@ PROGRAM driver
     REAL(dp) :: RSTATE(20)
     REAL(dp) :: DIURNAL_OLD(NVAR,3000), DIURNAL_NEW(NVAR,3000)
     REAL(dp) :: DIURNAL_RATES(NREACT, 3000)
-    REAL(dp) :: BASE_JDAY, BASE_JDAY_GMT, BASE_JDAY_LOCAL
+    REAL(dp) :: BASE_JDAY_GMT, BASE_JDAY_LOCAL
     REAL(dp) :: TZOFFSET_DAYS, TZOFFSET_HOURS, TZOFFSET_SECONDS
     INTEGER  :: ERROR, IJ
     LOGICAL :: SCREWED
@@ -64,29 +64,20 @@ PROGRAM driver
         O2 = 0.21 * CFACTOR
         N2 = 0.78 * CFACTOR
 
-        WRITE(OUTPUT_UNIT,*) 'Starting Jday:',jday
+        WRITE(OUTPUT_UNIT,*) 'Starting Jday_GMT:',jday_gmt
 
-! tstart is the starting time, variations due to day of year are dealt with somewhere else 
-        tstart = (mod(jday,1.))*24.*60.*60.              ! time start
 
 ! convert tstart to local time
         tzoffset_hours=LON/360.*24.
         tzoffset_seconds = tzoffset_hours*60.*60.
         tzoffset_days = tzoffset_hours/24.
-        IF (JDAYISGMT) THEN
-            JDAY_GMT = JDAY
-            JDAY_LOCAL = JDAY+tzoffset_days
-            tstart_gmt = tstart
-            tstart_local = tstart+tzoffset_seconds
-        ELSE
-            JDAY_GMT = JDAY
-            JDAY_LOCAL = JDAY-tzoffset_days
-            tstart_local = tstart
-            tstart_gmt = tstart-tzoffset_seconds
-        ENDIF
-        write(OUTPUT_UNIT,*) 'Fractional JDAY (INPUT,GMT,LST)', JDAY,JDAY_GMT,JDAY_LOCAL
-        write(OUTPUT_UNIT,*) 'Time since 0UTC on JDAY (INPUT,GMT,LST)', tstart,tstart_gmt,tstart_local
-        BASE_JDAY = JDAY - tstart / 3600. / 24
+! tstart is the starting time, variations due to day of year are dealt with somewhere else 
+        tstart_gmt = (mod(jday_gmt,1.))*24.*60.*60.              ! time start
+        JDAY_LOCAL = JDAY_GMT+tzoffset_days
+        tstart_local = tstart+tzoffset_seconds
+        tstart = tstart_gmt
+        write(OUTPUT_UNIT,*) 'Fractional JDAY (GMT,LST)', JDAY_GMT,JDAY_LOCAL
+        write(OUTPUT_UNIT,*) 'Time since 0UTC on JDAY (GMT,LST)', tstart_gmt,tstart_local
         BASE_JDAY_GMT = JDAY_GMT - tstart / 3600. / 24
         BASE_JDAY_LOCAL = JDAY_LOCAL - tstart / 3600. / 24
 ! tend is the end time. IntTime is determined from the Init_cons.dat file
@@ -111,7 +102,6 @@ PROGRAM driver
         WRITE(OUTPUT_UNIT,*) 'Temperature =', Temp
         WRITE(OUTPUT_UNIT,*) 'Latitude =', Lat
         WRITE(OUTPUT_UNIT,*) 'Lon =', Lon
-!        WRITE(OUTPUT_UNIT,*) 'SZA =',ZENANG(int(jday),Tstart/(60.*60.),lat)*180./(4*ATAN(1.))
         if (o3col .eq. 0) then 
            o3col=260.
            WRITE(OUTPUT_UNIT,*) 'Ozone column not specified using 260 Dobsons'
@@ -262,12 +252,10 @@ PROGRAM driver
             IF (CONSTRAIN_RUN .EQV. .FALSE.) THEN 
                 JDAY_GMT = BASE_JDAY_GMT + TIME / 24d0 / 60d0 / 60d0
                 JDAY_LOCAL = BASE_JDAY_LOCAL + TIME / 24d0 / 60d0 / 60d0
-                JDAY = BASE_JDAY + TIME / 24d0 / 60d0 / 60d0
             ENDIF
             IF (CONSTRAIN_RUN .EQV. .TRUE.) THEN 
                 JDAY_GMT = BASE_JDAY_GMT + MOD(TIME,86400d0)/24d0/60d0/60d0
                 JDAY_LOCAL = BASE_JDAY_LOCAL + MOD(TIME,86400d0)/24d0/60d0/60d0
-                JDAY = BASE_JDAY + MOD(TIME,86400d0)/24d0/60d0/60d0
             ENDIF
             Daycounter=Daycounter+1
 

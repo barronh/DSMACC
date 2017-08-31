@@ -5,15 +5,15 @@
       USE dsmacc_Global
       use dsmacc_Monitor
     
-      INTEGER :: i,j,found, counter
+      INTEGER :: i,j,found, counter, STATUS, ARGLEN
       REAL(kind=dp) :: x
-      CHARACTER(LEN=10000) :: line
+      CHARACTER(LEN=10000) :: line, INPATH
       CHARACTER(LEN=15) :: test
       REAL(kind=dp) :: concs(10000)
       REAL(kind=dp) :: oldvar(10000)
       LOGICAL :: SPECIAL
       INTEGER :: COUNT_NOX_CONSTRAINTS, IOSTAT
-      SAVE SPECIAL
+      SAVE SPECIAL, INPATH
     
     ! Open the file with the info
     
@@ -31,7 +31,16 @@
       RP1=0.
     
       IF (counter .eq. 0) then 
-            open(UNIT=21,FILE='Init_cons.dat', IOSTAT = IOSTAT)
+        IF (COMMAND_ARGUMENT_COUNT() == 0) THEN
+           WRITE(6,*) "There were no command arguments; using Init_cons.dat"
+           INPATH = 'Init_cons.dat'
+        ELSE
+           CALL GET_COMMAND_ARGUMENT(1, VALUE = INPATH, LENGTH = ARGLEN, STATUS = STATUS)	
+           IF (STATUS .ne. 0) THEN
+               STOP 'INPATH was truncated'
+           ENDIF
+        ENDIF
+            open(UNIT=21,FILE=INPATH, IOSTAT = IOSTAT)
     
     ! set everything to zero for the first iteration
     ! after that IF doing a constrained run don't
@@ -45,7 +54,7 @@
       ENDIF
     
       IF (COUNTER .EQ. 1) THEN 
-        open(UNIT=21,FILE='Init_cons.dat')
+        open(UNIT=21,FILE=INPATH)
       ENDIF    
       time=tstart
     ! Set everything to zero
@@ -115,7 +124,7 @@
                H2O=CONCS(I)
             ENDIF
     
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'PRESS') THEN 
+            IF (TRIM(SPEC_NAME(I)) .EQ. 'PRESS_hPa') THEN 
                FOUND=1
                PRESS=CONCS(I)
             ENDIF
@@ -123,27 +132,27 @@
             IF (TRIM(SPEC_NAME(I)) .EQ. 'NOx') THEN
                FOUND=1
                CONSTRAIN_NOX=.TRUE.
-               WRITE (6,*) 'Constraining total NOx concentation'
+               WRITE (6,*) 'Constraining total NOx concentration'
             ENDIF
     
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'LAT') THEN
+            IF (TRIM(SPEC_NAME(I)) .EQ. 'LAT_degN') THEN
                FOUND=1
                LAT=CONCS(I)
             ENDIF
     
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'LON') THEN 
+            IF (TRIM(SPEC_NAME(I)) .EQ. 'LON_degE') THEN 
                FOUND=1
                LON=CONCS(I)
             ENDIF
     
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'TEMP') THEN
+            IF (TRIM(SPEC_NAME(I)) .EQ. 'TEMP_K') THEN
                FOUND=1
                TEMP=CONCS(I)
             ENDIF
             
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'JDAY') THEN 
+            IF (TRIM(SPEC_NAME(I)) .EQ. 'JDAY_GMT') THEN 
                FOUND=1
-               JDAY=CONCS(I)
+               JDAY_GMT=CONCS(I)
             ENDIF
     
             IF (TRIM(SPEC_NAME(I)) .EQ. 'TIME(GMTs)') THEN
@@ -151,7 +160,7 @@
                
             ENDIF
     
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'O3COL') THEN
+            IF (TRIM(SPEC_NAME(I)) .EQ. 'O3COL_DU') THEN
                FOUND=1
                O3COL=CONCS(I)
             ENDIF
@@ -163,15 +172,15 @@
     
         IF (TRIM(SPEC_NAME(I)) .EQ. 'SAREA') THEN 
            FOUND=1
-               SAREA=CONCS(I)
+           SAREA=CONCS(I)
         ENDIF
             
         IF (TRIM(SPEC_NAME(I)) .EQ. 'RP1') THEN 
            FOUND=1
-               RP1=CONCS(I)
+           RP1=CONCS(I)
         ENDIF
     
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'JNO2') THEN
+        IF (TRIM(SPEC_NAME(I)) .EQ. 'JNO2_per_s') THEN
            FOUND=1
                IF (CONST_METHOD(I) .GE. 1) THEN 
                    JNO2=CONCS(I)
@@ -182,7 +191,7 @@
            ENDIF        
         ENDIF
             
-        IF (TRIM(SPEC_NAME(I)) .EQ. 'JO1D') THEN
+        IF (TRIM(SPEC_NAME(I)) .EQ. 'JO1D_per_s') THEN
            FOUND=1
            IF (CONST_METHOD(I) .GE. 1) THEN 
                JO1D=CONCS(I)
@@ -330,20 +339,37 @@
         USE dsmacc_Parameters
         USE dsmacc_monitor
         USE dsmacc_GLOBAL
-        INTEGER counter, length, ierr
-        CHARACTER*20 filename1, filename
+        INTEGER counter, length, ierr, STATUS, ARGLEN
+        CHARACTER*20 filename1
+        CHARACTER(LEN=10000) :: SPECROOT, RATEROOT, filename
         INTEGER i
-      
-            
-        CALL  ICNVRT(0, counter, filename1, length, ierr)
+        IF (COMMAND_ARGUMENT_COUNT() <= 2) THEN
+           WRITE(6,*) "There were no command arguments; using Spec_"
+           SPECROOT = 'Spec_'
+        ELSE
+           CALL GET_COMMAND_ARGUMENT(2, VALUE = SPECROOT, LENGTH = ARGLEN, STATUS = STATUS)	
+           IF (STATUS .ne. 0) THEN
+               STOP 'SPECROOT was truncated'
+           ENDIF
+        ENDIF
+        IF (COMMAND_ARGUMENT_COUNT() <= 3) THEN
+           WRITE(6,*) "There were no command arguments; using Rate_"
+           RATEROOT = 'Rate_'
+        ELSE
+           CALL GET_COMMAND_ARGUMENT(3, VALUE = RATEROOT, LENGTH = ARGLEN, STATUS = STATUS)	
+           IF (STATUS .ne. 0) THEN
+               STOP 'RATEROOT was truncated'
+           ENDIF
+        ENDIF
 
-        filename='Spec_'//TRIM(filename1)//'.dat'
+        WRITE(filename1,'(I20)') counter
+        filename=TRIM(ADJUSTL(SPECROOT))//TRIM(ADJUSTL(filename1))//'.dat'
         open(SPEC_UNIT, file=filename)
  
-        filename='Rate_'//TRIM(filename1)//'.dat'
+        filename=TRIM(ADJUSTL(RATEROOT))//TRIM(ADJUSTL(filename1))//'.dat'
         open(RATE_UNIT, file=filename)
 
-        WRITE(SPEC_UNIT,'(100000(a25,"!"))') 'TIME','JDAY_GMT','LAT','LON','PRESS','TEMP','THETA',&
+        WRITE(SPEC_UNIT,'(100000(a25,"!"))') 'TIME','JDAY_GMT','LAT_degN','LON_degE','PRESS','TEMP','THETA',&
                 'H2O', 'CFACTOR', 'M', 'N2', 'O2', 'JNO2FACT','JO1DFACT','RO2',&
                 (SPC_NAMES(LOOKAT(i)), i=1,NLOOKAT)
 
@@ -370,9 +396,9 @@
         
         INTEGER i
         IF (CONSTRAIN_RUN) THEN
-            WRITE(SPEC_UNIT,'(100000(E25.16E3,"!"))') JDAY,JDAY_GMT,LAT,LON,PRESS,TEMP,THETA,H2O,&
+            WRITE(SPEC_UNIT,'(100000(E25.16E3,"!"))') JDAY_GMT,LAT,LON,PRESS,TEMP,THETA,H2O,&
             CFACTOR,M,N2,O2,JFACTNO2, JFACTO1D, RO2,C
-            WRITE(RATE_UNIT,'(100000(E50.16E3,"!"))') JDAY,JDAY_GMT,LAT,LON,PRESS,TEMP,THETA,H2O,&
+            WRITE(RATE_UNIT,'(100000(E50.16E3,"!"))') JDAY_GMT,LAT,LON,PRESS,TEMP,THETA,H2O,&
             CFACTOR,M,N2,O2,JFACTNO2, JFACTO1D, RO2,RCONST
         ELSE
             WRITE(SPEC_UNIT,'(100000(E25.16E3,"!"))') TIME,JDAY_GMT,LAT,LON,PRESS,TEMP,THETA,H2O,&
@@ -406,231 +432,5 @@
 ! END of CloseSaveData FUNCTION
 ! ****************************************************************
 
-    SUBROUTINE ICNVRT(WAY,NUM,STRING,LENGTH,IERR)
-!
-!       FUNCTION:
-!F
-!F        This subroutine does an INTEGER-to-CHARACTER conversion
-!F        or a characater-to-INTEGER conversion depending on the
-!F        INTEGER WAY:
-!F                IF WAY = 0 then an INTEGER-to-CHARACTER conversion
-!F                is done. IF WAY .NE. 0 then a CHARACTER-to-INTEGER
-!F                conversion is done.
-!F
-!       USAGE:
-!U
-!U        !ALL I!NVRT(WAY,NUM,STRING)
-!U             where WAY, NUM, STRING, and LENGTH are defined below.
-!U
-!U        Example: !ALL I!NVRT(0,1000,STRING,LENGTH)
-!U                 on return STRING = '1000' and
-!U                 LENGTH = 4.
-!U         
-!       INPUTS:
-!I
-!I        WAY - INTEGER; Determines which way the conversion goes:
-!I              IF WAY = 0 then an INTEGER-to-CHARACTER conversion
-!I                         is performed;
-!I              IF WAY.NE.0 then a CHARACTER-to-INTEGER conversion
-!I                         is performed.
-!I
-!I         NUM - INTEGER; an input only IF WAY = 0. NUM is the INTEGER
-!I               number to be converted to a CHARACTER expression.
-!I
-!I         STRING - !HARACTER; an input only IF WAY .NE. 0. STRING
-!I                is the CHARACTER expression to be converted to an
-!CI                INTEGER value. It contain no decimal points or 
-!I                non-numeric characters other than possibly a
-!I                sign. IF STRING contains  a '+' sign, it will be
-!I                stripped of it on return.
-!I
-!       OUTPUTS:
-!O
-!O         NUM - INTEGER; contains the INTEGER representation of 
-!O                STRING.
-!O
-!O         STRING - !HARA!TER; contains the CHARACTER representation of
-!O                  NUM.
-!CO
-!CO         LENGTH - INTEGER; The length of STRING to the first blank.
-!CO                  The significant part of STRING can be accessed with
-!CO                  the declaration STRING(1:LENGTH).
-!CO
-!CO         IERR - INTEGER variable giving return condition:
-!CO                IERR = 0 for normal return;
-!CO                IERR = 1 IF NUM cannot be converted to STRING because
-!CO                       STRING is too short or STRING cannot be
-!CO                       converted to NUM because STRING is too long.
-!CO                IERR = 2 IF STRING contained a non-numeric CHARACTER
-!CO                       other than a leading sign or something went
-!CO                       wrong with an INTEGER-to-CHARACTER conversion.
-!CO
-!C       ALGORITHM:
-!CA
-!CA         Nothing noteworthy, except that this subroutine will work
-!CA          for strange CHARACTER sets where the CHARACTER '1' doesn't
-!CA          follow '0', etc.
-!CA
-!C       MACHINE DEPENDENCIES:
-!CM
-!CM          The parameter MAXINT (below) should be set to the
-!CM          number of digits that an INTEGER data type can have
-!CM          not including leading signs. For VAX FORTRAN V4.4-177
-!CM          MAXINT = 10.
-!CM
-!CM          NOTE: Under VAX FORTRAN V4.4-177, the
-!CM          error condition IERR = 1 will never occur for an
-!CM          INTEGER-to-CHARACTER conversion IF STRING
-!CM          is allocated at least 11 bytes (CHARACTER*11).
-!CM
-!C       HISTORY:
-!CH
-!CH      written by:             bobby bodenheimer
-!CH      date:                   september 1986
-!CH      current version:        1.0
-!CH      modifications:          none
-!CH
-!C       ROUTINES CALLED:
-!CC
-!CC          NONE.
-!CC
-!C----------------------------------------------------------------------
-!C       written for:    The CASCADE Project
-!C                       Oak Ridge National Laboratory
-!C                       U.S. Department of Energy
-!C                       contract number DE-AC05-840R21400
-!C                       subcontract number 37B-7685 S13
-!C                       organization:  The University of Tennessee
-!C----------------------------------------------------------------------
-!C       THIS SOFTWARE IS IN THE PUBLIC DOMAIN
-!C       NO RESTRICTIONS ON ITS USE ARE IMPLIED
-!C----------------------------------------------------------------------
-!C
-!C Global Variables.
-!C
-        INTEGER       WAY
-        INTEGER       LENGTH
-        INTEGER       NUM
-        INTEGER       IERR
-        CHARACTER*(*) STRING
-!C
-!C Local Variables
-!C
-        INTEGER       I
-        INTEGER       MAXINT
-        INTEGER       MNUM
-        INTEGER       M
-        LOGICAL       NEG
-!C
-        PARAMETER(MAXINT=10)
-!C
-        NEG = .FALSE.
-        IERR = 0
-!C
-!C  INTEGER-to-CHARACTER conversion.
-!C
-        IF (WAY.EQ.0) THEN
-            STRING = ' '
-            IF (NUM.LT.0) THEN
-                NEG = .TRUE.
-                MNUM = -NUM
-                LENGTH = INT(LOG10(REAL(MNUM))) + 1
-            ELSE IF (NUM.EQ.0) THEN
-                MNUM = NUM
-                LENGTH = 1
-            ELSE
-                MNUM = NUM
-                LENGTH = INT(LOG10(REAL(MNUM))) + 1
-            END IF
-            IF (LENGTH.GT.LEN(STRING)) THEN
-                IERR = 1
-                RETURN
-            END IF
-            DO 10, I=LENGTH,1,-1
-                M=INT(REAL(MNUM)/10**(I-1))
-                IF (M.EQ.0) THEN
-                   STRING(LENGTH-I+1:LENGTH-I+1) = '0'
-                ELSE IF (M.EQ.1) THEN
-                   STRING(LENGTH-I+1:LENGTH-I+1) = '1'
-                ELSE IF (M.EQ.2) THEN
-                   STRING(LENGTH-I+1:LENGTH-I+1) = '2'
-                ELSE IF (M.EQ.3) THEN
-                   STRING(LENGTH-I+1:LENGTH-I+1) = '3'
-                ELSE IF (M.EQ.4) THEN
-                   STRING(LENGTH-I+1:LENGTH-I+1) = '4'
-                ELSE IF (M.EQ.5) THEN
-                   STRING(LENGTH-I+1:LENGTH-I+1) = '5'
-                ELSE IF (M.EQ.6) THEN
-                   STRING(LENGTH-I+1:LENGTH-I+1) = '6'
-                ELSE IF (M.EQ.7) THEN
-                   STRING(LENGTH-I+1:LENGTH-I+1) = '7'
-                ELSE IF (M.EQ.8) THEN
-                   STRING(LENGTH-I+1:LENGTH-I+1) = '8'
-                ELSE IF (M.EQ.9) THEN
-                   STRING(LENGTH-I+1:LENGTH-I+1) = '9'
-                ELSE
-                   IERR = 2
-                   RETURN
-                END IF
-                MNUM = MNUM - M*10**(I-1)
-            10       CONTINUE
-                IF (NEG) THEN
-                    STRING = '-'//STRING
-                    LENGTH = LENGTH + 1
-                END IF
-!C
-!C  CHARACTER-to-INTEGER conversion.
-!!C
-        ELSE
-            IF (STRING(1:1).EQ.'-') THEN
-                NEG = .TRUE.
-                STRING = STRING(2:LEN(STRING))
-            END IF
-
-            IF (STRING(1:1).EQ.'+') STRING = STRING(2:LEN(STRING))
-                NUM = 0
-                LENGTH = INDEX(STRING,' ') - 1
-                IF (LENGTH.GT.MAXINT) THEN
-                    IERR = 1
-                    RETURN
-                END IF
-                DO 20, I=LENGTH,1,-1
-                    IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'0') THEN
-                        M = 0
-                    ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'1') THEN
-                        M = 1
-                    ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'2') THEN
-                        M = 2
-                    ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'3') THEN
-                        M = 3
-                    ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'4') THEN
-                        M = 4
-                    ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'5') THEN
-                        M = 5
-                    ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'6') THEN
-                        M = 6
-                    ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'7') THEN
-                        M = 7
-                    ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'8') THEN
-                        M = 8
-                    ELSE IF (STRING(LENGTH-I+1:LENGTH-I+1).EQ.'9') THEN
-                        M = 9
-                    ELSE
-                        IERR = 2
-                        RETURN
-                    END IF
-                    NUM = NUM + INT(10**(I-1))*M
-     20         CONTINUE
-                IF (NEG) THEN
-                    NUM = -NUM
-                    STRING = '-'//STRING
-                    LENGTH = LENGTH + 1
-                END IF
-            END IF
-!C
-!C  Last lines of ICNVRT
-!C
-        RETURN
-    END SUBROUTINE
          
 #ENDINLINE
