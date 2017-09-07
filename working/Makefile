@@ -1,7 +1,8 @@
 export KPP_HOME=$(PWD)/../kpp
 MODEL=dsmacc
+
 help:
-	@echo "`make all`"
+	@echo "$ make all"
 	@echo "will run a timeseries box model and"
 	@echo "a diural steady-state."
 	@echo ""
@@ -9,7 +10,7 @@ help:
 	@echo "from the dsmacc.kpp file"
 	@echo ""
 	@echo "To build another model from a "
-	@echo "different .kpp file, type `make -e MODEL=newname`"
+	@echo "different .kpp file, type make -e MODEL=newname"
 
 all: check
 
@@ -21,12 +22,15 @@ show: check.timeseries.log check.diurnal.log
 
 check: check.timeseries.log check.diurnal.log show
 
+INPUTS:
+	ln -s ../tuv_new/INPUTS .
+	ln -s ../tuv_new/DATA* .
 .SECONDARY: $(MODEL) Spec_1.dat.diurnal Spec_1.dat.timeseries Rate_1.dat.diurnal Rate_1.dat.timeseries
 
-check.diurnal.log: Spec_1.dat.diurnal check.py
+check.diurnal.log: Spec_1.dat.diurnal ../test/check.py
 	@python check.py check.Spec_1.dat.diurnal Spec_1.dat.diurnal > $@
 
-check.timeseries.log: Spec_1.dat.timeseries check.py
+check.timeseries.log: Spec_1.dat.timeseries ../test/check.py
 	@python check.py check.Spec_1.dat.timeseries Spec_1.dat.timeseries > $@
 
 Spec_1.dat.timeseries: $(MODEL) Init_cons.dat.timeseries
