@@ -34,7 +34,6 @@
       integer NRAN, RANSEED, LTOP, NJXX
       real*8, dimension(LWEPAR) :: CLDFRW,CLDIWCW,CLDLWCW   ! WCW=Cloud Water Content (g/g)
       character*6, dimension(JVN_)   ::  TITLJXX
-      real*8, dimension(L_,8,4)  :: ZPJCLD
       real*8, dimension(21,4)    :: ERRJ, ERRJJ,ERRJ2
       integer JP04,JP09,JP11,JP15, ICLD
       integer, dimension(8)      :: JCNT
@@ -343,7 +342,6 @@
       IRAN = 13+ILON+3*JLAT+5*(MYEAR-1900)+7*IDAY + 11*nint(GMTAU)
 
 !!!!!!!          if (ICLD .gt. 1) LPRTJ =.false.
-          ZPJCLD(:,:,:) = 0.d0
        L3RG = PL3RG
       !BHH - control CLDFLAG from the input
       !do CLDFLAG = 1,8
@@ -371,6 +369,7 @@
 !   9NO2       PHOTON    N2        O         1.000 mapped to FJX:   9 NO2
 !  11NO3       PHOTON    NO        O2        0.114 mapped to FJX:  10 NO3
 !  15HNO3      PHOTON    NO2       OH        1.000 mapped to FJX:  13 HNO3
+        IF (DEBUG>0) THEN
         JP04 = JIND(4)
         JP09 = JIND(9)
         JP11 = JIND(11)
@@ -379,7 +378,6 @@
         TITJX(2) = 'J(NO2)     '
         TITJX(3) = 'J(NO3>all) '
         TITJX(4) = 'J(HNO3)    '
-        IF (DEBUG>0) THEN
         print *,'BHH',IZOUT,'PPP',PPP(IZOUT)
         print *,'BHH',IZOUT,'TTT',TTT(IZOUT)
         print *,'BHH',IZOUT,'RRR',RRR(IZOUT)
@@ -390,12 +388,6 @@
         PRINT *,'BHH',TITJX(3),VALJXX(IZOUT,JP11)
         PRINT *,'BHH',TITJX(4),VALJXX(IZOUT,JP15)
         ENDIF
-       do L = 1,L_
-        ZPJCLD(L,CLDFLAG,1) = VALJXX(L,JP04)
-        ZPJCLD(L,CLDFLAG,2) = VALJXX(L,JP09)
-        ZPJCLD(L,CLDFLAG,3) = VALJXX(L,JP11)
-        ZPJCLD(L,CLDFLAG,4) = VALJXX(L,JP15)
-       enddo ! L
       enddo ! ICLD
       JVMAPS(:) = JVMAP(:)
       JLABELS(:) = JLABEL(:)

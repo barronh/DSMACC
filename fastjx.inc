@@ -34,9 +34,9 @@
         write(*,*) 'ERROR', JIDX, ' greater than available ', NJ
         STOP
        ENDIF
-       DO JIN=JIDX,JIDX !1,NRATJ
-            WRITE(*,'(I2,x,A,x,A,x,e8.2,x,e8.2)') JIN,JLABELS(JIN),JVMAPS(JIN),JFACTORS(JIN),JVALUES(JINDS(JIN))
-       ENDDO
+       !DO JIN=JIDX,JIDX !1,NRATJ
+       !     WRITE(*,'(I2,x,A,x,A,x,e8.2,x,e8.2)') JIN,JLABELS(JIN),JVMAPS(JIN),JFACTORS(JIN),JVALUES(JINDS(JIN))
+       !ENDDO
        J = JFACTORS(JIDX)*JVALUES(JINDS(JIDX))
   END FUNCTION J
 #ENDINLINE
