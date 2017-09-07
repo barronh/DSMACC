@@ -2,7 +2,7 @@ PROGRAM driver
     
     USE dsmacc_global
     USE dsmacc_Parameters  !ONLY: IND_*
-    USE dsmacc_Rates,       ONLY: Update_SUN, Update_RCONST, J, TUV_J
+    USE dsmacc_Rates,       ONLY: Update_SUN, Update_RCONST, J
     USE dsmacc_integrator,  ONLY: integrate!, IERR_NAMES
     USE dsmacc_monitor,     ONLY: spc_names, MONITOR
     USE dsmacc_Util
@@ -246,8 +246,8 @@ PROGRAM driver
                 write(OUTPUT_UNIT,*) 'JDAY_LOCAL', JDAY_LOCAL
                 write(OUTPUT_UNIT,*) 'TEMP', TEMP
                 write(OUTPUT_UNIT,*) 'SZA', THETA
-                write(OUTPUT_UNIT,*) JMAPPING(1)%LABEL, J(1)
-                write(OUTPUT_UNIT,*) JMAPPING(4)%LABEL, J(4)
+                !write(OUTPUT_UNIT,*) JMAPPING(1)%LABEL, J(1)
+                !write(OUTPUT_UNIT,*) JMAPPING(4)%LABEL, J(4)
             ENDIF
             IF (CONSTRAIN_RUN .EQV. .FALSE.) THEN 
                 JDAY_GMT = BASE_JDAY_GMT + TIME / 24d0 / 60d0 / 60d0

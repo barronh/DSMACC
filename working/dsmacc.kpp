@@ -968,7 +968,7 @@ KBPPN = (KPPN0*KPPNI)*FCPPN/(KPPN0+KPPNI)
 
 #INCLUDE ../global.inc
 #INCLUDE ../rate.inc
-#INCLUDE ../photolysis.inc
+//#INCLUDE ../photolysis.inc
 #INCLUDE ../util.inc
 #INCLUDE ../fastjx.inc
 

@@ -158,7 +158,7 @@
            ,L2_=2*L_+2 &        ! no. levels in the Fast-JX grid that
                        ! includes both layer edges and layer mid-points
            ,JVL_=LPAR &  ! vertical(levels) dim for J-values sent to CTM
-           ,JVN_=101 &  ! max no. of J-values
+           ,JVN_=2000 &  ! max no. of J-values
            ,AN_=25     ! # FJX aerosols in layer (needs NDX for each)
 
 !-----------------------------------------------------------------------
