@@ -46,9 +46,12 @@
     ! after that IF doing a constrained run don't
             LINECOUNT=0
             DO WHILE (.NOT.IS_IOSTAT_END(IOSTAT))
-            READ (21,*, IOSTAT = IOSTAT)
-            LINECOUNT=LINECOUNT+1
+            READ (21,'(A1000000)', IOSTAT = IOSTAT) line
+            IF ((TRIM(ADJUSTL(line)) .ne. '') .and. .NOT.IS_IOSTAT_END(IOSTAT)) THEN
+                LINECOUNT=LINECOUNT+1
+            ENDIF
             ENDDO
+            
          CLOSE(21)
          WRITE (6,*) 'Input file has ',LINECOUNT,' lines'
       ENDIF
