@@ -25,25 +25,21 @@ check: check.timeseries.log check.diurnal.log show
 INPUTS:
 	ln -s ../tuv_new/INPUTS .
 	ln -s ../tuv_new/DATA* .
-.SECONDARY: $(MODEL) Spec_1.dat.diurnal Spec_1.dat.timeseries Rate_1.dat.diurnal Rate_1.dat.timeseries
+.SECONDARY: $(MODEL) Spec_diurnal_1.dat Spec_timeseries_1.dat Rate_diurnal_1.dat Rate_timeseries_1.dat
 
-check.diurnal.log: Spec_1.dat.diurnal ../test/check.py
+check.diurnal.log: Spec_diurnal_1.dat ../test/check.py
 	@python check.py check.Spec_1.dat.diurnal Spec_1.dat.diurnal > $@
 
-check.timeseries.log: Spec_1.dat.timeseries ../test/check.py
+check.timeseries.log: Spec_timeseries_1.dat ../test/check.py
 	@python check.py check.Spec_1.dat.timeseries Spec_1.dat.timeseries > $@
 
-Spec_1.dat.timeseries: $(MODEL) Init_cons.dat.timeseries
+Spec_timeseries_1.dat: $(MODEL) Init_cons.dat.timeseries
 	ln -fs Init_cons.dat.timeseries Init_cons.dat
-	./$< > timeseries.log 2>&1
-	mv Spec_1.dat Spec_1.dat.timeseries
-	mv Rate_1.dat Rate_1.dat.timeseries
+	./$< Init_cons.dat.timeseries Spec_timeseries_ Rate_timeseries_  > timeseries.log 2>&1
 
-Spec_1.dat.diurnal: $(MODEL) Init_cons.dat.diurnal
+Spec_diurnal_1.dat: $(MODEL) Init_cons.dat.diurnal
 	ln -fs Init_cons.dat.diurnal Init_cons.dat
-	./$< 1> diurnal.log 2>&1
-	mv Spec_1.dat Spec_1.dat.diurnal
-	mv Rate_1.dat Rate_1.dat.diurnal
+	./$< Init_cons.dat.diurnal Spec_diurnal_ Rate_diurnal_ 1> diurnal.log 2>&1
 
 $(MODEL): $(MODEL).kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.inc ../fastjx.inc ../kpp/bin/kpp
 	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../working/$(MODEL).kpp dsmacc && make && mv ../bin/dsmacc ../working/$(MODEL)

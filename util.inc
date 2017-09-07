@@ -343,8 +343,8 @@
         CHARACTER*20 filename1
         CHARACTER(LEN=10000) :: SPECROOT, RATEROOT, filename
         INTEGER i
-        IF (COMMAND_ARGUMENT_COUNT() <= 2) THEN
-           WRITE(6,*) "There were no command arguments; using Spec_"
+        IF (COMMAND_ARGUMENT_COUNT() < 2) THEN
+           WRITE(6,*) "There were fewer than 2 command arguments; using Spec_"
            SPECROOT = 'Spec_'
         ELSE
            CALL GET_COMMAND_ARGUMENT(2, VALUE = SPECROOT, LENGTH = ARGLEN, STATUS = STATUS)	
@@ -352,8 +352,8 @@
                STOP 'SPECROOT was truncated'
            ENDIF
         ENDIF
-        IF (COMMAND_ARGUMENT_COUNT() <= 3) THEN
-           WRITE(6,*) "There were no command arguments; using Rate_"
+        IF (COMMAND_ARGUMENT_COUNT() < 3) THEN
+           WRITE(6,*) "There were fewer than 3 command arguments; using Rate_"
            RATEROOT = 'Rate_'
         ELSE
            CALL GET_COMMAND_ARGUMENT(3, VALUE = RATEROOT, LENGTH = ARGLEN, STATUS = STATUS)	
@@ -369,11 +369,11 @@
         filename=TRIM(ADJUSTL(RATEROOT))//TRIM(ADJUSTL(filename1))//'.dat'
         open(RATE_UNIT, file=filename)
 
-        WRITE(SPEC_UNIT,'(100000(a25,"!"))') 'TIME','JDAY_GMT','LAT_degN','LON_degE','PRESS','TEMP','THETA',&
+        WRITE(SPEC_UNIT,'(100000(a25,"!"))') 'TIME','JDAY_GMT','LAT_degN','LON_degE','PRESS_hPa','TEMP_K','THETA',&
                 'H2O', 'CFACTOR', 'M', 'N2', 'O2', 'JNO2FACT','JO1DFACT','RO2',&
                 (SPC_NAMES(LOOKAT(i)), i=1,NLOOKAT)
 
-        WRITE(RATE_UNIT,'(100000(a50,"!"))') 'TIME','JDAY_GMT','LAT','LON','PRESS','TEMP','THETA','H2O', &
+        WRITE(RATE_UNIT,'(100000(a50,"!"))') 'TIME','JDAY_GMT','LAT_degN','LON_degE','PRESS_hPa','TEMP_K','THETA','H2O', &
                 'CFACTOR', 'M', 'N2', 'O2', 'JNO2FACT','JO1DFACT','RO2',&
                                               EQN_NAMES
 
