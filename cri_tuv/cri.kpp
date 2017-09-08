@@ -3,7 +3,11 @@
 // - include "generic rate constants"
 #INCLUDE ../cri_tuv/CRI_subset.kpp 
 
-#INCLUDE mcmtuv.inc
+#INCLUDE mcm.inc
+#INCLUDE tuv.inc
+// alternative photolysis mechanisms
+//#INCLUDE fastjx.inc
+//#INCLUDE mcmj.inc
 
 #MONITOR O3; NO2; NO;
 #LOOKATALL;
