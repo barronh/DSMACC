@@ -5,10 +5,10 @@
 #INCLUDE geoschem-08-02-03.def
 
 
-#INCLUDE ../global.inc
-#INCLUDE ../mcmratedef.inc
-#INCLUDE ../tuv.inc
-#INCLUDE ../io.inc
+#INCLUDE global.inc
+#INCLUDE mcmratedef.inc
+#INCLUDE tuv.inc
+#INCLUDE io.inc
 
 #DOUBLE ON 
 

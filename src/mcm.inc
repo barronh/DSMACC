@@ -1,26 +1,24 @@
-// include file with definition of the chemical species
-// and chemical equations
-
-//#INCLUDE ./mcm_subset.kpp 
-#INCLUDE geoschem-09-02.def
-
-
+// global.inc is required
 #INCLUDE global.inc
+
+// rate includes definition of mcm generic rate
+// constant variables (e.g., 
 #INCLUDE mcmratedef.inc
-#INCLUDE tuv.inc
+// io handles input output in the 
+// DSMACC fashion
 #INCLUDE io.inc
 
 #DOUBLE ON 
 
 // computer language for code produced by kpp
 #LANGUAGE FORTRAN90
-// #LANGUAGE FORTRAN77
-// #LANGUAGE C
 
 // initial concentrations
 #INITVALUES
+
 // conversion from mixing ratio to concentration
 CFACTOR = 2.5E19;
+
 // initial mixing ratios
 ALL_SPEC = 0.;
 
@@ -47,7 +45,3 @@ ALL_SPEC = 0.;
 
 // equation IDs
 #EQNTAGS on
-#LOOKATALL;
-//#MONITOR HCHO; CO; HNO3; NO; NO2; NO3; N2O5; O3; SO2; CH4; PAN; PPN; MPAN; CH3OH; CH3CHO; CH3COCH3; HCOOH; MEK; C2H6; C2H4; C2H2; C3H8; C3H6; IC4H10; NC4H10; BUT1ENE; TBUT2ENE; C4H6; IC5H12; NC5H12; PENT1ENE; TPENT2ENE; C5H8; NC6H14; NC7H16; NC8H18; BENZENE; TOLUENE;
-//#MONITOR NO; NO2; NO3; N2O5; HO2NO2; HONO;
-//#MONITOR HCHO; O1D; O3; HO2NO2; NO3; N2O5; H2O2; NO; NA; HO2; NO2; HSO3; CO; O; HNO3; SO3; SO2; OH; H2; HONO; SA;
