@@ -51,10 +51,9 @@ results with a set of archived results.
 3.  type `unzip DSMACC-master.zip`
 4.  type `cd DSMACC-master`
 5.  type `./configure`
-6.  type `make check`
+6.  type `make`
 
-This may take some time, but will give you a list of pass/fails for a
-diurnal constrained steady state run.
+This will run a test case and produce some figures (requires python and numpy).
 
 ## Chemistry Options
 
@@ -98,7 +97,7 @@ For `python`:
     open('mcm_subset.kpp', 'w').write(txt);"
 ```
 
-Now make a master kpp file. The easiest approach is to copy the test/cri.kpp file and rename it to mcm.kpp. 
+Now make a master kpp file. The easiest approach is to modify the copy in working. 
 Replace the line `#INCLUDE CRI_subset.kpp` with `#INCLUDE mcm_subset.kpp`. Then follow the [compilation instructions](#compilation-instructions)
 
 ### Using the GEOS-Chem globchem.dat file
@@ -127,7 +126,7 @@ FORTAN code into a program.
 #### Generate the code
 
 First, build a master.kpp file (e.g., [MCM input](#mcm-input)). In this tutorial, the master 
-kpp file is assumed to be named master.kpp, but it can be anything (e.g., mcm.kpp, cri.kpp, etc).
+kpp file is assumed to be named master.kpp, but it can be anything (e.g., dsmacc.kpp mcm.kpp, cri.kpp, etc).
 To build the model code, you must run `kpp` from within the `DSMACC/src` directory with the master.kpp
 path as the first argument and `dsmacc` as the second argument. For this command to be successful,
 you will need `KPP_HOME` set in your environment and `PATH` updated to include `${KPP_HOME}/bin`.
