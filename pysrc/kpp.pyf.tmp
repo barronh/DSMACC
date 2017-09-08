@@ -1,0 +1,78 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+! Note: dsmacc_precision and dsmacc_parameters parameter values must be
+!       updated manually to match code
+
+python module kpp ! in 
+    interface  ! in :kpp
+        module dsmacc_precision ! in :kpp:dsmacc_Parameters.f90
+            integer, public,parameter,optional :: dp=8
+        end module dsmacc_parameters
+        module dsmacc_parameters ! in :kpp:dsmacc_Parameters.f90
+            !Note that these parameters must be updated
+            !manually
+            use dsmacc_precision, only : dp
+            integer, public,parameter,optional :: nspec=%(NSPEC)d
+            integer, public,parameter,optional :: nvar=%(NVAR)d
+            integer, public,parameter,optional :: nreact=%(NREACT)d
+        end module dsmacc_parameters
+        module pyint ! in :kpp:pyint.f90
+            use dsmacc_integrator, only: integrate
+            subroutine integrate(tin,tout,icntrl_u,rcntrl_u,istatus_u,rstatus_u,ierr_u) ! in :kpp:kpp_py.f90:pyint:unknown_interface
+                use dsmacc_global
+                use dsmacc_parameters
+                use dsmacc_precision, only : dp
+                real(kind=dp) intent(in) :: tin
+                real(kind=dp) intent(in) :: tout
+                integer, optional,dimension(20),intent(in) :: icntrl_u
+                real(kind=dp), optional,dimension(20),intent(in) :: rcntrl_u
+                integer, optional,dimension(20),intent(out) :: istatus_u
+                real(kind=dp), optional,dimension(20),intent(out) :: rstatus_u
+                integer, optional,intent(out) :: ierr_u
+            end subroutine integrate
+        end module pyint
+        module pyglob ! in :kpp:pyglob.f90
+            use dsmacc_global
+            use dsmacc_precision, only : dp
+            use dsmacc_parameters, only : nspec, nvar, nreact
+            real(kind=dp), public :: PRESS
+            real(kind=dp), public :: TEMP
+            real(kind=dp), public :: LAT
+            real(kind=dp), public :: LON
+            real(kind=dp), public :: O3COL
+            real(kind=dp), public :: JO1D
+            real(kind=dp), public :: JNO2
+            real(kind=dp), public :: JDAY_GMT
+            real(kind=dp), public :: ALBEDO
+            real(kind=dp), public :: SAREA
+            real(kind=dp), public :: RP1
+            real(kind=dp), public :: THETA
+            real(kind=dp), public :: M
+            real(kind=dp), public :: N2
+            real(kind=dp), public :: O2
+            real(kind=dp), public :: RO2
+            real(kind=dp), public :: H2O
+            real(kind=dp), public :: time
+            real(kind=dp), public,dimension((nspec)) :: c
+            real(kind=dp), public,dimension((nreact)) :: rconst
+            real(kind=dp), public,dimension((nvar)) :: atol
+            real(kind=dp), public,dimension((nvar)) :: rtol
+            real(kind=dp), public,dimension((nreact)) :: irr
+        end module pyglob
+        module pyrate
+            subroutine update_rconst ! in :kpp:dsmacc_Rates.f90:dsmacc_rates
+                use constants
+            end subroutine update_rconst
+        end module pyrate 
+        module pymon ! in :kpp:pymon.f90
+            function getnames() result (out_names) ! in :kpp:pymon.f90:pymon
+                use dsmacc_parameters, only: nspec
+                use dsmacc_monitor, only: spc_names
+                character, dimension(nspec,24) :: out_names
+            end function getnames
+        end module pymon
+    end interface 
+end python module kpp
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
