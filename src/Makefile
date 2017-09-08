@@ -21,10 +21,6 @@ OBJS1 := $(SRCS1:.f90=.o)
 OBJS := $(OBJS1)
 LIBS = -L../tuv_new/ -ltuv -L../UCI_fastJX72e/ -lfastjx
 
-# If you don't have the perl script sfmakedepend, get it from:
-# http://www.arsc.edu/~kate/Perl
-F_makedepend = ../sfmakedepend 
-
 # the dependencies depend on the link
 # the executable depends on depend and also on all objects
 # the executable is created by linking all objects
@@ -60,8 +56,6 @@ distclean: clean
 
 # list of dependencies (via USE statements)
 #include depend.mk
-./constants.o: ../tuv_new/params
-./constants.o: ./dsmacc_Global.o ./dsmacc_Precision.o
 ./dsmacc_Function.o: ./dsmacc_Parameters.o
 ./dsmacc_Global.o: ../tuv_new/params
 ./dsmacc_Global.o: ./dsmacc_Parameters.o
@@ -83,5 +77,3 @@ distclean: clean
 ./dsmacc_StoichiomSP.o: ./dsmacc_Precision.o
 ./dsmacc_Util.o: ./dsmacc_Global.o ./dsmacc_Integrator.o ./dsmacc_Monitor.o
 ./dsmacc_Util.o: ./dsmacc_Parameters.o
-constants.mod: kpp_constants.o
-
