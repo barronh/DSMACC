@@ -1,0 +1,10 @@
+// include CRI_subset file generated from the MCM website
+// - include "inorganic chemistry"
+// - include "generic rate constants"
+#INCLUDE ../cri_tuv/CRI_subset.kpp 
+
+#INCLUDE mcmtuv.inc
+
+#MONITOR O3; NO2; NO;
+#LOOKATALL;
+    

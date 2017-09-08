@@ -1,0 +1,17 @@
+# CRI with TUV Photolysis
+
+This folder contains the following files
+ - cri.kpp: a file the contains kpp instructions to build a dsmacc model with CRI
+ - CRI_subset.kpp: the CRI subset from http://mcm.leeds.ac.uk/CRI/. File 
+                   requires cleanup after download
+ - cri_init.dat: initial conditions for a simple CRI simulation
+ - Makefile: a file with instructions on how to build and run the model.
+
+To build and run the model, type "make" in a linux terminal
+  $ make
+
+The makefile will build the model (cri) and run it with initial
+conditions from cri_init.dat. This will produce three outputs:
+ - cri_conc_1.dat
+ - cri_rate_1.dat
+ - cri.log
