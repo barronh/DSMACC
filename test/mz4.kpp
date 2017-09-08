@@ -6,9 +6,9 @@
 
 
 #INCLUDE ../global.inc
-#INCLUDE ../rate.inc
-#INCLUDE ../photolysis.inc
-#INCLUDE ../util.inc
+#INCLUDE ../mcmratedef.inc
+#INCLUDE ../tuv.inc
+#INCLUDE ../io.inc
 
 #DOUBLE ON 
 

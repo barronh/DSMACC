@@ -37,16 +37,16 @@ check:
 	ln -fs $*.Init_cons.dat.timeseries Init_cons.dat && \
 	./$* >& $*.timeseries.log && mv Spec_1.dat $*.Spec_1.dat.timeseries && mv Rate_1.dat $*.Rate_1.dat.timeseries
 
-cri: cri.kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.inc ../kpp/bin/kpp
+cri: cri.kpp ../global.inc ../mcmratedef.inc ../io.inc ../driver.f90 ../tuv.inc ../kpp/bin/kpp
 	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../test/cri.kpp dsmacc && make && mv ../bin/dsmacc ../test/cri
 
-geos: geos.kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.inc ../kpp/bin/kpp
+geos: geos.kpp ../global.inc ../mcmratedef.inc ../io.inc ../driver.f90 ../tuv.inc ../kpp/bin/kpp
 	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../test/geos.kpp dsmacc && make && mv ../bin/dsmacc ../test/geos
 
-geoschem-09-02: geoschem-09-02.kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.inc ../kpp/bin/kpp
+geoschem-09-02: geoschem-09-02.kpp ../global.inc ../mcmratedef.inc ../io.inc ../driver.f90 ../tuv.inc ../kpp/bin/kpp
 	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../test/geoschem-09-02.kpp dsmacc && make && mv ../bin/dsmacc ../test/geoschem-09-02
 
-mz4: mz4.kpp ../global.inc ../rate.inc ../util.inc ../driver.f90 ../photolysis.inc ../kpp/bin/kpp
+mz4: mz4.kpp ../global.inc ../mcmratedef.inc ../io.inc ../driver.f90 ../tuv.inc ../kpp/bin/kpp
 	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../test/mz4.kpp dsmacc && make && mv ../bin/dsmacc ../test/mz4
 
 clean:
