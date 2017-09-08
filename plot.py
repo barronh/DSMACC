@@ -60,7 +60,7 @@ parser.add_argument("--figprops", dest = "figprops", default = "", type = str, h
 parser.add_argument("--axprops", dest = "axprops", default = "", type = str, help = 'Key words string for axes')
 
 args = parser.parse_args()
-data = np.recfromtxt('jingqiu.Spec_1.dat.timeseries', delimiter = '!', dtype = 'f', names = True)
+data = np.recfromtxt(args.ifile, delimiter = '!', dtype = 'f', names = True)
 data = dict([(k, data[k]) for k in data.dtype.names])
 
 from matplotlib import use
