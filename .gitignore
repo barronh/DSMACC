@@ -1,5 +1,15 @@
+*.png
+*.log
+*.a
 *.o
 *.mod
+working/*.png
+working/*.dat
+working/*.log
+working/*.timeseries
+working/*.diurnal
+working/DATA*
+working/INPUTS
 depend.mk
 depend.mk.old
 fort.*
@@ -31,3 +41,8 @@ config.log
 config.status
 Makefile.defs
 autom*.cache
+cri_tuv/cri
+cri_tuv/cri_rate_*.dat
+cri_tuv/cri_conc_*.dat
+cri_tuv/DATA*
+cri_tuv/INPUTS
