@@ -1,0 +1,44 @@
+<--J-value data from chemistry code: id#, reaction,       factor/fastJX/code(a6)
+   1 O3             PHOTON    O2        O(1D)              1.000 /O3(1D)/
+   2 O3             PHOTON    O2        O(total)           1.000 /O3    /
+   3 H2O2           PHOTON    OH        OH                 1.000 /H2O2  /
+   4 NO2            PHOTON    N2        O                  1.000 /NO2   /
+   5 NO3            PHOTON    NO        O2                 0.114 /NO3   /
+   6 NO3            PHOTON    NO2       O                  0.886 /NO3   /
+   7 HNO2           PHOTON    NO        OH                 1.000 /HNO2  /
+   8 HNO3           PHOTON    NO2       OH                 1.000 /HNO3  /
+  11 H2CO           PHOTON    HCO       H                  1.000 /H2COa /
+  12 H2CO           PHOTON    CO        H2                 1.000 /H2COb /
+  13 CH3CHO         PHOTON    CH3       HCO                1.000 /ActAld/
+  14 C2H5CHO        PHOTON    C2H5      CO                 1.000 /PrAld /
+  15 nC3H7CHO       PHOTON    nC3H7     HCO                1.000 /PrAld / 
+  16 nC3H7CHO       PHOTON    C2H4      CH3CHO             1.000 /PrAld /
+  17 iC3H7CHO       PHOTON    iC3H7     HCO                1.000 /PrAld /
+  18 CH2=C(CH3)CHO  PHOTON    PRODUCTS                     0.500 /MeAcr /
+  19 CH2=C(CH3)CHO  PHOTON    PRODUCTS                     0.500 /MeAcr / 
+  21 CH3COCH3       PHOTON    CH3CO     CH3                1.000 /Acet-a/
+  22 CH3COC2H5      PHOTON    C2H5      CH3CO              0.850 /MEKeto/ 
+  23 CH3COCHCH2     PHOTON    PRODUCTS                     0.500 /MeVK  /
+  24 CH3COCHCH2     PHOTON    PRODUCTS                     0.500 /MeVK  /
+  31 CHOCHO         PHOTON    H2        CO        CO       1.000 /Glyxlb/
+  32 CHOCHO         PHOTON    CH2O      CO                 1.000 /Glyxlc/
+  33 CHOCHO         PHOTON    HCO       HCO                1.000 /Glyxla/
+  34 CH3COCHO       PHOTON    CH3CO     HCO                1.000 /MGlyxl/
+  35 CH3COCOCH3     PHOTON    PRODUCTS                     1.000 /MGlyxl/
+  41 ClNO3          PHOTON    ClO       NO2                1.000 /ClNO3b/
+  51 CH3NO3         PHOTON    CH3O      NO2                1.000 /CH3NO3/
+  52 CH3CH2ONO2     PHOTON    CH3CH2O   NO2                1.000 /CH3NO3/
+  53 nC3H7ONO2      PHOTON    nC3H7O    NO2                1.000 /CH3NO3/
+  54 CH3CH2ONO2     PHOTON    CH3CH2O   NO2                1.000 /CH3NO3/
+  55 2-C4H9ONO2     PHOTON    2-C4H9O   NO2                1.000 /CH3NO3/
+  56 CH3COCH2(ONO2) PHOTON    PRODUCTS                     0.750 /ONIT1 /
+  57 CH3COCH2(ONO2) PHOTON    PRODUCTS                     0.250 /ONIT1 /
+1001 HOBr           PHOTON    Br        OH                 1.000 /HOBr  /
+1002 BrO            PHOTON    Br        Cl                 1.000 /BrO   /
+1003 Br2            PHOTON    Br        Br                 1.000 /Br2   /
+1004 BrONO2         PHOTON    Br        NO3                0.850 /BrNO3 /
+1005 BrONO2         PHOTON    BrO       NO2                0.150 /BrNO3 /
+1006 ClNO3          PHOTON    Cl        NO3                1.000 /ClNO3a/
+1007 ClNO3          PHOTON    ClO       NO2                1.000 /ClNO3b/
+1008 Cl2            PHOTON    Cl        Cl                 1.000 /Cl2   /
+9999
