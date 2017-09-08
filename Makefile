@@ -13,7 +13,9 @@ kpp/bin/kpp: Makefile.defs
 clean:
 	cd src && make -i distclean
 	cd cri_tuv && make -i clean
-	cd kpp && make clean
+	cd tuv_new && make -i clean
+	cd UCI_fastJX72e && make -i clean
+	cd kpp && make -i clean
 
 distclean: clean
 	@rm -f bin/dsmacc
