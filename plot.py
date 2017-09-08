@@ -22,7 +22,7 @@ import numpy as np
 parser = ArgumentParser(description = 'DSMACC Plotting Script to make individual species or combined species plots')
 
 parser.add_argument('ifile', type = str, help='path to a file formatted as type -f')
-parser.add_argument("-v", "--vardesc", dest = "variables", default = None, action = "append", metavar = '-v vardesc1[ -v vardesc[... -v vardesc]',
+parser.add_argument("-v", "--vardesc", dest = "variables", default = [], action = "append", metavar = '-v vardesc1[ -v vardesc[... -v vardesc]',
                         help = "Variable description; made of an expression and optional keywords expr[;key1=val1,[key2=val2]]; e.g., -v NO or -v \"NO+NO2;label=NOx,color='g'\"")
 
 
@@ -41,13 +41,13 @@ parser.add_argument("--title", dest = "axtitle", type = str, default = "%(name)s
 
 parser.add_argument("--varlabel", dest = "varlabel", type = str, default = "%(name)s", metavar = "TEMPLATE", help = 'String template for var label')
 
-parser.add_argument("--unit", dest = "unit", type = str, default = "unknown", metavar = "UNIT", help = 'Unit name')
+parser.add_argument("--unit", dest = "unit", type = str, default = "ppb", metavar = "UNIT", help = 'Unit name')
 
 parser.add_argument("--xlabel", dest = "xlabel", type = str, default = "time", metavar = "STR", help = 'X Label')
 
-parser.add_argument("--factor", dest = "factor", type = str, default = "1./CFACTOR", help = '1 or CFACTOR; var * 1 or var * CFACTOR')
+parser.add_argument("--factor", dest = "factor", type = str, default = "1.e9/CFACTOR", help = '1 or CFACTOR; var * 1 or var * CFACTOR')
 
-parser.add_argument("--axes", dest = "axes", type = str, default = "[.1, .1, .8, .8]", help = 'See pylab')
+parser.add_argument("--axes", dest = "axes", type = str, default = "[.1, .15, .8, .75]", help = 'See pylab')
 
 parser.add_argument("--xtickformat", dest = "xtickformat", type = str, default = "%jT%H", help = 'See pylab')
 
@@ -71,7 +71,7 @@ if args.prefix is None:
 
 from datetime import datetime, timedelta
 sdate = datetime.strptime(args.startdate, '%Y-%m-%dT%H:%M:%S')
-dates = map(lambda x: sdate + timedelta(seconds = float(x)), data['TIME'])
+dates = [sdate + timedelta(seconds = float(x)) for x in data['TIME']]
 CFACTOR = data['CFACTOR']
 if len(args.variables) == 0:
     args.variables.extend([k for k in data.dtype.names if k != 'TIME'])
