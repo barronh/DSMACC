@@ -74,7 +74,9 @@ sdate = datetime.strptime(args.startdate, '%Y-%m-%dT%H:%M:%S')
 dates = [sdate + timedelta(seconds = float(x)) for x in data['TIME']]
 CFACTOR = data['CFACTOR']
 if len(args.variables) == 0:
-    args.variables.extend([k for k in data.dtype.names if k != 'TIME'])
+    args.variables.extend([k for k in data.keys() if k in ('O3', 'NO2')])
+if len(args.variables) == 0:
+    args.variables.extend([k for k in data.keys() if k != 'TIME'])
 
 
 if args.plotall:

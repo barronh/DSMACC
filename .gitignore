@@ -3,13 +3,7 @@
 *.a
 *.o
 *.mod
-working/*.png
-working/*.dat
-working/*.log
-working/*.timeseries
-working/*.diurnal
-working/DATA*
-working/INPUTS
+working/*
 depend.mk
 depend.mk.old
 fort.*
