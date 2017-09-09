@@ -40,3 +40,10 @@ cri_tuv/cri_rate_*.dat
 cri_tuv/cri_conc_*.dat
 cri_tuv/DATA*
 cri_tuv/INPUTS
+cri_tuv/photolysis.txt
+pysrc/INPUTS
+pysrc/DATA*
+pysrc/*.so
+pysrc/*.tsv
+pysrc/kpp.pyf
+pysrc/photolysis.txt

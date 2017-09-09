@@ -1,0 +1,16 @@
+import pandas as pd;
+data = pd.read_csv('cri_isop.tsv', delimiter = '\t')
+data.eval('JDAY=time/3600./24.', inplace = True)
+data.eval('NOx=NO+NO2', inplace = True)
+ntrs = [k for k in data.columns if 'NO3' in k and k not in ('NO3', 'HNO3')]
+data.eval('NTR1 = %s' % ' + '.join(ntrs[:25]), inplace = True)
+data.eval('NTR2 = %s' % ' + '.join(ntrs[25:]), inplace = True)
+data.eval('NTR = NTR1 + NTR2', inplace = True)
+data.eval('N2O5N = 2*N2O5', inplace = True)
+pans = [k for k in data.columns if 'PAN' in k] + 'PPN PHAN PBENZ IPBENZ'.split(' ')
+data.eval('PANS = %s' % ' + '.join(pans), inplace = True)
+ax = data.plot(x = 'JDAY', y = ['O3', 'C5H8'], linestyle = '--')
+ax.set_ylabel('O3, C5H8 ppb')
+ax = data.plot(x = 'JDAY', y = 'NOx N2O5N HONO HNO3 PANS HO2NO2 NO3 NTR NOA NA'.split(), secondary_y = True, ax = ax, stacked = True)
+ax.set_ylabel('NOx,HNO3 ppb')
+ax.figure.savefig('cri_isop.png')

@@ -18,7 +18,7 @@ source:
 # Run the model and make a plot
 test:
 	python driver.py
-	python -c "import pandas as pd; data = pd.read_csv('cri_isop.tsv', delimiter = '\t'); data.eval('JDAY=time/3600./24.', inplace = True); ax = data.plot(x = 'JDAY', y = ['O3', 'C5H8']); ax.figure.savefig('cri_isop.png')"
+	python plot.py
 
 # complete list of all f90 source files
 SRCS1 = $(wildcard ../src/dsmacc_*.f90)
