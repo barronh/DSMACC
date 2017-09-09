@@ -25,4 +25,4 @@ cri: cri.kpp ../src/global.inc ../src/mcmratedef.inc ../driver.f90 ../src/tuv.in
 	cd ../src && $(KPP_HOME)/bin/kpp ../cri_tuv/cri.kpp dsmacc && make && mv ../bin/dsmacc ../cri_tuv/cri
 
 clean:
-	rm -f cri cri_conc_*.dat cri_rate_*.dat cri.log *.png DATA* INPUTS
+	rm -f cri cri_conc_*.dat cri_rate_*.dat cri.log *.png DATA* INPUTS photolysis.txt
