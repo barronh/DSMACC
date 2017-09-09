@@ -1,7 +1,7 @@
 # CRI with TUV Photolysis
 
 This folder contains the following files
- - cri.kpp: a file the contains kpp instructions to build a dsmacc model with CRI
+ - cri.kpp: a file the contains kpp syntax to build a dsmacc model with CRI
  - CRI_subset.kpp: the CRI subset from http://mcm.leeds.ac.uk/CRI/. File 
                    requires cleanup after download
  - cri_init.dat: initial conditions for a simple CRI simulation
@@ -15,3 +15,7 @@ conditions from cri_init.dat. This will produce three outputs:
  - cri_conc_1.dat
  - cri_rate_1.dat
  - cri.log
+
+To use another photolysis model (MCM standard or FAST-JX), comment
+out the `#INCLUDE tuv.inc` and uncomment out the other photolysis
+option.

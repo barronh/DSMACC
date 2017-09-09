@@ -1,3 +1,6 @@
+// CRI subset downloaded in September 2017
+//
+//
 #INLINE F90_GLOBAL 
  REAL(dp)::M, N2, O2, RO2, H2O 
 #ENDINLINE {above lines go into MODULE KPP_ROOT_Global}
