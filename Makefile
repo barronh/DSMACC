@@ -5,14 +5,14 @@ export KPP_HOME=$(PWD)/kpp
 all: testrun
 
 testrun: kpp/bin/kpp
-	cd cri_tuv && make
+	cd cri && make
 
 kpp/bin/kpp: Makefile.defs
 	cd kpp && make
 
 clean:
 	cd src && make -i distclean
-	cd cri_tuv && make -i clean
+	cd cri && make -i clean
 	cd tuv_new && make -i clean
 	cd UCI_fastJX72e && make -i clean
 	cd kpp && make -i clean

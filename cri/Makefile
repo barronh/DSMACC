@@ -22,7 +22,7 @@ INPUTS:
 	./$< cri_init.dat $*_conc_ $*_rate_  > $*.log 2>&1
 
 cri: cri.kpp ../src/global.inc ../src/mcmratedef.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
-	cd ../src && $(KPP_HOME)/bin/kpp ../cri_tuv/cri.kpp dsmacc && make && mv ../bin/dsmacc ../cri_tuv/cri
+	cd ../src && $(KPP_HOME)/bin/kpp ../cri/cri.kpp dsmacc && make && mv ../bin/dsmacc ../cri/cri
 
 clean:
 	rm -f cri cri_conc_*.dat cri_rate_*.dat cri.log *.png DATA* INPUTS photolysis.txt

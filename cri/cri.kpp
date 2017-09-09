@@ -1,7 +1,7 @@
 // include CRI_subset file generated from the MCM website
 // - include "inorganic chemistry"
 // - include "generic rate constants"
-#INCLUDE ../cri_tuv/CRI_subset.kpp 
+#INCLUDE ../cri/CRI_subset.kpp 
 
 #INCLUDE mcm.inc
 #INCLUDE tuv.inc

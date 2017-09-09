@@ -11,9 +11,9 @@ all:
 inputs:
 	ln -fs ../tuv_new/INPUTS ../tuv_new/DATA* .
 
-# build the standard cri_tuv model including f90 and objects
+# build the standard cri model including f90 and objects
 source:
-	cd ../cri_tuv; make cri
+	cd ../cri; make cri
 
 # Run the model and make a plot
 test:
