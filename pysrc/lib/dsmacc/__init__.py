@@ -29,6 +29,15 @@ def h2o_from_rh_and_temp(RH, TEMP):
 
 
 class model(object):
+    def __init__(self, outpath = None, delimiter = ',', globalkeys = ['time', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR']):
+        """
+            outpath - string for path of output
+            globalkeys - keys to output with concentrations
+        """
+        self.outpath = outpath
+        self.delimiter = delimiter
+        self.globalkeys = globalkeys
+        
     def custom_updateenv(self):
         """
         Called by updateenv before update_rconst. By default,
@@ -111,7 +120,7 @@ class model(object):
         for k, v in conc_ppb.items():
             pyglob.c[spc_names.index(k)] = v * CFACTOR
 
-    def output(self, globalkeys = [], restart = False):
+    def output(self, globalkeys = None, restart = False):
         """
         Arguments:
             globalkeys - list of keys to print from global environment
@@ -120,16 +129,18 @@ class model(object):
         Actions:
             saves current state to self.out
         """
+        if globalkeys is None:
+            globalkeys = self.globalkeys
         vals = tuple([getattr(pyglob, gk) for gk in globalkeys] + [(ci/pyglob.CFACTOR) for ci in pyglob.c[:]])
         if restart:
-            self.out = '\t'.join(globalkeys + spc_names)
-            self.fmt = '\t'.join(['%d'] + ['%.8e'] * (len(vals) - 1))
+            self.out = self.delimiter.join(globalkeys + spc_names)
+            self.fmt = self.delimiter.join(['%d'] + ['%.8e'] * (len(vals) - 1))
 
         # Write out tout results
         out = self.fmt % vals
         self.out += '\n' + out
 
-    def save(self, path = 'output.tsv', clear = True):
+    def save(self, path = None, clear = True):
         """
         Arguments:
             path - string path for output to be saved to
@@ -137,18 +148,21 @@ class model(object):
             
         Actions
         """
+        if path is None:
+            path = self.outpath
+        if path is None:
+            path = 'output.dat'
         # Archive results in a file
         outfile = open(path, 'w')
         outfile.write(self.out)
         outfile.close()
         if clear: self.out = ""
 
-    def run(self, jday_gmt, run_hours, dt, conc_ppb, globvar, initkwds = {}, atol = 1e-3, rtol = 1e-5, global_out_keys = ['time', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR']):
+    def run(self, jday_gmt, run_hours, dt, conc_ppb, globvar, initkwds = {}, atol = 1e-3, rtol = 1e-5):
         """
         - jday_gmt, conc_ppb, globvar and initkwds are used to initialize the model (See initialize)
         - run_hours and dt are used to configure integration and steps
         - atol and rtol are used to configure the solver
-        - global_out_keys list of keys to output from global environment
         
         basically:
             - configure integrate inputs
@@ -162,6 +176,7 @@ class model(object):
                 
             
         """
+        self.dt = dt
         # Prepare integrator
         integrate =kpp.pyint.integrate
         RSTATE = np.zeros(30, dtype = 'd')
@@ -176,7 +191,7 @@ class model(object):
         tend = pyglob.time + run_hours * 3600
         updateenv = self.updateenv
         output = self.output
-        output(globalkeys = global_out_keys, restart = True)
+        output(restart = True)
         
         # Loop through time until at end
         while pyglob.time < tend:
@@ -185,12 +200,76 @@ class model(object):
                 updateenv()
                 istatus, rstatus, ierr = integrate( tin = pyglob.time, tout = tout, icntrl_u = ICNTRL_U)
                 if ierr != 1:
-                    raise ValueError('Integration failed at ' + str(t))
+                    raise ValueError('Integration failed at ' + str(pyglob.time))
                 pyglob.time = rstatus[0]
             # show Local time for clarity
             #print(pyglob.JDAY_GMT+pyglob.LON/15./24, pyglob.THETA)
             # Write out tout results
-            output(globalkeys = global_out_keys, restart = False)
+            output(restart = False)
 
     
         self.save()
+
+class dynenv(model):
+    def __init__(self, outpath = None, delimiter = ',', envdata = None, emissdata = None, bkgdata = None, globalkeys = ['time', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR', 'PBL']):
+        """
+        Arguments:
+            outpath - path for output to be saved
+            envdata - dictionary of vectors (must contain JDAY_GMT) and optionally other
+                      global variables that influence model. PBL can also be supplied in meters.
+            emissdata - dictionary of vectors (must contain JDAY_GMT) and optionally species
+                        data in moles/area/s where area is cm2
+            bkgdata - dictionary of scalars optionally provides time-constant species
+                        data in ppb
+            globalkeys - keys for outputing global variables
+        """
+        import pandas as pd
+        self.globalkeys = globalkeys
+        self.outpath = outpath
+        self.delimiter = delimiter
+        self.envdata = envdata
+        self.emissdata = emissdata
+        self.updatebkg = not bkgdata is None
+        if self.updatebkg:
+            bkgc_ppb = self._bkgc_ppb = np.zeros_like(pyglob.c[:])
+            for k, v in bkgdata.items():
+                ki = spc_names.index(k)
+                bkgc_ppb[ki] = v
+                
+    def updateenv(self, **kwds):
+        """
+        updateenv is overwritten to first calculate interpolated
+        values and then call the original model updateenv
+        
+        uses optional keyword PBL to entrain air
+        """
+        globvar = kwds.copy()
+        t = pyglob.BASE_JDAY_GMT + pyglob.time / 3600. / 24.
+        xt = self.envdata['JDAY_GMT']
+        for k, yv in self.envdata.items():
+            if k != 'JDAY_GMT':
+                v = np.interp(t, xt, yv)
+                globvar[k] = v
+        emisvar = {}
+        for k, yv in self.emissdata.items():
+            if k != 'JDAY_GMT':
+                v = np.interp(t, xt, yv)
+                emisvar[k] = v
+        
+        if 'PBL' in globvar:
+            pyglob.PBL = newpbl = globvar.pop('PBL')
+            if self.updatebkg:
+                if hasattr(self, 'oldpbl'):
+                    dpbl = newpbl - self.oldpbl
+                    if dpbl > 0:
+                        fnew = dpbl / self.oldpbl
+                        fold = 1 - fnew
+                        pyglob.c[:] = pyglob.c[:] * fold + self._bkgc_ppb[:] * pyglob.CFACTOR * fnew
+                
+            newpbl_cm = newpbl * 100
+            for ek, ev in emisvar.items():
+                ki = spc_names.index(ek)
+                pyglob.c[:] += self.dt * ev * Avogadro / newpbl_cm
+            self.oldpbl = newpbl
+        
+        model.updateenv(self, **globvar)
