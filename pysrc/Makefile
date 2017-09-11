@@ -2,7 +2,6 @@
 
 ##############################################################################
 all:
-	make inputs
 	make source
 	make pykpp
 	make test
@@ -12,8 +11,9 @@ inputs:
 	ln -fs ../tuv_new/INPUTS ../tuv_new/DATA* .
 
 # build the standard cri model including f90 and objects
-source:
-	cd ../cri; make cri
+source: cri_mcmj.kpp ../src/global.inc ../src/mcmratedef.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
+	cd ../src && $(KPP_HOME)/bin/kpp ../pysrc/cri_mcmj.kpp dsmacc && make && mv ../bin/dsmacc ../cri/cri
+
 
 # Run the model and make a plot
 test:

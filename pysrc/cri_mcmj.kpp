@@ -1,0 +1,19 @@
+// included CRI_subset file generated from the MCM website
+// - includes "inorganic chemistry"
+// - includes "generic rate constants"
+#INCLUDE ../cri/CRI_subset.kpp 
+
+// Using the mcm configuration of dsmacc
+#INCLUDE mcm.inc
+
+// Using the tuv photolysis of dsmacc
+//#INCLUDE tuv.inc
+// alternative photolysis mechanisms
+// FAST-JX vs 72e from UCI
+//#INCLUDE fastjx.inc
+// MCM photolysis from fit
+#INCLUDE mcmj.inc
+
+#MONITOR O3; NO2; NO;
+#LOOKATALL;
+    
