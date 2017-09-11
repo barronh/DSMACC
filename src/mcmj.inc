@@ -85,7 +85,7 @@
           MCMJ=MCM_J(TJ)
           IF (MCMJ.ne.0) THEN
           J = MCM_L(IJ) * COSX**MCM_M(IJ) * EXP(-MCM_N(KJ) / COSX)
-          WRITE(*,*) MCMJ, MCM_L(MCMJ), MCM_M(MCMJ), MCM_N(MCMJ), J
+          WRITE(*,'(I2,x,ES9.3,x,F7.3,x,F7.3x,F7.3)') MCMJ, MCM_L(MCMJ), MCM_M(MCMJ), MCM_N(MCMJ), J
           ENDIF
         ENDDO
     ENDIF
