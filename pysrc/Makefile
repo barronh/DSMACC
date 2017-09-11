@@ -36,4 +36,4 @@ kpp.pyf: ../src/dsmacc_Precision.f90
 	python makekpp_pyf.py
 
 clean:
-	rm -f kpp.pyf photolysis.txt *.so *.tsv *.png INPUTS DATA*
+	rm -f kpp.pyf photolysis.txt *.so *.tsv *.png INPUTS DATA* *.dat
