@@ -178,7 +178,6 @@ class model(object):
         output = self.output
         output(globalkeys = global_out_keys, restart = True)
         
-        print('JDAY_LST', pyglob.THETA, pyglob.CFACTOR)
         # Loop through time until at end
         while pyglob.time < tend:
             tout = pyglob.time+dt
