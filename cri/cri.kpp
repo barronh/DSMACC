@@ -6,7 +6,7 @@
 // Using the mcm configuration of dsmacc
 #INCLUDE mcm.inc
 
-//Using the tuv photolysis of dsmacc
+// Using the tuv photolysis of dsmacc
 #INCLUDE tuv.inc
 // alternative photolysis mechanisms
 // FAST-JX vs 72e from UCI
