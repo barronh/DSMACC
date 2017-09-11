@@ -5,9 +5,9 @@
 
 python module kpp ! in 
     interface  ! in :kpp
-        module dsmacc_precision ! in :kpp:dsmacc_Parameters.f90
+        module dsmacc_precision ! in :kpp:dsmacc_Precision.f90
             integer, public,parameter,optional :: dp=8
-        end module dsmacc_parameters
+        end module dsmacc_precision
         module dsmacc_parameters ! in :kpp:dsmacc_Parameters.f90
             !Note that these parameters must be updated
             !manually
@@ -76,3 +76,5 @@ end python module kpp
 
 ! This file was auto-generated with f2py (version:2).
 ! See http://cens.ioc.ee/projects/f2py2e/
+!
+! And updated extensively by Barron Henderson
