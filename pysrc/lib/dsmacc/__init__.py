@@ -69,7 +69,11 @@ class model(object):
         # Calculate the CFACTOR (c_air [=] molecules/cm3
         for k, v in kwds.items():
             if hasattr(pyglob, k):
-                setattr(pyglob, k, v)
+                globv = getattr(pyglob, k)
+                if globv.size > 1:
+                    globv[:] = np.ones_like(globv[:]) * v
+                else:
+                    setattr(pyglob, k, v)
             elif 'RH_pct' == k:
                 pyglob.H2O=h2o_from_rh_and_temp(v, pyglob.TEMP)
             else:
@@ -245,16 +249,19 @@ class dynenv(model):
         """
         globvar = kwds.copy()
         t = pyglob.BASE_JDAY_GMT + pyglob.time / 3600. / 24.
-        xt = self.envdata['JDAY_GMT']
-        for k, yv in self.envdata.items():
-            if k != 'JDAY_GMT':
-                v = np.interp(t, xt, yv)
-                globvar[k] = v
+        if not self.envdata is None:
+            xt = self.envdata['JDAY_GMT']
+            for k, yv in self.envdata.items():
+                if k != 'JDAY_GMT':
+                    v = np.interp(t, xt, yv)
+                    globvar[k] = v
         emisvar = {}
-        for k, yv in self.emissdata.items():
-            if k != 'JDAY_GMT':
-                v = np.interp(t, xt, yv)
-                emisvar[k] = v
+        if not self.emissdata is None:
+            xt = self.emissdata['JDAY_GMT']
+            for k, yv in self.emissdata.items():
+                if k != 'JDAY_GMT':
+                    v = np.interp(t, xt, yv)
+                    emisvar[k] = v
         
         if 'PBL' in globvar:
             pyglob.PBL = newpbl = globvar.pop('PBL')
