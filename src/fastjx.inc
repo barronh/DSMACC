@@ -34,9 +34,9 @@
         write(*,*) 'ERROR', JIDX, ' greater than available ', NJ
         STOP
        ENDIF
-       !DO JIN=JIDX,JIDX !1,NRATJ
-       !     WRITE(*,'(I2,x,A,x,A,x,e8.2,x,e8.2)') JIN,JLABELS(JIN),JVMAPS(JIN),JFACTORS(JIN),JVALUES(JINDS(JIN))
-       !ENDDO
+       ! For debugging FAST-JX
        J = JFACTORS(JIDX)*JVALUES(JINDS(JIDX))
+       ! WRITE(*,'(I2,x,A30,x,A6,x,es8.2,x,es8.2,x,es8.2)') JIDX,JLABELS(JIDX),JVMAPS(JIDX),JFACTORS(JIDX),JVALUES(JINDS(JIDX)),J
+       RETURN 
   END FUNCTION J
 #ENDINLINE
