@@ -53,11 +53,13 @@ python module kpp ! in
             real(kind=dp), public :: RO2
             real(kind=dp), public :: H2O
             real(kind=dp), public :: time
+            real(kind=dp), parameter, public :: KJ=61
             real(kind=dp), public,dimension((nspec)) :: c
             real(kind=dp), public,dimension((nreact)) :: rconst
             real(kind=dp), public,dimension((nvar)) :: atol
             real(kind=dp), public,dimension((nvar)) :: rtol
             real(kind=dp), public,dimension((nreact)) :: irr
+            real(kind=dp), public,dimension((KJ)) :: JSCALE
         end module pyglob
         module pyrate
             subroutine update_rconst ! in :kpp:dsmacc_Rates.f90:dsmacc_rates
