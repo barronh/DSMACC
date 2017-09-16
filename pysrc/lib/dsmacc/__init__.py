@@ -8,6 +8,8 @@ pyglob = kpp.pyglob
 pyrate = kpp.pyrate
 pymon = kpp.pymon
 
+_instance_count = 0
+
 # Get spc_names as a string
 spc_names = [n.decode('ASCII') for n in np.char.strip(kpp.pymon.getnames().copy().view('S24')[:, 0]).tolist()]
 
@@ -32,16 +34,30 @@ def h2o_from_rh_and_temp(RH, TEMP):
 
 
 class model(object):
+    def __del__(self):
+        global _instance_count
+        _instance_count -= 1
+    
     def __init__(self, outconcpath = None, outratepath = None, delimiter = ',', globalkeys = ['time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR']):
         """
             outconcpath - path for output concentrations to be saved (ppb)
             outratepath - path for output rates to be saved (1/s, cm3/molecules/s)
             globalkeys - keys to output with concentrations
         """
+        global _instance_count
+        if _instance_count > 0:
+            raise ValueError('You may only have one DSMACC instance open per session; currently %d' % _instance_count)
+        else:
+            _instance_count += 1
+
+
         self.outconcpath = outconcpath
         self.outratepath = outratepath
         self.delimiter = delimiter
         self.globalkeys = globalkeys
+        self._pyglob = pyglob
+        self._pyrate = pyrate
+        self._pymon = pymon
         
     def custom_before_rconst(self):
         """
@@ -132,7 +148,6 @@ class model(object):
     
         # Set default concentration for all species
         CFACTOR =pyglob.CFACTOR
-        print(CFACTOR)
         pyglob.c[:] = default*CFACTOR;
 
         # Set initial values for any species in conc_ppb
@@ -261,10 +276,8 @@ class dynenv(model):
             globalkeys - keys for outputing global variables
         """
         import pandas as pd
-        self.globalkeys = globalkeys
-        self.outconcpath = outconcpath
-        self.outratepath = outratepath
-        self.delimiter = delimiter
+        super(dynenv, self).__init__(outconcpath = outconcpath, outratepath = outratepath, delimiter = delimiter, globalkeys = globalkeys)
+        
         self.envdata = envdata
         self.emissdata = emissdata
         self.updatebkg = not bkgdata is None
@@ -313,4 +326,4 @@ class dynenv(model):
                 pyglob.c[:] += self.dt * ev * Avogadro / newpbl_cm
             self.oldpbl = newpbl
         
-        model.updateenv(self, **globvar)
+        super(dynenv, self).updateenv(**globvar)
