@@ -19,7 +19,7 @@ kppmod = Extension('dsmacc.kpp',
                 library_dirs = ['../tuv_new/', '../UCI_fastJX72e/'],
                 libraries = ['tuv', 'fastjx'],
                 include_dirs = ['.', '../src'],
-                extra_f90_compile_args = ['-cpp', '-O0'])
+                extra_f90_compile_args = ['-cpp', '-O2'])
 if __name__ == '__main__':
     setup (name = 'dsmacc',
            version = '1.0',
@@ -30,18 +30,3 @@ if __name__ == '__main__':
            package_dir = {'': 'lib'},
            packages = ['dsmacc'],
            ext_modules = [kppmod])
-
-# def configuration(parent_package='', top_path='.'):
-#     from numpy.distutils.misc_util import Configuration
-#     config = Configuration('dsmacc',parent_package, top_path, )
-#     config.add_extension('kpp',
-#                 sources = ['kpp.pyf', 'pyint.f90', 'pyglob.f90', 'pyrate.f90', 'pymon.f90'] + glob('../src/dsmacc_*.f90'),
-#                 library_dirs = ['../tuv_new/', '../UCI_fastJX72e/'],
-#                 libraries = ['tuv', 'fastjx'],
-#                 include_dirs = ['.', '../src'],
-#                 extra_f90_compile_args = ['-cpp', '-O0'])
-#     return config
-# 
-# if __name__ == '__main__':
-#     from numpy.distutils.core import setup
-#     setup(**configuration(top_path='.').todict())
