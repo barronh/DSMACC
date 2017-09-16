@@ -12,7 +12,7 @@ inputs:
 
 # build the standard cri model including f90 and objects
 source: cri_mcmj.kpp ../src/global.inc ../src/mcmratedef.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
-	cd ../src && $(KPP_HOME)/bin/kpp ../pysrc/cri_mcmj.kpp dsmacc && make && rm ../bin/dsmacc
+	cd ../src && make distclean && $(KPP_HOME)/bin/kpp ../pysrc/cri_mcmj.kpp dsmacc #&& make && rm ../bin/dsmacc
 
 
 # Run the model and make a plot
