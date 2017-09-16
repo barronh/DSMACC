@@ -53,7 +53,6 @@ python module kpp ! in
             real(kind=dp), public :: RO2
             real(kind=dp), public :: H2O
             real(kind=dp), public :: time
-            real(kind=dp), parameter, public :: KJ=61
             real(kind=dp), public,dimension((nspec)) :: c
             real(kind=dp), public,dimension((nreact)) :: rconst
             real(kind=dp), public,dimension((nvar)) :: atol
