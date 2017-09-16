@@ -72,6 +72,11 @@ python module kpp ! in
                 use dsmacc_monitor, only: spc_names
                 character, dimension(nspec,24) :: out_names
             end function getnames
+            function geteqnnames() result (out_names) ! in :kpp:pymon.f90:pymon
+                use dsmacc_parameters, only: nreact
+                use dsmacc_monitor, only: eqn_names
+                character, dimension(nreact,100) :: out_names
+            end function geteqnnames
         end module pymon
     end interface 
 end python module kpp

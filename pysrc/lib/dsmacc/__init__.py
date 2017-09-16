@@ -11,6 +11,9 @@ pymon = kpp.pymon
 # Get spc_names as a string
 spc_names = [n.decode('ASCII') for n in np.char.strip(kpp.pymon.getnames().copy().view('S24')[:, 0]).tolist()]
 
+# Get spc_names as a string
+eqn_names = [n.decode('ASCII') for n in np.char.strip(kpp.pymon.geteqnnames().copy().view('S100')[:, 0]).tolist()]
+
 
 def h2o_from_rh_and_temp(RH, TEMP):
     """
@@ -29,18 +32,28 @@ def h2o_from_rh_and_temp(RH, TEMP):
 
 
 class model(object):
-    def __init__(self, outpath = None, delimiter = ',', globalkeys = ['time', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR']):
+    def __init__(self, outconcpath = None, outratepath = None, delimiter = ',', globalkeys = ['time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR']):
         """
-            outpath - string for path of output
+            outconcpath - path for output concentrations to be saved (ppb)
+            outratepath - path for output rates to be saved (1/s, cm3/molecules/s)
             globalkeys - keys to output with concentrations
         """
-        self.outpath = outpath
+        self.outconcpath = outconcpath
+        self.outratepath = outratepath
         self.delimiter = delimiter
         self.globalkeys = globalkeys
         
-    def custom_updateenv(self):
+    def custom_before_rconst(self):
         """
         Called by updateenv before update_rconst. By default,
+        this does nothing. Overwrite in subclass with custom 
+        updates to pyglob.
+        """
+        return
+    
+    def custom_after_rconst(self):
+        """
+        Called by updateenv after update_rconst. By default,
         this does nothing. Overwrite in subclass with custom 
         updates to pyglob.
         """
@@ -57,8 +70,9 @@ class model(object):
         - sets LON (degE), LAT (degN), TEMP (K), PRESS (Pa)
         - sets O2, N2, H2, H2O in molecules/cm3
         - sets CFACTOR to convert from ppb to molecules/cm3
-        - calls custom_updateenv, which should be overwritten
+        - calls custom_before_rconst, which should be overwritten
         - updates rate constants
+        - calls custom_after_rconst, which should be overwritten
     
         Can be edited called with arguments
         """
@@ -88,8 +102,9 @@ class model(object):
         pyglob.CH4=CH4_vmr*pyglob.M
 
         
-        self.custom_updateenv()
+        self.custom_before_rconst()
         pyrate.update_rconst()
+        self.custom_after_rconst()
 
     def initialize(self, JDAY_GMT, conc_ppb = {}, globvar = {}, default = 1e-32):
         """
@@ -122,7 +137,10 @@ class model(object):
 
         # Set initial values for any species in conc_ppb
         for k, v in conc_ppb.items():
-            pyglob.c[spc_names.index(k)] = v * CFACTOR
+            if k in spc_names:
+                pyglob.c[spc_names.index(k)] = v * CFACTOR
+            else:
+                warn('%s not in mechanism' % k)
 
     def output(self, globalkeys = None, restart = False):
         """
@@ -135,32 +153,46 @@ class model(object):
         """
         if globalkeys is None:
             globalkeys = self.globalkeys
-        vals = tuple([getattr(pyglob, gk) for gk in globalkeys] + [(ci/pyglob.CFACTOR) for ci in pyglob.c[:]])
+        outconcvals = tuple([getattr(pyglob, gk, np.nan) for gk in globalkeys] + [(ci/pyglob.CFACTOR) for ci in pyglob.c[:]])
+        outratevals = tuple([getattr(pyglob, gk, np.nan) for gk in globalkeys] + [(ri) for ri in pyglob.rconst[:]])
         if restart:
-            self.out = self.delimiter.join(globalkeys + spc_names)
-            self.fmt = self.delimiter.join(['%d'] + ['%.8e'] * (len(vals) - 1))
+            self.outconc = self.delimiter.join(globalkeys + spc_names)
+            self.outrate = self.delimiter.join(globalkeys + eqn_names)
+            self.fmtoutconc = self.delimiter.join(['%d'] + ['%.8e'] * (len(outconcvals) - 1))
+            self.fmtoutrate = self.delimiter.join(['%d'] + ['%.8e'] * (len(outratevals) - 1))
 
         # Write out tout results
-        out = self.fmt % vals
-        self.out += '\n' + out
+        outconc = self.fmtoutconc % outconcvals
+        self.outconc += '\n' + outconc
+        outrate = self.fmtoutrate % outratevals
+        self.outrate += '\n' + outrate
 
-    def save(self, path = None, clear = True):
+    def save(self, concpath = None, ratepath = None, clear = True):
         """
         Arguments:
-            path - string path for output to be saved to
+            concpath - string path for output concentrations to be saved to
+            ratepath - string path for output rates to be saved to
             clear - boolean to erase self.out after savign
             
         Actions
         """
-        if path is None:
-            path = self.outpath
-        if path is None:
-            path = 'output.dat'
+        if concpath is None:
+            concpath = self.outconcpath
+        if concpath is None:
+            concpath = 'output.dat'
+        if ratepath is None:
+            ratepath = self.outratepath
+        if ratepath is None:
+            ratepath = 'rate.dat'
         # Archive results in a file
-        outfile = open(path, 'w')
-        outfile.write(self.out)
+        outfile = open(concpath, 'w')
+        outfile.write(self.outconc)
         outfile.close()
-        if clear: self.out = ""
+        outfile = open(ratepath, 'w')
+        outfile.write(self.outrate)
+        outfile.close()
+        if clear: self.outconc = ""
+        if clear: self.outrate = ""
 
     def run(self, jday_gmt, run_hours, dt, conc_ppb, globvar, initkwds = {}, atol = 1e-3, rtol = 1e-5):
         """
@@ -215,10 +247,11 @@ class model(object):
         self.save()
 
 class dynenv(model):
-    def __init__(self, outpath = None, delimiter = ',', envdata = None, emissdata = None, bkgdata = None, globalkeys = ['time', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR', 'PBL']):
+    def __init__(self, outconcpath = None, outratepath = None, delimiter = ',', envdata = None, emissdata = None, bkgdata = None, globalkeys = ['time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR', 'PBL']):
         """
         Arguments:
-            outpath - path for output to be saved
+            outconcpath - path for output concentrations to be saved (ppb)
+            outratepath - path for output rates to be saved (1/s, cm3/molecules/s)
             envdata - dictionary of vectors (must contain JDAY_GMT) and optionally other
                       global variables that influence model. PBL can also be supplied in meters.
             emissdata - dictionary of vectors (must contain JDAY_GMT) and optionally species
@@ -229,7 +262,8 @@ class dynenv(model):
         """
         import pandas as pd
         self.globalkeys = globalkeys
-        self.outpath = outpath
+        self.outconcpath = outconcpath
+        self.outratepath = outratepath
         self.delimiter = delimiter
         self.envdata = envdata
         self.emissdata = emissdata
