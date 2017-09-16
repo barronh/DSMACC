@@ -7,13 +7,7 @@
 //   the function J = 
 #INLINE F90_GLOBAL
   INTEGER, parameter :: KJ=61
-  REAL(dp) :: JSCALE(KJ) = &
-            (/ 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0,&
-               1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0,&
-               1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0,&
-               1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0,&
-               1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0,&
-               1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0, 1.d0 /)
+  REAL(dp) :: JSCALE = 1.d0
   ! variables for zenith routine which calculates zenith angle
   REAL(dp) cosx
 #ENDINLINE 
@@ -96,6 +90,6 @@
           ENDIF
         ENDDO
     ENDIF
-    J = MCM_L(IJ) * COSX**MCM_M(IJ) * EXP(-MCM_N(KJ) / COSX) *  JSCALE(IJ)
+    J = MCM_L(IJ) * COSX**MCM_M(IJ) * EXP(-MCM_N(KJ) / COSX) *  JSCALE
   END FUNCTION J
 #ENDINLINE

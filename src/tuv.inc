@@ -2,6 +2,7 @@
     !Photolysis variables
     include '../tuv_new/params'
     REAL*8::bs(19,kj), cs(19,kj),ds(19,kj)
+    REAL*8::JSCALE = 1.0d0
     REAL::svj_tj(kt,kj), szas(kt)
     CHARACTER*50 JLABELS(kj)
     TYPE JMAP
@@ -119,7 +120,7 @@
     DO i=1,NMCMJ
       mcmi = JMAPPING(i)%%%%mcmj
       IF (mcmi .eq. IJ) THEN
-        J = TUV_J(JMAPPING(i)%%%%tuvj, THETA, JMAPPING(i)%%%%factor)
+        J = TUV_J(JMAPPING(i)%%%%tuvj, THETA, JMAPPING(i)%%%%factor) * JSCALE
         IF (FIRST) THEN
           WRITE(*,*) '* START TUV -> MCM Mapping Confirmation *'
           DO JL = 1,NMCMJ
