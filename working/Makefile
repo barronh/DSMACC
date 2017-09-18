@@ -37,7 +37,7 @@ Spec_diurnal_1.dat: $(MODEL) Init_cons.dat.diurnal INPUTS
 	./$< Init_cons.dat.diurnal Spec_diurnal_ Rate_diurnal_ 1> diurnal.log 2>&1
 
 $(MODEL): $(MODEL).kpp ../src/global.inc ../src/mcmratedef.inc ../src/io.inc ../driver.f90 ../src/tuv.inc ../src/fastjx.inc ../kpp/bin/kpp
-	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../working/$(MODEL).kpp dsmacc && make && mv ../bin/dsmacc ../working/$(MODEL)
+	cd ../src && rm -f depend.mk && ../kpp/bin/kpp ../working/$(MODEL).kpp dsmacc ; make && mv ../bin/dsmacc ../working/$(MODEL)
 
 clean:
 	rm -f $(MODEL) Spec*.dat Rate*.dat *.png *.log
