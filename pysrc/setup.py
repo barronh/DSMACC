@@ -15,7 +15,7 @@ def makekpp():
 makekpp()
 
 kppmod = Extension('dsmacc.kpp',
-                sources = ['kpp.pyf', 'pyint.f90', 'pyglob.f90', 'pyrate.f90', 'pymon.f90'] + glob('../src/dsmacc_*.f90'),
+                sources = ['kpp.pyf', '../src/dsmacc_Precision.f90', '../src/dsmacc_Parameters.f90', '../src/dsmacc_Function.f90', '../src/dsmacc_Global.f90', '../src/dsmacc_JacobianSP.f90', '../src/dsmacc_Jacobian.f90', '../src/dsmacc_LinearAlgebra.f90', '../src/dsmacc_Rates.f90', '../src/dsmacc_Integrator.f90', '../src/dsmacc_Monitor.f90', '../src/dsmacc_Util.f90', '../src/dsmacc_Initialize.f90', '../src/dsmacc_Main.f90', '../src/dsmacc_StoichiomSP.f90', '../src/dsmacc_Stoichiom.f90', '../src/dsmacc_Model.f90', 'pyint.f90', 'pyglob.f90', 'pyrate.f90', 'pymon.f90'],
                 library_dirs = ['../tuv_new/', '../UCI_fastJX72e/'],
                 libraries = ['tuv', 'fastjx'],
                 include_dirs = ['.', '../src'],
