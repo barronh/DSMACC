@@ -3404,7 +3404,7 @@ SUBROUTINE INTEGRATE( TIN, TOUT, &
       IMPLICIT NONE
 
       KPP_REAL :: V(NVAR), T, TOLD
-      INTEGER :: I, J, N, ML, MU, NROWPD
+      INTEGER :: III, JJI, N, ML, MU, NROWPD
 #ifdef FULL_ALGEBRA    
       KPP_REAL :: JV(LU_NONZERO), JF(NVAR,NVAR)
 #else
@@ -3420,13 +3420,13 @@ SUBROUTINE INTEGRATE( TIN, TOUT, &
     
 #ifdef FULL_ALGEBRA    
       CALL Jac_SP(V, FIX, RCONST, JV)
-      DO j=1,NVAR
-      DO i=1,NVAR
-         JF(i,j) = 0.0d0
+      DO JJI=1,NVAR
+      DO III=1,NVAR
+         JF(III,JJI) = 0.0d0
       END DO
       END DO
-      DO i=1,LU_NONZERO
-         JF(LU_IROW(i),LU_ICOL(i)) = JV(i)
+      DO III=1,LU_NONZERO
+         JF(LU_IROW(III),LU_ICOL(III)) = JV(III)
       END DO
 #else
       CALL Jac_SP(V, FIX, RCONST, JF) 
