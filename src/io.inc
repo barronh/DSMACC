@@ -1,14 +1,32 @@
 #INLINE F90_UTIL
-
+    SUBROUTINE ShowHelp()
+        WRITE(6,*) "There are 3 optional arguments:"
+        WRITE(6,*) " - initpath: path to initialization file with 3 header lines"
+        WRITE(6,*) "   and N data lines."
+        WRITE(6,*) "      - First line (i10) indicates "
+        WRITE(6,*) "        integration time (>0), constrained (-1) or diurnal"
+        WRITE(6,*) "        steady-state constrained (-2) run. "
+        WRITE(6,*) "      - The second line (10000(a15,x)) has the names of "
+        WRITE(6,*) "        species or global properties (e.g., JDAY_GMT, TEMP_K,"
+        WRITE(6,*) "        PRESS_hPa, LON_degE, LAT_degN). "
+        WRITE(6,*) "      - The third line (10000(i15,x)) has 1 (yes) or 0 (no)"
+        WRITE(6,*) "        indicating if the species will be constrained"
+        WRITE(6,*) "      - The data lines (10000(e15.4,x)) specify data values"
+        WRITE(6,*) " - concpath: prefix path to write out concentrations in volume "
+        WRITE(6,*) "   mixing ratios. Run number and .dat will be appended)"
+        WRITE(6,*) " - ratepath: prefix path to write out reaction rates (1/s, "
+        WRITE(6,*) "   cm3/molecule/s). Run number and .dat will be appended)"
+        WRITE(6,*) ""
+        WRITE(6,*) "This warning is shown if any are not provided, even though"
+        WRITE(6,*) "default values will be tested."
+    END SUBROUTINE ShowHelp
     SUBROUTINE NewInitVal (counter )
     
-      USE dsmacc_Global
-      use dsmacc_Monitor
-    
-      INTEGER :: i,j,found, counter, STATUS, ARGLEN
+      INTEGER :: i,JJI,found, counter, STATUS, ARGLEN
       REAL(kind=dp) :: x
       CHARACTER(LEN=10000) :: line, INPATH
       CHARACTER(LEN=15) :: test
+      CHARACTER(LEN=24) :: THIS_SPEC_NAME
       REAL(kind=dp) :: concs(10000)
       REAL(kind=dp) :: oldvar(10000)
       LOGICAL :: SPECIAL
@@ -21,9 +39,8 @@
       call flush(6)
     
     
-      DO I=1,NVAR
+      DO I=1,NSPEC
          OLDVAR(I)=C(I)
-         VAR(I)=0.
          C(I)=0.
       ENDDO
       SAREA=0.
@@ -32,10 +49,16 @@
     
       IF (counter .eq. 0) then 
         IF (COMMAND_ARGUMENT_COUNT() == 0) THEN
-           WRITE(6,*) "There were no command arguments; using Init_cons.dat"
+           WRITE(6,*) "There were no command arguments; using Init_cons.dat."
+           WRITE(6,*) "Use -h for more details"
            INPATH = 'Init_cons.dat'
         ELSE
-           CALL GET_COMMAND_ARGUMENT(1, VALUE = INPATH, LENGTH = ARGLEN, STATUS = STATUS)	
+           CALL GET_COMMAND_ARGUMENT(1, VALUE = INPATH, LENGTH = ARGLEN, STATUS = STATUS)
+           SELECT CASE (TRIM(ADJUSTL(INPATH)))
+                  CASE ('-h', '--help')
+                    CALL ShowHelp
+                    STOP
+           END SELECT
            IF (STATUS .ne. 0) THEN
                STOP 'INPATH was truncated'
            ENDIF
@@ -98,6 +121,9 @@
          READ(21,'(10000(a15,x))') spec_name
          READ(21,'(10000(i15,x))') const_method     
       ENDIF
+      DO JJI=1,NSPEC 
+         SPEC_NAME(I)=ADJUSTL(SPEC_NAME(I))
+      ENDDO
     
       IF (COUNTER .NE. 0) THEN 
     
@@ -106,221 +132,123 @@
          LAST_POINT=.TRUE.
       ENDIF
       DO I=1,10000
+         IF (TRIM(SPEC_NAME(I)).eq.'') CYCLE
          FOUND=0
-         IF (SPEC_NAME(I) .NE. '') THEN
-            
-            DO J=1,NVAR 
-               
-               SPEC_NAME(I)=ADJUSTL(SPEC_NAME(I))
-               
-               IF (TRIM(SPEC_NAME(I)) .EQ. TRIM(SPC_NAMES(J))) THEN 
-                  FOUND=1
-                  VAR(J)=CONCS(I)
-                  IF (const_method(i) .EQ. 1) CONSTRAIN(J)=CONCS(I)
-                  IF (SPEC_NAME(I) .EQ. 'CH4') SPEC_CH4=.TRUE.
-                  IF (SPEC_NAME(I) .EQ. 'H2') SPEC_H2=.TRUE.
-               ENDIF
-            ENDDO
-    
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'H2O') THEN
+         DO JJI=1,NSPEC 
+            IF (TRIM(SPEC_NAME(I)) .EQ. TRIM(SPC_NAMES(JJI))) THEN 
                FOUND=1
+               C(JJI)=CONCS(I)
+               IF (const_method(i) .EQ. 1) CONSTRAIN(JJI)=CONCS(I)
+               IF (SPEC_NAME(I) .EQ. 'CH4') SPEC_CH4=.TRUE.
+               IF (SPEC_NAME(I) .EQ. 'H2') SPEC_H2=.TRUE.
+            ENDIF
+         ENDDO
+         THIS_SPEC_NAME = TRIM(SPEC_NAME(I))
+         ! Check for Global Variables
+         ! by name
+         SELECT CASE (THIS_SPEC_NAME)
+            CASE('H2O')
                H2O=CONCS(I)
-            ENDIF
-    
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'PRESS_hPa') THEN 
-               FOUND=1
+            CASE('PRESS_hPa')
                PRESS=CONCS(I)
-            ENDIF
-    
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'NOx') THEN
-               FOUND=1
+            CASE('NOx')
                CONSTRAIN_NOX=.TRUE.
                WRITE (6,*) 'Constraining total NOx concentration'
-            ENDIF
-    
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'LAT_degN') THEN
-               FOUND=1
+            CASE('LAT_degN')
                LAT=CONCS(I)
-            ENDIF
-    
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'LON_degE') THEN 
-               FOUND=1
+            CASE('LON_degE') 
                LON=CONCS(I)
-            ENDIF
-    
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'TEMP_K') THEN
-               FOUND=1
+            CASE('TEMP_K')
                TEMP=CONCS(I)
-            ENDIF
-            
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'JDAY_GMT') THEN 
-               FOUND=1
+            CASE('JDAY_GMT') 
                JDAY_GMT=CONCS(I)
-            ENDIF
-    
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'TIME(GMTs)') THEN
-               FOUND=1
-               
-            ENDIF
-    
-            IF (TRIM(SPEC_NAME(I)) .EQ. 'O3COL_DU') THEN
-               FOUND=1
+            CASE('TIME(GMTs)')
+            CASE('O3COL_DU')
                O3COL=CONCS(I)
-            ENDIF
-    
-        IF (TRIM(SPEC_NAME(I)) .EQ. 'ALBEDO') THEN 
-           FOUND=1
+            CASE('ALBEDO') 
                ALBEDO=CONCS(I)
-        ENDIF
-    
-        IF (TRIM(SPEC_NAME(I)) .EQ. 'SAREA') THEN 
-           FOUND=1
-           SAREA=CONCS(I)
-        ENDIF
-            
-        IF (TRIM(SPEC_NAME(I)) .EQ. 'RP1') THEN 
-           FOUND=1
-           RP1=CONCS(I)
-        ENDIF
-    
-        IF (TRIM(SPEC_NAME(I)) .EQ. 'JNO2_per_s') THEN
-           FOUND=1
-               IF (CONST_METHOD(I) .GE. 1) THEN 
+            CASE('SAREA') 
+               SAREA=CONCS(I)
+            CASE('RP1') 
+               RP1=CONCS(I)
+            CASE('JNO2_per_s')
+               IF (CONST_METHOD(I) .GE. 1) THEN
                    JNO2=CONCS(I)
-           ENDIF 
+               ENDIF 
                JREPEAT=0
-           IF (CONST_METHOD(I) .EQ. 2) THEN 
-            JREPEAT=1
-           ENDIF        
-        ENDIF
-            
-        IF (TRIM(SPEC_NAME(I)) .EQ. 'JO1D_per_s') THEN
-           FOUND=1
-           IF (CONST_METHOD(I) .GE. 1) THEN 
-               JO1D=CONCS(I)
-           ENDIF
-           JREPEAT=0
-           IF (CONST_METHOD(I) .EQ. 2) THEN 
-               JREPEAT=1
+               IF (CONST_METHOD(I) .EQ. 2) THEN
+                   JREPEAT=1
+               ENDIF
+            CASE('JO1D_per_s')
+               IF (CONST_METHOD(I) .GE. 1) THEN
+                   JO1D=CONCS(I)
+               ENDIF
+               JREPEAT=0
+               IF (CONST_METHOD(I) .EQ. 2) THEN
+                   JREPEAT=1
                ENDIF    
-            ENDIF
-         ENDIF
-          IF (TRIM(SPEC_NAME(I)) .NE. '' .AND. FOUND .EQ. 0) THEN
-             WRITE (6,*) SPEC_NAME(I),' NOT FOUND'
-             IF (SPEC_NAME(I)(1:1) .NE. 'X') STOP
-             WRITE (6,*) 'Starts with an X so ignored and continued'   
-          ENDIF
+            CASE DEFAULT
+                IF (FOUND .eq. 0) THEN
+                    WRITE (6,*) SPEC_NAME(I),' NOT FOUND'
+                    IF (SPEC_NAME(I)(1:1) .NE. 'X') STOP
+                    WRITE (6,*) 'Starts with an X so ignored and continued'   
+                ENDIF
+        END SELECT
       ENDDO
          
       CFACTOR=PRESS*1e2*1e-6/(8.314*TEMP)*6.022E23
       
       H2O=H2O*CFACTOR 
-      DO I=1,NVAR
-         VAR(I)=VAR(I)*CFACTOR
+      DO I=1,NSPEC
+         C(I)=C(I)*CFACTOR
     !     IF (OLDVAR(I) .NE. CONSTRAIN(I)) THEN 
           CONSTRAIN(I)=CONSTRAIN(I)*CFACTOR
     !  ENDIF
       ENDDO
     
-     DO I=1,NVAR
+     DO I=1,NSPEC
     !    C(I)=0.
-    !     IF (VAR(I) .EQ. 0) VAR(I)=OLDVAR(I)  
-      ENDDO
+    !     IF (C(I) .EQ. 0) C(I)=OLDVAR(I)  
+     ENDDO
     
     ! FIND NOX species
-      IF (CONSTRAIN_NOX) THEN 
-      COUNT_NOX_CONSTRAINTS=0
-      DO I=1,NVAR 
-         IF (TRIM(SPC_NAMES(I)) .EQ. 'NO2') THEN
-            NOX(I)=1
-            CONSTRAIN(I)=-1.*CONSTRAIN(I)
-            IF (CONSTRAIN(I) .NE. 0) THEN 
-               COUNT_NOX_CONSTRAINTS=COUNT_NOX_CONSTRAINTS+1
-            ENDIF
-         ENDIF 
-    
-         IF (TRIM(SPC_NAMES(I)) .EQ. 'NO') THEN
-            NOX(I)=1
-            CONSTRAIN(I)=-1.*CONSTRAIN(I)
-            IF (CONSTRAIN(I) .NE. 0) THEN 
-               COUNT_NOX_CONSTRAINTS=COUNT_NOX_CONSTRAINTS+1
-            ENDIF
-         ENDIF
-    
-         IF (TRIM(SPC_NAMES(I)) .EQ. 'NO3') THEN 
-            NOX(I)=1
-            CONSTRAIN(I)=-1.*CONSTRAIN(I)
-              IF (CONSTRAIN(I) .NE. 0) THEN 
-               COUNT_NOX_CONSTRAINTS=COUNT_NOX_CONSTRAINTS+1
-            ENDIF
-         ENDIF
-    
-         IF (TRIM(SPC_NAMES(I)) .EQ. 'N2O5') THEN
-            NOX(I)=2
-            CONSTRAIN(I)=-1.*CONSTRAIN(I)
-              IF (CONSTRAIN(I) .NE. 0) THEN 
-               COUNT_NOX_CONSTRAINTS=COUNT_NOX_CONSTRAINTS+1
-            ENDIF
-         ENDIF
-    
-         IF (TRIM(SPC_NAMES(I)) .EQ. 'HONO') THEN
-            NOX(I)=1
-            CONSTRAIN(I)=-1.*CONSTRAIN(I)
-              IF (CONSTRAIN(I) .NE. 0) THEN 
-               COUNT_NOX_CONSTRAINTS=COUNT_NOX_CONSTRAINTS+1
-            ENDIF
-         ENDIF
-    
-         IF (TRIM(SPC_NAMES(I)) .EQ. 'HNO2') THEN
-            NOX(I)=1
-            CONSTRAIN(I)=-1.*CONSTRAIN(I)
-              IF (CONSTRAIN(I) .NE. 0) THEN 
-               COUNT_NOX_CONSTRAINTS=COUNT_NOX_CONSTRAINTS+1
-            ENDIF
-         ENDIF
-    
-         IF (TRIM(SPC_NAMES(I)) .EQ. 'HO2NO2') THEN
-            NOX(I)=1
-            CONSTRAIN(I)=-1.*CONSTRAIN(I)
-              IF (CONSTRAIN(I) .NE. 0) THEN 
-               COUNT_NOX_CONSTRAINTS=COUNT_NOX_CONSTRAINTS+1
-            ENDIF
-         ENDIF
-    
-         IF (TRIM(SPC_NAMES(I)) .EQ. 'PNA') THEN 
-            NOX(I)=1
-            CONSTRAIN(I)=-1*CONSTRAIN(I)
-         ENDIF
-    
-         IF (TRIM(SPC_NAMES(I)) .EQ. 'HNO4') THEN 
-            NOX(I)=1
-            CONSTRAIN(I)=-1.*CONSTRAIN(I)
-            IF (CONSTRAIN(I) .NE. 0) THEN 
-               COUNT_NOX_CONSTRAINTS=COUNT_NOX_CONSTRAINTS+1
-            ENDIF
-         ENDIF
-    
-         IF (NOX(I) .NE. 0) WRITE (6,*) SPC_NAMES(I),' IN NOX FAMILY'
-      ENDDO
+     IF (CONSTRAIN_NOX) THEN 
+       COUNT_NOX_CONSTRAINTS=0
+       DO I=1,NSPEC 
+          SELECT CASE (TRIM(SPC_NAMES(I)))
+              CASE ('NO2', 'NO', 'NO3', 'N2O5', 'HONO', 'HNO2', 'HO2NO2', 'PNA', 'HNO4')
+                IF (TRIM(SPC_NAMES(I)).EQ. 'N2O5') THEN
+                    NOX(I)=2
+                ELSE
+                    NOX(I)=1
+                ENDIF
+                CONSTRAIN(I)=-1.*CONSTRAIN(I)
+                IF (CONSTRAIN(I) .NE. 0) THEN 
+                   COUNT_NOX_CONSTRAINTS=COUNT_NOX_CONSTRAINTS+1
+                ENDIF
+                WRITE (6,*) SPC_NAMES(I),' IN NOX FAMILY'
+              CASE DEFAULT
+          END SELECT
+       ENDDO
       
-      IF (COUNT_NOX_CONSTRAINTS .GT. 1) THEN 
+       IF (COUNT_NOX_CONSTRAINTS .GT. 1) THEN 
          WRITE (6,*) 'You can not contrains multiple NOX species'
          STOP
-      ENDIF
-      ENDIF
+       ENDIF
+     ENDIF
     
     ! FIND CH4 and H2 species
-      DO I=1,NVAR 
+      DO I=1,NSPEC 
          IF (TRIM(SPC_NAMES(I)) .EQ. 'CH4' .AND. (SPEC_CH4 .EQV. .FALSE.)) THEN
             WRITE (6,*) 'No CH4 specified assuming 1770 ppbv'
-            VAR(I)=1770e-9*CFACTOR
-            CONSTRAIN(I)=VAR(I)
+            C(I)=1770e-9*CFACTOR
+            CONSTRAIN(I)=C(I)
          ENDIF
     
          IF (TRIM(SPC_NAMES(I)) .EQ. 'H2' .AND. (SPEC_H2 .EQV. .FALSE.)) THEN 
             WRITE (6,*) 'No H2 specified assuming 550 ppbv'
-            VAR(I)= 550e-9*CFACTOR
-            CONSTRAIN(I)=VAR(I)
+            C(I)= 550e-9*CFACTOR
+            CONSTRAIN(I)=C(I)
          ENDIF
       ENDDO
     ! INLINED initialisations
@@ -339,29 +267,30 @@
 ! ****************************************************************
 
     SUBROUTINE NewInitSaveData(counter)
-        USE dsmacc_Parameters
-        USE dsmacc_monitor
-        USE dsmacc_GLOBAL
         INTEGER counter, length, ierr, STATUS, ARGLEN
         CHARACTER*20 filename1
         CHARACTER(LEN=10000) :: SPECROOT, RATEROOT, filename
         INTEGER i
-        IF (COMMAND_ARGUMENT_COUNT() < 2) THEN
+        IF (COMMAND_ARGUMENT_COUNT() .lt. 2) THEN
            WRITE(6,*) "There were fewer than 2 command arguments; using Spec_"
+           WRITE(6,*) "Use -h for more details"
            SPECROOT = 'Spec_'
         ELSE
-           CALL GET_COMMAND_ARGUMENT(2, VALUE = SPECROOT, LENGTH = ARGLEN, STATUS = STATUS)	
+           CALL GET_COMMAND_ARGUMENT(2, VALUE = SPECROOT, LENGTH = ARGLEN, STATUS = STATUS)
            IF (STATUS .ne. 0) THEN
-               STOP 'SPECROOT was truncated'
+               WRITE(*,*)'SPECROOT was truncated'
+               STOP 
            ENDIF
         ENDIF
-        IF (COMMAND_ARGUMENT_COUNT() < 3) THEN
+        IF (COMMAND_ARGUMENT_COUNT() .lt. 3) THEN
            WRITE(6,*) "There were fewer than 3 command arguments; using Rate_"
+           WRITE(6,*) "Use -h for more details"
            RATEROOT = 'Rate_'
         ELSE
-           CALL GET_COMMAND_ARGUMENT(3, VALUE = RATEROOT, LENGTH = ARGLEN, STATUS = STATUS)	
+           CALL GET_COMMAND_ARGUMENT(3, VALUE = RATEROOT, LENGTH = ARGLEN, STATUS = STATUS)
            IF (STATUS .ne. 0) THEN
-               STOP 'RATEROOT was truncated'
+               WRITE(*,*)'RATEROOT was truncated'
+               STOP
            ENDIF
         ENDIF
 
@@ -393,10 +322,6 @@
 
     SUBROUTINE NewSaveData ()
 
-        USE dsmacc_Global
-        USE dsmacc_Monitor
-        USE dsmacc_Integrator
-        
         INTEGER i
         IF (CONSTRAIN_RUN) THEN
             WRITE(SPEC_UNIT,'(100000(E25.16E3,"!"))') JDAY_GMT,LAT,LON,PRESS,TEMP,THETA,H2O,&
@@ -423,9 +348,6 @@
 ! ****************************************************************
 
     SUBROUTINE NewCloseData ()
-        
-        USE dsmacc_Parameters
-        USE dsmacc_Global, ONLY : SPEC_UNIT, RATE_UNIT
         
         CLOSE(SPEC_UNIT)
         CLOSE(RATE_UNIT)
