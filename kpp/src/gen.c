@@ -3004,6 +3004,8 @@ case 'h':
    UseFile( utilFile ); 
     F90_Inline("MODULE %s_Util\n", rootFileName);
     F90_Inline("  USE %s_Parameters", rootFileName );
+    F90_Inline("  USE %s_Monitor", rootFileName );
+    F90_Inline("  USE %s_Global", rootFileName );
     F90_Inline("  IMPLICIT NONE", rootFileName );
     F90_Inline("\nCONTAINS\n\n");
     
