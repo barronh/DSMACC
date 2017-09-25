@@ -2,8 +2,8 @@
     REAL(dp) :: PRESS, LAT, LON, O3COL, JO1D, JNO2
     REAL(dp) :: JDAY_GMT, JDAY_LOCAL, JREPEAT, ALBEDO, SAREA, RP1
     REAL(dp) :: TSTART_GMT, TSTART_LOCAL
-    INTEGER :: INIT_TIME, NOX(NVAR)
-    REAL(dp):: CONSTRAIN(NVAR)
+    INTEGER :: INIT_TIME, NOX(NSPEC)
+    REAL(dp):: CONSTRAIN(NSPEC)
     LOGICAL :: SPEC_CH4, SPEC_H2
     INTEGER :: IntTime
     LOGICAL :: JDAYISGMT = .true.
@@ -19,4 +19,4 @@
     REAL:: jfactno2, jfacto1d
     REAL(dp) :: THETA
     !END photolysis variables
-#ENDINLINE {above lines go into MODULE dsmacc_Global}
+#ENDINLINE {above lines go into MODULE KPP_ROOT_Global}
