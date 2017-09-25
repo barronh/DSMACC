@@ -60,7 +60,7 @@ parser.add_argument("--figprops", dest = "figprops", default = "", type = str, h
 parser.add_argument("--axprops", dest = "axprops", default = "", type = str, help = 'Key words string for axes')
 
 args = parser.parse_args()
-data = np.recfromtxt(args.ifile, delimiter = '!', dtype = 'f', names = True)
+data = np.recfromtxt(args.ifile, delimiter = '!', dtype = 'd', names = True)
 data = dict([(k, data[k]) for k in data.dtype.names])
 
 from matplotlib import use
@@ -70,8 +70,12 @@ if args.prefix is None:
     args.prefix = args.ifile + '_'
 
 from datetime import datetime, timedelta
-sdate = datetime.strptime(args.startdate, '%Y-%m-%dT%H:%M:%S')
-dates = [sdate + timedelta(seconds = float(x)) for x in data['TIME']]
+if not 'JDAY_GMT' in data.keys():
+    sdate = datetime.strptime(args.startdate, '%Y-%m-%dT%H:%M:%S')
+    dates = [sdate + timedelta(seconds = float(x)) for x in data['TIME']]
+else:
+    dates = [datetime.strptime('%.0f' % (j//1), '%Y%j') + timedelta(hours = (j % 1) * 24) for j in data['JDAY_GMT']]
+    
 CFACTOR = data['CFACTOR']
 if len(args.variables) == 0:
     args.variables.extend([k for k in data.keys() if k in ('O3', 'NO2')])
