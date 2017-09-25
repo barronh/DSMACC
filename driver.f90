@@ -2,7 +2,7 @@ PROGRAM driver
     
     USE dsmacc_global
     USE dsmacc_Parameters  !ONLY: IND_*
-    USE dsmacc_Rates,       ONLY: Update_SUN, Update_RCONST, J
+    USE dsmacc_Rates,       ONLY: Update_SUN, Update_RCONST, Update_PHOTO, J
     USE dsmacc_integrator,  ONLY: integrate!, IERR_NAMES
     USE dsmacc_monitor,     ONLY: spc_names, MONITOR
     USE dsmacc_Util
@@ -152,6 +152,7 @@ PROGRAM driver
 
 ! Update the rate constants
         CALL Update_RCONST()
+        CALL Update_PHOTO()
 
         CALCJO1D = J(1)
         CALCJNO2 = J(4)
@@ -204,6 +205,7 @@ PROGRAM driver
 
 ! Update the rate constants
             CALL Update_RCONST()
+            CALL Update_PHOTO()
             COLD(:) = C(:)
 ! Integrate the model forwards 1 timestep
             CALL INTEGRATE( TIN = time, TOUT = time+DT, RSTATUS_U = RSTATE, &
