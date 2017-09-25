@@ -1,8 +1,10 @@
 -include ../Makefile.defs
 
+MODEL=dsmacc
+
 ##############################################################################
 
-PROG = ../bin/dsmacc 
+PROG = ../bin/$(MODEL) 
 
 all: libtuv libfastjx $(PROG)
 
@@ -13,7 +15,7 @@ libfastjx:
 	cd ../UCI_fastJX72e/; make
 
 # complete list of all f90 source files
-SRCS1 = $(wildcard ./dsmacc_*.f90)
+SRCS1 = $(wildcard ./$(MODEL)_*.f90)
 SRCS3 = constants.f90 
 
 # the object files are the same as the source files but with suffix ".o"
@@ -24,7 +26,7 @@ LIBS = -L../tuv_new/ -ltuv -L../UCI_fastJX72e/ -lfastjx
 # the dependencies depend on the link
 # the executable depends on depend and also on all objects
 # the executable is created by linking all objects
-$(PROG): dsmacc_Main.f90 $(OBJS) dsmacc_Main.f90
+$(PROG): $(MODEL)_Main.f90 $(OBJS) $(MODEL)_Main.f90
 	@mkdir -p ../bin
 	$(FC) $(F90FLAGS) $(OBJS) $(LIBS) -o $@
 
@@ -40,7 +42,7 @@ distclean: clean
 	rm -f depend.mk* 
 	rm -f *.nc
 	rm -f *.dat
-	rm -f $(SRCS1) Makefile_dsmacc dsmacc.map tuvlog.txt ../bin/dsmacc
+	rm -f $(SRCS1) Makefile_$(MODEL) $(MODEL).map tuvlog.txt ../bin/$(MODEL)
 	rm -f fflags
 
 # all object files *.o depend on their source files *.f90
@@ -56,24 +58,24 @@ distclean: clean
 
 # list of dependencies (via USE statements)
 #include depend.mk
-./dsmacc_Function.o: ./dsmacc_Parameters.o
-./dsmacc_Global.o: ../tuv_new/params
-./dsmacc_Global.o: ./dsmacc_Parameters.o
-./dsmacc_Initialize.o: ./dsmacc_Global.o ./dsmacc_Parameters.o ./dsmacc_Util.o
-./dsmacc_Integrator.o: ./dsmacc_Function.o ./dsmacc_Global.o
-./dsmacc_Integrator.o: ./dsmacc_Jacobian.o ./dsmacc_LinearAlgebra.o
-./dsmacc_Integrator.o: ./dsmacc_Parameters.o ./dsmacc_Rates.o
-./dsmacc_Jacobian.o: ./dsmacc_JacobianSP.o ./dsmacc_Parameters.o
-./dsmacc_LinearAlgebra.o: ./dsmacc_JacobianSP.o ./dsmacc_Parameters.o
-./dsmacc_Main.o: ./dsmacc_Global.o ./dsmacc_Integrator.o ./dsmacc_Monitor.o
-./dsmacc_Main.o: ./dsmacc_Parameters.o ./dsmacc_Rates.o ./dsmacc_Util.o
-./dsmacc_Model.o: ./dsmacc_Function.o ./dsmacc_Global.o ./dsmacc_Integrator.o
-./dsmacc_Model.o: ./dsmacc_Jacobian.o ./dsmacc_LinearAlgebra.o
-./dsmacc_Model.o: ./dsmacc_Monitor.o ./dsmacc_Parameters.o ./dsmacc_Precision.o
-./dsmacc_Model.o: ./dsmacc_Rates.o ./dsmacc_Stoichiom.o ./dsmacc_Util.o
-./dsmacc_Parameters.o: ./dsmacc_Precision.o
-./dsmacc_Rates.o: ./dsmacc_Global.o ./dsmacc_Parameters.o
-./dsmacc_Stoichiom.o: ./dsmacc_Parameters.o ./dsmacc_StoichiomSP.o
-./dsmacc_StoichiomSP.o: ./dsmacc_Precision.o
-./dsmacc_Util.o: ./dsmacc_Global.o ./dsmacc_Integrator.o ./dsmacc_Monitor.o
-./dsmacc_Util.o: ./dsmacc_Parameters.o
+./$(MODEL)_Function.o: ./$(MODEL)_Parameters.o
+./$(MODEL)_Global.o: ../tuv_new/params
+./$(MODEL)_Global.o: ./$(MODEL)_Parameters.o
+./$(MODEL)_Initialize.o: ./$(MODEL)_Global.o ./$(MODEL)_Parameters.o ./$(MODEL)_Util.o
+./$(MODEL)_Integrator.o: ./$(MODEL)_Function.o ./$(MODEL)_Global.o
+./$(MODEL)_Integrator.o: ./$(MODEL)_Jacobian.o ./$(MODEL)_LinearAlgebra.o
+./$(MODEL)_Integrator.o: ./$(MODEL)_Parameters.o ./$(MODEL)_Rates.o
+./$(MODEL)_Jacobian.o: ./$(MODEL)_JacobianSP.o ./$(MODEL)_Parameters.o
+./$(MODEL)_LinearAlgebra.o: ./$(MODEL)_JacobianSP.o ./$(MODEL)_Parameters.o
+./$(MODEL)_Main.o: ./$(MODEL)_Global.o ./$(MODEL)_Integrator.o ./$(MODEL)_Monitor.o
+./$(MODEL)_Main.o: ./$(MODEL)_Parameters.o ./$(MODEL)_Rates.o ./$(MODEL)_Util.o
+./$(MODEL)_Model.o: ./$(MODEL)_Function.o ./$(MODEL)_Global.o ./$(MODEL)_Integrator.o
+./$(MODEL)_Model.o: ./$(MODEL)_Jacobian.o ./$(MODEL)_LinearAlgebra.o
+./$(MODEL)_Model.o: ./$(MODEL)_Monitor.o ./$(MODEL)_Parameters.o ./$(MODEL)_Precision.o
+./$(MODEL)_Model.o: ./$(MODEL)_Rates.o ./$(MODEL)_Stoichiom.o ./$(MODEL)_Util.o
+./$(MODEL)_Parameters.o: ./$(MODEL)_Precision.o
+./$(MODEL)_Rates.o: ./$(MODEL)_Global.o ./$(MODEL)_Parameters.o
+./$(MODEL)_Stoichiom.o: ./$(MODEL)_Parameters.o ./$(MODEL)_StoichiomSP.o
+./$(MODEL)_StoichiomSP.o: ./$(MODEL)_Precision.o
+./$(MODEL)_Util.o: ./$(MODEL)_Global.o ./$(MODEL)_Integrator.o ./$(MODEL)_Monitor.o
+./$(MODEL)_Util.o: ./$(MODEL)_Parameters.o
