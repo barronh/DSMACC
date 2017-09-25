@@ -4,7 +4,6 @@
 
 #INLINE F90_RATES
     REAL(kind=dp) FUNCTION J(JIDX)
-       USE dsmacc_Global, ONLY : JDAY_GMT, PRESS, TEMP
        IMPLICIT NONE
        REAL*8 XLNG,YLAT
        REAL*8 OLDLON, OLDLAT, OLDPRESS,OLDTEMP,OLDJDAY
@@ -34,7 +33,7 @@
            OLDLAT = LAT
            OLDJDAY = JDAY_GMT
        ENDIF
-       IF (JIDX > NJ) THEN
+       IF ((JIDX .gt. NJ) .or. (JIDX .eq. 0) .or. (JINDS(JIDX).eq.0)) THEN
         write(*,*) 'ERROR', JIDX, ' greater than available ', NJ
         STOP
        ENDIF

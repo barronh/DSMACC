@@ -61,7 +61,6 @@
 #INCLUDE theta.inc
 #INLINE F90_RATES
   SUBROUTINE UPDATE_TUV() 
-     USE dsmacc_Global, ONLY : JLABELS
      LOGICAL :: DEBUG = .false.
      REAL(kind=dp) alta
      INTEGER :: IJDAY, OLD_JDAY = -9999 ! JDAY for use in photolysis
@@ -113,7 +112,6 @@
      ENDIF
   END SUBROUTINE UPDATE_TUV
   REAL(kind=dp) FUNCTION J(IJ)
-    USE dsmacc_Global, ONLY : THETA, JMAPPING, NMCMJ, JLABELS
     LOGICAL, SAVE :: FIRST = .true.
     INTEGER i, IJ, mcmi, JL
     J = 0._dp    
@@ -137,8 +135,6 @@
   END FUNCTION J
 
   REAL(kind=dp) FUNCTION TUV_J(IJ, THETA, JFACT)
-    USE dsmacc_Global,  only: BS, CS, DS, SZAS, SVJ_TJ, &
-  &               PRESS, TEMP, kj
     INTEGER, parameter :: NSZAS = 19
     REAL(kind=dp) B(NSZAS), C(NSZAS), D(NSZAS), TMP_SVJ_TJ(NSZAS), &
   &               TMP_SZAS(NSZAS), THETA, JFACT

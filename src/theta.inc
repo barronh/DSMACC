@@ -50,7 +50,6 @@
       ! - JDAY_GMT (YYYYJJJ.F) where F is a fractional day
       ! Returns:
       ! ZENITH - degrees from zenith
-      USE dsmacc_Global, ONLY : LAT, LON, JDAY_GMT
       LOGICAL :: DEBUG = .false.
       REAL rlat, rlon, rut
       REAL az, el, soldia, soldst

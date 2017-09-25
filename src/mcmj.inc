@@ -14,7 +14,6 @@
 #INCLUDE theta.inc
 #INLINE F90_RATES
   REAL(kind=dp) FUNCTION J(IJ)
-    USE dsmacc_Global, ONLY : THETA, KJ
     INTEGER, intent(in) :: IJ
     REAL(dp), SAVE :: L, M, N
     REAL(dp), SAVE :: MCM_L(KJ)
