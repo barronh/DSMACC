@@ -214,7 +214,7 @@
       ! BHH DSMACC setting temperature at output point to explicit value
       TI(IZOUT) = TEMP_K
       ! BHH DSMACC not specifying RH explicitly at this time
-      RI(IZOUT) = 0.5*(RI(IZOUT-1)+RI(IZOUT+1))
+      RI(IZOUT) = 0.5*(RI(MAX(1, IZOUT-1))+RI(IZOUT+1))
       IF (DEBUG>1) THEN
         print*,'BHH',IZOUT
         DO L=1,L1_
