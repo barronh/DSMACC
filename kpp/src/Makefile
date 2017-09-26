@@ -55,8 +55,8 @@ OBJS  = \
 	debug.o
 
 kpp:    $(OBJS)
-	@echo "  "$(CC) $(CC_FLAGS) $(CFLAGS) $(OBJS) -L$(FLEX_LIB_DIR) -lfl -o kpp
-	@$(CC) $(CC_FLAGS) $(CFLAGS) $(OBJS) $(FLEX_LIB) -o kpp
+	@echo "  "$(CC) $(CC_FLAGS) $(CFLAGS) $(OBJS) $(LDFLAGS) $(FLEX_LIB) -o kpp
+	@$(CC) $(CC_FLAGS) $(CFLAGS) $(OBJS) $(LDFLAGS) $(FLEX_LIB) -o kpp
 	@mkdir -p ../bin
 	@mv kpp ../bin/
 

@@ -4031,7 +4031,6 @@ $as_echo "no" >&6; }
   SET_MAKE="MAKE=${MAKE-make}"
 fi
 
-
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lfl':
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for yywrap in -lfl" >&5
@@ -4089,12 +4088,13 @@ UNAME_SYSTEM=`(uname -s) 2>/dev/null` || UNAME_SYSTEM=unknown
 $as_echo "${UNAME_SYSTEM}" >&6; }
 
 if test $cflags_update -eq 0; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: You have disabled automatic FCFLAGS by setting your own. Unset FCFLAGS to allow configure to automatically manage flags." >&5
-$as_echo "$as_me: You have disabled automatic FCFLAGS by setting your own. Unset FCFLAGS to allow configure to automatically manage flags." >&6;}
+  { $as_echo "$as_me:${as_lineno-$LINENO}: You have disabled automatic CFLAGS by setting your own. Unset CFLAGS to allow configure to automatically manage flags." >&5
+$as_echo "$as_me: You have disabled automatic CFLAGS by setting your own. Unset CFLAGS to allow configure to automatically manage flags." >&6;}
 else
 { $as_echo "$as_me:${as_lineno-$LINENO}: Updating CFLAGS automatically KPP compilation; to disable use CFLAGS=\" \"" >&5
 $as_echo "$as_me: Updating CFLAGS automatically KPP compilation; to disable use CFLAGS=\" \"" >&6;}
 # Adding compiler specific flags that have no macros in autoconf
+
 case ${UNAME_SYSTEM}:${CC} in
 Darwin:gcc)
   { $as_echo "$as_me:${as_lineno-$LINENO}: Adding -arch i386 option to prevent failure of test" >&5
@@ -4344,6 +4344,17 @@ $as_echo "$as_me: Adding no automatic for $FC; to disable set your own FCFLAGS" 
     ;;
   pgf*)
     FCFLAGS="$FCFLAGS -save"
+    ;;
+  esac
+  case ${UNAME_SYSTEM} in
+  Darwin)
+    { $as_echo "$as_me:${as_lineno-$LINENO}: Not adding -fPIC for mac" >&5
+$as_echo "$as_me: Not adding -fPIC for mac" >&6;}
+    ;;
+  *)
+    { $as_echo "$as_me:${as_lineno-$LINENO}: Adding -fPIC on non-mac" >&5
+$as_echo "$as_me: Adding -fPIC on non-mac" >&6;}
+    FCFLAGS="$FCFLAGS -fPIC"
     ;;
   esac
 fi

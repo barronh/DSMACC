@@ -44,6 +44,7 @@
 CC=@CC@
 CFLAGS=@CFLAGS@
 CPPFLAGS=@CPPFLAGS@
+LDFLAGS=@LDFLAGS@
 
 # 2. The name of your lexical analizer. KPP requires FLEX to be used.
 #    FLEX is a public domain lexical analizer and you can download it from

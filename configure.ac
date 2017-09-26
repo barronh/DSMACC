@@ -17,7 +17,6 @@ AC_CHECK_PROG([FOUND_LEX],[$LEX],[yes],[AC_MSG_NOTICE([flex/lex not found. If KP
 AC_PROG_CC
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lfl':
 AC_CHECK_LIB([fl], [yywrap],,AC_MSG_ERROR([Flex library `libfl` is required by kpp and not found]), )
@@ -27,10 +26,11 @@ UNAME_SYSTEM=`(uname -s) 2>/dev/null` || UNAME_SYSTEM=unknown
 AC_MSG_RESULT([${UNAME_SYSTEM}])
 
 if test $cflags_update -eq 0; then
-  AC_MSG_NOTICE([You have disabled automatic FCFLAGS by setting your own. Unset FCFLAGS to allow configure to automatically manage flags.])
+  AC_MSG_NOTICE([You have disabled automatic CFLAGS by setting your own. Unset CFLAGS to allow configure to automatically manage flags.])
 else
 AC_MSG_NOTICE([Updating CFLAGS automatically KPP compilation; to disable use CFLAGS=" "])
 # Adding compiler specific flags that have no macros in autoconf
+
 case ${UNAME_SYSTEM}:${CC} in
 Darwin:gcc)
   AC_MSG_NOTICE([Adding -arch i386 option to prevent failure of test])
@@ -63,6 +63,15 @@ else
     ;;
   pgf*)
     FCFLAGS="$FCFLAGS -save"
+    ;;
+  esac
+  case ${UNAME_SYSTEM} in
+  Darwin)
+    AC_MSG_NOTICE([Not adding -fPIC for mac])
+    ;;
+  *)
+    AC_MSG_NOTICE([Adding -fPIC on non-mac])
+    FCFLAGS="$FCFLAGS -fPIC"
     ;;
   esac
 fi
