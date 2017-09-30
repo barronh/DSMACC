@@ -16,7 +16,7 @@
     REAL(kind=dp) :: COLD(NSPEC)
     INTEGER, PARAMETER :: OUTPUT_UNIT = 6, ERROR_UNIT = 0,&
     SPEC_UNIT = 10, RATE_UNIT = 12
-    REAL:: jfactno2, jfacto1d
+    REAL:: jfactno2 = 1., jfacto1d = 1.
     REAL(dp) :: THETA
     !END photolysis variables
 #ENDINLINE {above lines go into MODULE KPP_ROOT_Global}
