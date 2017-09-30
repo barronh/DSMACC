@@ -1,5 +1,5 @@
 !>>>>>>>>cloud-JX code (includes fractional cloud treatments) ver 7.2 (12/2013)<<<<<<<<<<<<
-      subroutine DSMACC_FAST_JX(XLNG,YLAT,JDAY,PRESS_MB,TEMP_K,CLDFLAG,JLABELS,JVMAPS,JFACTORS,JVALUES,JINDS,NJ,DEBUG)
+      subroutine DSMACC_FAST_JX(XLNG,YLAT,JDAY,PRESS_MB,TEMP_K,CLDFLAG,JLABELS,JVMAPS,JFACTORS,JVALUES,JINDS,NJ,SZA,DEBUG)
 ! USES:
       USE CMN_FJX_MOD
       USE FJX_SUB_MOD
@@ -24,6 +24,7 @@
       character*50, dimension(JVN_), intent(OUT) :: JLABELS
       integer, dimension(JVN_), intent(out) :: JINDS
       integer, intent(out) :: NJ
+      real*8, intent(inout) :: SZA
       real*8, dimension(L1_) :: ETAA,ETAB, ZOFL,RI,TI,CLDP,AER1,AER2
       real*8, dimension(L_) :: WLC,WIC
       real*8  GMTAU,PHOTAU,ALBEDO, XGRD,YGRD,PSURF, SCALEH
@@ -61,7 +62,7 @@
       integer, parameter                :: CLDFLDS = 1
 
 !--------------------key params sent to CLOUD_JX-------------------------
-      real*8                     :: U0,SZA,REFLB,SOLF
+      real*8                     :: U0,REFLB,SOLF
       real*8,  parameter         :: FG0 = 1.10d0
       logical                    :: LPRTJ, FIRST=.true.
       real*8,  dimension(L1_+1)  :: PPP,ZZZ
@@ -345,7 +346,7 @@
        L3RG = PL3RG
       !BHH - control CLDFLAG from the input
       !do CLDFLAG = 1,8
-          write(6,*) ' call CLOUD_JX w/flag=',CLDFLAG,L3RG,NRANDO
+      IF (DEBUG>0) write(6,*) ' call CLOUD_JX w/flag=',CLDFLAG,L3RG,NRANDO
 
 !---special diag to find out what is wrong with QCA - mid ?????
 !          if (ICLD .eq. 3) then

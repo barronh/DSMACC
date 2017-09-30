@@ -36,7 +36,8 @@ conc.eval('NOx = NO2 + NO', inplace = True)
 conc.eval('RN = NOx / HNO3', inplace = True)
 
 plt.close()
-rate.plot(x = 'JDAY_LST', y = ['NO2 --> O + NO', 'NO3 --> NO', 'NO3 --> O + NO2', 'H2O2 --> 2 OH'])
+ax = rate.plot(x = 'JDAY_LST', y = ['NO2 --> O + NO', 'NO3 --> NO', 'NO3 --> O + NO2', 'H2O2 --> 2 OH'])
+rate.plot(x = 'JDAY_LST', y = ['THETA'], secondary_y = True, ax = ax)
 plt.savefig('rates.png')
 
 plt.close()
