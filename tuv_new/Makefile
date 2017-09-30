@@ -24,7 +24,7 @@ clean:
 .SUFFIXES: $(SUFFIXES) .f90
 
 .f.o:
-	$(FC) $(TUVF90FLAGS) -c $<
+	$(FC) $(F90FLAGS) -c $<
 
 main.o: params
 grids.o: params
