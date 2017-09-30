@@ -1,7 +1,7 @@
 <--J-value data from chemistry code: id#, reaction,       factor/fastJX/code(a6)
    1 O2        PHOTON    O         O                       1.000 /O2    /
    2 O3        PHOTON    O2        O                       1.000 /O3    /
-   3 O3        PHOTON    O2        O(1D)                   1.000 /O3(1D)/
+   3 O3        PHOTON    O2        OH       OH             1.000 /O3(1D)/
    4 H2O       PHOTON    OH        H                       0.000 /H2O   /
    5 HO2       PHOTON    OH        O                       0.000 /HO2   / 
    6 NO        PHOTON    N         O                       1.000 /NO    /
@@ -60,7 +60,7 @@
   59 PAN       PHOTON    CH3C(O)O2 NO2                     1.000 /PAN   /
   60 R4N2      PHOTON    CH3O      NO2                     1.000 /CH3NO3/
   61 ALD2      PHOTON    CH3       HCO                     1.000 /ActAld/
-  62 ALD2      PHOTON    CH4       CO                      1.000 /ActAlx/
+  62 ALD2      PHOTON    CH4       CO                      1.000 /ActAld/
   63 MVK       PHOTON    PRPE      CO                      0.600 /MeVK  /
   64 MVK       PHOTON    MCO3      CH2O      CO     HO2    0.200 /MeVK  /
   65 MVK       PHOTON    MO2       RCO3                    0.200 /MeVK  /
@@ -101,7 +101,7 @@
  100 SO4       PHOTON    SO2       OH        OH            1.000 /H2SO4 /
  101 ClNO2     PHOTON    Cl        NO2                     1.000 /ClNO2 /
  102 ClOO      PHOTON    Cl        O2                      1.000 /ClOO  /
- 103 O3        PHOTON    O2        O(1D)                   1.000 /O3(1D)/
+ 103 O3        PHOTON    O2        HO2       OH            1.000 /O3(1D)/
  104 MPN       PHOTON    HO2       NO3       HCHO          0.050 /MPN   /
  105 MPN       PHOTON    MO2       NO2                     0.950 /MPN   /
 9999
