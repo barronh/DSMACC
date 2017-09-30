@@ -1,21 +1,63 @@
 # CRI with TUV Photolysis
 
+## Prerequisites:
+ - installed KPP (../kpp/bin/kpp)
+
+## Inventory
+
 This folder contains the following files
  - cri.kpp: a file the contains kpp syntax to build a dsmacc model with CRI
- - CRI_subset.kpp: the CRI subset from http://mcm.leeds.ac.uk/CRI/. File 
-                   requires cleanup after download
+ - CRI_subset.kpp: the CRI subset from http://mcm.leeds.ac.uk/CRI/.
  - cri_init.dat: initial conditions for a simple CRI simulation
  - Makefile: a file with instructions on how to build and run the model.
+
+## Instructions
 
 To build and run the model, type "make" in a linux terminal
   $ make
 
 The makefile will build the model (cri) and run it with initial
-conditions from cri_init.dat. This will produce three outputs:
- - cri_conc_1.dat
- - cri_rate_1.dat
- - cri.log
+conditions from cri_init.dat. This will produce four outputs:
+ - cri_conc_1.dat: concentrations in ! delimited format
+ - cri_rate_1.dat: reaction rates in ! delimited format
+ - cri.log: output log for warnings and/or errors
+ - cri_conc_1.dat_O3.png: time series of ozone
+
+## Switching Photolysis Options
 
 To use another photolysis model (MCM standard or FAST-JX), comment
 out the `#INCLUDE tuv.inc` and uncomment out the other photolysis
 option.
+
+## Switching CRI_subset.kpp
+
+To make a new CRI_subset.kpp:
+
+1. go to http://mcm.leeds.ac.uk/CRI/
+2. select the base VOCs by selecting the check boxes associated with each species.
+3. Once all the VOC's have been selected click 'Added Selection to Marked List.'
+4. Then click on 'Extract' from the menu at the top of the page. 
+  - Select "KPP, experimental KPP format".
+  - Select "Include generic rate coefficients"
+  - Select "Include inorganic reactions." 
+  - Then, Click on Extract.
+5. Copy the CRI_extract.kpp file over the version in this directory
+6. Cleanup the download (see below).
+
+The raw downloaded file has several problems:
+
+ - radical comments have a } ending each line, but only have { on the first.
+ - the line endings include both linux and windows.
+ - reactions without produces should have a dummy species.
+ - the dummy species name is missing.
+
+Copying and pasting the command below will everything except the radical 
+comments. Make sure that either each radical comment line begins with { and
+ends with }, or that only the last radical comment line ends with }
+
+
+python -c "txt = open('CRI_subset.kpp', 'rU').read(); # implicit line ending fix
+txt = txt.replace('CALL mcm_constants', '! CALL mcm_constants'); # comment out mcm_constants
+txt = txt.replace('= :', '= DUMMY :'); # add DUMMY to productless reactions
+txt = txt.replace('\n = IGNORE', 'DUMMY = IGNORE') # fix DUMMY species definition
+open('CRI_subset.kpp', 'w').write(txt);"
