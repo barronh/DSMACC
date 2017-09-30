@@ -74,6 +74,9 @@
      !    Set up the photolysis rates
      !    First calculate pressure altitude from altitude
      IJDAY = INT(JDAY_GMT)
+     ! JFACTO1D
+     JMAPPING(1)%%%%factor = JFACTO1D
+     JMAPPING(4)%%%%factor = JFACTNO2
      IF ((OLD_TEMP .eq. -9999._dp) .or. &
         &(ABS(TEMP - OLD_TEMP) .gt. 1.)) THEN
      IF (OLD_M .ne. M .or. &
@@ -168,7 +171,7 @@
           
 8879     FORMAT(1A6,100000(E26.17))
           TUV_J = SEVAL(NSZAS, THETA, TMP_SZAS, TMP_SVJ_TJ, B, C, D, .true.)
-
+          
       endif
     
       IF (TUV_J .LT. 0.d0) TUV_J = 0.d0

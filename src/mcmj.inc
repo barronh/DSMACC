@@ -13,20 +13,20 @@
 #ENDINLINE 
 #INCLUDE theta.inc
 #INLINE F90_RATES
-  REAL(kind=dp) FUNCTION J(IJ)
+  RECURSIVE FUNCTION J(IJ) RESULT(TMPJ)
     INTEGER, intent(in) :: IJ
     REAL(dp), SAVE :: L, M, N
     REAL(dp), SAVE :: MCM_L(KJ)
     REAL(dp), SAVE :: MCM_M(KJ)
     REAL(dp), SAVE :: MCM_N(KJ)
     INTEGER, SAVE :: MCM_J(KJ)
-    REAL(dp) COSX
+    REAL(dp) COSX, TMPJ
     INTEGER, parameter :: PHOT_UNIT=100
     REAL(DP), parameter :: DEG2RAD = 3.141592653589793/180.d0
     INTEGER :: IOSTAT, tj, mcmj
     LOGICAL, SAVE :: FIRST = .true.
     IF (THETA .ge. 90) THEN
-       J = 0.
+       TMPJ = 0.
        RETURN
     ENDIF
     COSX = COS(THETA*DEG2RAD)
@@ -84,11 +84,17 @@
         DO TJ=1,KJ
           MCMJ=MCM_J(TJ)
           IF (MCMJ.ne.0) THEN
-          J = MCM_L(IJ) * COSX**MCM_M(IJ) * EXP(-MCM_N(KJ) / COSX)
-          WRITE(*,'(I2,x,ES9.3,x,F7.3,x,F7.3x,F7.3)') MCMJ, MCM_L(MCMJ), MCM_M(MCMJ), MCM_N(MCMJ), J
+          TMPJ = J(IJ)
+          WRITE(*,'(I2,x,ES9.3,x,F7.3,x,F7.3x,F7.3)') MCMJ, MCM_L(MCMJ), MCM_M(MCMJ), MCM_N(MCMJ), TMPJ
           ENDIF
         ENDDO
     ENDIF
-    J = MCM_L(IJ) * COSX**MCM_M(IJ) * EXP(-MCM_N(KJ) / COSX) *  JSCALE
+    TMPJ = MCM_L(IJ) * COSX**MCM_M(IJ) * EXP(-MCM_N(KJ) / COSX) *  JSCALE
+    IF ((IJ .eq. 1) .and. (JFACTO1D.ne.1.)) THEN
+       TMPJ = TMPJ * JFACTO1D
+    ELSEIF ((IJ .eq. 4) .and. (JFACTO1D.ne.1.)) THEN
+       TMPJ = TMPJ * JFACTNO2
+    ENDIF
+
   END FUNCTION J
 #ENDINLINE
