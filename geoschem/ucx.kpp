@@ -1,0 +1,5 @@
+#INLINE F90_GLOBAL 
+ LOGICAL :: UCX = .true.
+#ENDINLINE
+#INCLUDE ../geoschem/ucx.spc
+#INCLUDE ../geoschem/ucx.eqn

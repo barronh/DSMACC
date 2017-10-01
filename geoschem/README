@@ -1,0 +1,35 @@
+# GEOS-Chem with FAST-JX Photolysis
+
+## Prerequisites:
+ - installed KPP (../kpp/bin/kpp)
+
+## Inventory
+
+This folder contains the following files
+ - gckpp.kpp: contains kpp syntax to build a dsmacc model with GEOS-Chem
+ - tropchem.kpp: (default) enables tropchem.eqn and tropchem.spc
+ - tropchem.spc: v11-01 tropchem species
+ - tropchem.eqn: v11-01 tropchem equations
+ - ucx.kpp: enables ucx.eqn and ucx.spc
+ - ucx.spc: v11-01 UCX species
+ - ucx.eqn: v11-01 UCX equations
+ - geoschem_init.dat: initial conditions for a simple simulation
+ - Makefile: a file with instructions on how to build and run the model.
+
+## Instructions
+
+To build and run the model, type "make" in a linux terminal
+  $ make
+
+The makefile will build the model (geoschem) and run it with initial
+conditions from geoschem_init.dat. This will produce four outputs:
+ - geoschem_conc_1.dat: concentrations in ! delimited format
+ - geoschem_rate_1.dat: reaction rates in ! delimited format
+ - geoschem.log: output log for warnings and/or errors
+ - geoschem_conc_1.dat_O3.png: time series of ozone
+
+## Switch to tropchem
+
+1. Uncomment out INCLUDE ../geoschem.kpp
+2. Add X before N2 and O2 in geoschem_init.dat
+3. Run make clean; make all
