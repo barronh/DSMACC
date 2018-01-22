@@ -1,3 +1,4 @@
+##############################################################################
 # -*- sh -*-
 ##############################################################################
 #
@@ -41,31 +42,30 @@
 #    For the native compiler use:
 #      CC=cc
 
-CC=gcc
+CC=@CC@
 
 # 2. Platform independent C compiler flags. By default "-O" is used which 
 #    turns on optimisation. If you are experiencing problems you may try 
-#    "-g" to include debugging informations. Add -m32 or -arch i386 to
-#    force 32-bit compile -- seems to help.
+#    "-g" to include debuging informations.
 
-CFLAGS=-g -O2 -arch i386 -I/usr/include/malloc
-CPPFLAGS=
+CFLAGS=@CFLAGS@
+CPPFLAGS=@CPPFLAGS@
 
 # 3. The name of your lexical analizer. KPP requires FLEX to be used.
 #    FLEX is a public domain lexical analizer and you can download it from
 #    http://www.gnu.org/software/flex/ or any other mirror site. If flex
 #    directory is not included in your path use the complete pathname.
 
-FLEX=flex
+FLEX=@LEX@
 
 # 4. Linker flags to ensure access to the FLEX library (libfl.a).
 #    If libfl.a is in a standard location, this can be blank.
 #    Otherwise LDFLAGS=-L<DIRPATH> where DIRPATH is the path that
 #    contains libfl.a
-LDFLAGS=
+LDFLAGS=@LDFLAGS@
 
 # 4. Flex library. Can either be -lfl or the full path to a libfl.a
-FLEX_LIB=-lfl
+FLEX_LIB=@LEXLIB@
 
 # 5. The name of the fortran compiler you want to use. Normaly this 
 #    is either GNU Fortran compiler (gfortran), the Intel Fortran
@@ -75,10 +75,35 @@ FLEX_LIB=-lfl
 #    For the Intel compiler use:
 #      FC=ifort
 
-FC=gfortran
+FC=@FC@
 
 # 6. Platform independent C compiler flags. By default "-O" is used which 
 #    turns on optimisation. If you are experiencing problems you may try 
 #    "-g" to include debuging informations.
 
-F90FLAGS=-cpp -g -O2 -fno-automatic -fcheck=bounds -fimplicit-none
+F90FLAGS=@FCFLAGS_f90@ @FCFLAGS@
+
+SRCS =	dsmacc_fjx72.F90 cld_sub_mod.F90 fjx_init_mod.F90 fjx_sub_mod.F90  \
+	cmn_fjx_mod.F90 
+
+OBJS =	cld_sub_mod.o cmn_fjx_mod.o fjx_dsmacc.o fjx_init_mod.o \
+	fjx_sub_mod.o
+
+
+all: libfastjx.a
+
+libfastjx.a: $(OBJS)
+	ar -rcs $@ $(OBJS) $(LIBS)
+
+clean:
+	rm -f $(PROG) $(OBJS) *.mod
+
+.SUFFIXES: $(SUFFIXES) .F90
+
+.F90.o:
+	$(FC) $(F90FLAGS) -c $<
+
+fjx_dsmacc.o:  cmn_fjx_mod.o fjx_sub_mod.o fjx_init_mod.o cld_sub_mod.o
+cld_sub_mod.o:   cmn_fjx_mod.o fjx_sub_mod.o
+fjx_init_mod.o:  cmn_fjx_mod.o fjx_sub_mod.o
+fjx_sub_mod.o:   cmn_fjx_mod.o

@@ -31,20 +31,7 @@ else
 AC_MSG_NOTICE([Updating CFLAGS automatically KPP compilation; to disable use CFLAGS=" "])
 # Adding compiler specific flags that have no macros in autoconf
 
-case ${UNAME_SYSTEM}:${CC} in
-Darwin:gcc)
-  AC_MSG_NOTICE([Adding -arch i386 option to prevent failure of test])
-  CFLAGS="$CFLAGS -arch i386"
-  AC_MSG_NOTICE([Adding include path for Mac where malloc.h is in /usr/include/malloc])
-  CFLAGS="$CFLAGS -I/usr/include/malloc"
-  ;;
-Darwin:*)
-  AC_MSG_NOTICE([Adding malloc subfolder for mac support.])
-  CFLAGS="$CFLAGS -I/usr/include/malloc"
-  ;;
-esac
 AC_MSG_NOTICE([${CFLAGS}])
-
 fi
 AC_PROG_FC()
 
@@ -78,7 +65,7 @@ fi
 
 # Checks for header files.
 AC_FUNC_ALLOCA
-AC_CHECK_HEADERS([malloc.h],,AC_MSG_ERROR([`malloc.h` is required and not found]), )
+AC_CHECK_HEADERS([stdlib.h],,AC_MSG_ERROR([`stdlib.h` is required and not found]), )
 AC_CHECK_HEADERS([stdio.h stdlib.h string.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -98,4 +85,10 @@ AC_CHECK_FUNCS([floor ftime getcwd memmove memset pow sqrt strchr])
 AC_FC_PP_SRCEXT(f90)
 AC_FC_CHECK_BOUNDS()
 AC_FC_IMPLICIT_NONE()
-AC_OUTPUT(Makefile.defs)
+AC_OUTPUT(Makefile)
+AC_OUTPUT(src/Makefile)
+AC_OUTPUT(kpp/Makefile)
+AC_OUTPUT(kpp/src/Makefile)
+AC_OUTPUT(UCI_fastJX72e/Makefile)
+AC_OUTPUT(tuv_new/Makefile)
+AC_OUTPUT(pysrc/Makefile)
