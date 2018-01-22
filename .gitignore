@@ -51,6 +51,7 @@ pysrc/INPUTS
 pysrc/DATA*
 pysrc/*.so
 pysrc/*.tsv
+pysrc/*.dat
 pysrc/cri.pyf
 pysrc/geoschem.pyf
 pysrc/photolysis.txt
