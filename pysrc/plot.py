@@ -19,7 +19,7 @@ if haspbl and hastemp:
     anchor = (.75, 1.05)
 elif haspbl or hastemp:
     pos = [.1, .1, .7, .7]
-    anchor = (.65, 1.05)
+    anchor = (.6, 1.05)
 pax = data.plot(x = 'JDAY', y = ['O3', 'C5H8'], linestyle = '-', legend=False, color = ['k', 'g'])
 pax.set_position(pos)
 sax = pax.twinx()
