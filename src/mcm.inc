@@ -16,9 +16,6 @@
 // initial concentrations
 #INITVALUES
 
-// conversion from mixing ratio to concentration
-CFACTOR = 2.5E19;
-
 // initial mixing ratios
 ALL_SPEC = 0.;
 
@@ -27,9 +24,6 @@ ALL_SPEC = 0.;
 //#INTEGRATOR kpp_lsode
 // #INTEGRATOR ros2_manual
 // #INTEGRATOR radau5
-
-// driver file that calls kpp subroutines
-#DRIVER ../driver
 
 // set indices of unused species to ind_*=0
 #DUMMYINDEX ON
