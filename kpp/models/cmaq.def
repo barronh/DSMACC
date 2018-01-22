@@ -39,8 +39,8 @@
  TEND = TSTART + (3.*24.*3600.) ! seconds
  DT = 1./15.*3600. ! seconds
  TEMP = 230. ! K
- PRESS = 298.30 ! hPa
- M = AVOGADRO * PRESS * 100. /TEMP/R ! molecules cm-3
+ PRESS = 29830. ! Pa
+ M = AVOGADRO * PRESS /TEMP/R ! molecules cm-3
 #ENDINLINE
 
 #INLINE F90_RCONST 
@@ -54,7 +54,7 @@
  TEMP = VTEMP(IntCount)
  LAT = VLAT(IntCount)
  LON = VLON(IntCount)
- M = AVOGADRO * PRESS * 100 / TEMP / R ! molecules cm-3
+ M = AVOGADRO * PRESS / TEMP / R ! molecules cm-3
  CFACTOR = M * 1.e-6
  H2O = VH2O(IntCount) * CFACTOR
  N2 = 0.7808*M
@@ -190,8 +190,8 @@
         call AddVarWithUnitDesc(ncid, 'LON', 'decimal degrees north', &
           'Longitude in degrees west', ncstdids(i))
         i = i + 1
-        call AddVarWithUnitDesc(ncid, 'PRESS', 'hPa', &
-          'Pressure in hecta Pascals', ncstdids(i))
+        call AddVarWithUnitDesc(ncid, 'PRESS', 'Pa', &
+          'Pressure in Pascals', ncstdids(i))
         i = i + 1
         call AddVarWithUnitDesc(ncid, 'TEMP', 'K', &
           'Temperature in degrees Kelvin', ncstdids(i))
