@@ -224,7 +224,6 @@
 
   #include <stdio.h>
   #include <stdlib.h>
-  #include <malloc.h>
   #include <string.h>
   #include <unistd.h>
   #include "scan.h"
@@ -276,12 +275,12 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 72 "scan.y"
+#line 71 "scan.y"
 {
   char str[200];
 }
 /* Line 193 of yacc.c.  */
-#line 285 "y.tab.c"
+#line 284 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -294,7 +293,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 298 "y.tab.c"
+#line 297 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -627,18 +626,18 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    96,    96,    97,    99,   102,   105,   108,   111,   114,
-     117,   120,   123,   126,   129,   132,   134,   136,   138,   140,
-     142,   144,   146,   148,   150,   152,   154,   156,   158,   160,
-     162,   164,   166,   168,   170,   172,   174,   176,   178,   180,
-     182,   184,   186,   191,   193,   195,   197,   199,   201,   205,
-     208,   210,   211,   212,   215,   222,   223,   224,   227,   231,
-     232,   233,   236,   240,   241,   242,   245,   249,   250,   251,
-     254,   258,   259,   260,   263,   271,   272,   273,   276,   277,
-     279,   287,   295,   296,   298,   301,   305,   306,   307,   310,
-     313,   314,   315,   320,   325,   330,   334,   338,   342,   345,
-     348,   351,   354,   358,   362,   367,   368,   369,   372,   375,
-     380,   384
+       0,    95,    95,    96,    98,   101,   104,   107,   110,   113,
+     116,   119,   122,   125,   128,   131,   133,   135,   137,   139,
+     141,   143,   145,   147,   149,   151,   153,   155,   157,   159,
+     161,   163,   165,   167,   169,   171,   173,   175,   177,   179,
+     181,   183,   185,   190,   192,   194,   196,   198,   200,   204,
+     207,   209,   210,   211,   214,   221,   222,   223,   226,   230,
+     231,   232,   235,   239,   240,   241,   244,   248,   249,   250,
+     253,   257,   258,   259,   262,   270,   271,   272,   275,   276,
+     278,   286,   294,   295,   297,   300,   304,   305,   306,   309,
+     312,   313,   314,   319,   324,   329,   333,   337,   341,   344,
+     347,   350,   353,   357,   361,   366,   367,   368,   371,   374,
+     379,   383
 };
 #endif
 
@@ -1685,208 +1684,208 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 100 "scan.y"
+#line 99 "scan.y"
     { CmdJacobian( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 5:
-#line 103 "scan.y"
+#line 102 "scan.y"
     { CmdHessian( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 6:
-#line 106 "scan.y"
+#line 105 "scan.y"
     { CmdDeclareValues( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 7:
-#line 109 "scan.y"
+#line 108 "scan.y"
     { CmdStoicmat( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 8:
-#line 112 "scan.y"
+#line 111 "scan.y"
     { CmdDouble( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 9:
-#line 115 "scan.y"
+#line 114 "scan.y"
     { CmdReorder( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 10:
-#line 118 "scan.y"
+#line 117 "scan.y"
     { CmdMex( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 11:
-#line 121 "scan.y"
+#line 120 "scan.y"
     { CmdDummyindex( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 12:
-#line 124 "scan.y"
+#line 123 "scan.y"
     { CmdEqntags( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 13:
-#line 127 "scan.y"
+#line 126 "scan.y"
     { CmdFunction( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 14:
-#line 130 "scan.y"
+#line 129 "scan.y"
     { CmdStochastic( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 15:
-#line 133 "scan.y"
+#line 132 "scan.y"
     {;}
     break;
 
   case 16:
-#line 135 "scan.y"
+#line 134 "scan.y"
     {;}
     break;
 
   case 17:
-#line 137 "scan.y"
+#line 136 "scan.y"
     {;}
     break;
 
   case 18:
-#line 139 "scan.y"
+#line 138 "scan.y"
     {;}
     break;
 
   case 19:
-#line 141 "scan.y"
+#line 140 "scan.y"
     {;}
     break;
 
   case 20:
-#line 143 "scan.y"
+#line 142 "scan.y"
     {;}
     break;
 
   case 21:
-#line 145 "scan.y"
+#line 144 "scan.y"
     {;}
     break;
 
   case 22:
-#line 147 "scan.y"
+#line 146 "scan.y"
     {;}
     break;
 
   case 23:
-#line 149 "scan.y"
+#line 148 "scan.y"
     {;}
     break;
 
   case 24:
-#line 151 "scan.y"
+#line 150 "scan.y"
     {;}
     break;
 
   case 25:
-#line 153 "scan.y"
+#line 152 "scan.y"
     {;}
     break;
 
   case 26:
-#line 155 "scan.y"
+#line 154 "scan.y"
     {;}
     break;
 
   case 27:
-#line 157 "scan.y"
+#line 156 "scan.y"
     {;}
     break;
 
   case 28:
-#line 159 "scan.y"
+#line 158 "scan.y"
     {;}
     break;
 
   case 29:
-#line 161 "scan.y"
+#line 160 "scan.y"
     { CheckAll(); ;}
     break;
 
   case 30:
-#line 163 "scan.y"
+#line 162 "scan.y"
     { LookAtAll(); ;}
     break;
 
   case 31:
-#line 165 "scan.y"
+#line 164 "scan.y"
     { TransportAll(); ;}
     break;
 
   case 32:
-#line 167 "scan.y"
+#line 166 "scan.y"
     { WriteAtoms(); ;}
     break;
 
   case 33:
-#line 169 "scan.y"
+#line 168 "scan.y"
     { WriteSpecies(); ;}
     break;
 
   case 34:
-#line 171 "scan.y"
+#line 170 "scan.y"
     { WriteMatrices(); ;}
     break;
 
   case 35:
-#line 173 "scan.y"
+#line 172 "scan.y"
     { WriteOptions(); ;}
     break;
 
   case 36:
-#line 175 "scan.y"
+#line 174 "scan.y"
     { CmdUse( (yyvsp[(2) - (2)].str) ); ;}
     break;
 
   case 37:
-#line 177 "scan.y"
+#line 176 "scan.y"
     { CmdLanguage( (yyvsp[(2) - (2)].str) ); ;}
     break;
 
   case 38:
-#line 179 "scan.y"
+#line 178 "scan.y"
     { DefineInitializeNbr( (yyvsp[(2) - (2)].str) ); ;}
     break;
 
   case 39:
-#line 181 "scan.y"
+#line 180 "scan.y"
     { DefineXGrid( (yyvsp[(2) - (2)].str) ); ;}
     break;
 
   case 40:
-#line 183 "scan.y"
+#line 182 "scan.y"
     { DefineYGrid( (yyvsp[(2) - (2)].str) ); ;}
     break;
 
   case 41:
-#line 185 "scan.y"
+#line 184 "scan.y"
     { DefineZGrid( (yyvsp[(2) - (2)].str) ); ;}
     break;
 
   case 42:
-#line 187 "scan.y"
+#line 186 "scan.y"
     { 
 		    AddInlineCode( (yyvsp[(2) - (4)].str), InlineBuf );
                     free( InlineBuf );
@@ -1894,49 +1893,49 @@ yyreduce:
     break;
 
   case 43:
-#line 192 "scan.y"
+#line 191 "scan.y"
     { ParserErrorMessage(); ;}
     break;
 
   case 44:
-#line 194 "scan.y"
+#line 193 "scan.y"
     { CmdIntegrator( (yyvsp[(2) - (2)].str) ); ;}
     break;
 
   case 45:
-#line 196 "scan.y"
+#line 195 "scan.y"
     { CmdDriver( (yyvsp[(2) - (2)].str) ); ;}
     break;
 
   case 46:
-#line 198 "scan.y"
+#line 197 "scan.y"
     { CmdRun( (yyvsp[(2) - (2)].str) ); ;}
     break;
 
   case 47:
-#line 200 "scan.y"
+#line 199 "scan.y"
     {;}
     break;
 
   case 48:
-#line 202 "scan.y"
+#line 201 "scan.y"
     { SparseData( (yyvsp[(2) - (2)].str) );
                   ;}
     break;
 
   case 49:
-#line 206 "scan.y"
+#line 205 "scan.y"
     { ScanWarning("Unnecessary ';'");
                   ;}
     break;
 
   case 53:
-#line 213 "scan.y"
+#line 212 "scan.y"
     { ParserErrorMessage(); ;}
     break;
 
   case 54:
-#line 216 "scan.y"
+#line 215 "scan.y"
     { switch( crt_section ) {
                       case ATOMDECL: DeclareAtom( (yyvsp[(1) - (1)].str) ); break;
                       case CHECK:    SetAtomType( (yyvsp[(1) - (1)].str), DO_CHECK ); break;
@@ -1945,56 +1944,56 @@ yyreduce:
     break;
 
   case 57:
-#line 225 "scan.y"
+#line 224 "scan.y"
     { ParserErrorMessage(); ;}
     break;
 
   case 58:
-#line 228 "scan.y"
+#line 227 "scan.y"
     { AddLookAt( (yyvsp[(1) - (1)].str) );
                   ;}
     break;
 
   case 61:
-#line 234 "scan.y"
+#line 233 "scan.y"
     { ParserErrorMessage(); ;}
     break;
 
   case 62:
-#line 237 "scan.y"
+#line 236 "scan.y"
     { AddMonitor( (yyvsp[(1) - (1)].str) );
                   ;}
     break;
 
   case 65:
-#line 243 "scan.y"
+#line 242 "scan.y"
     { ParserErrorMessage(); ;}
     break;
 
   case 66:
-#line 246 "scan.y"
+#line 245 "scan.y"
     { AddTransport( (yyvsp[(1) - (1)].str) );
                   ;}
     break;
 
   case 69:
-#line 252 "scan.y"
+#line 251 "scan.y"
     { ParserErrorMessage(); ;}
     break;
 
   case 70:
-#line 255 "scan.y"
+#line 254 "scan.y"
     { AddUseFile( (yyvsp[(1) - (1)].str) );
                   ;}
     break;
 
   case 73:
-#line 261 "scan.y"
+#line 260 "scan.y"
     { ParserErrorMessage(); ;}
     break;
 
   case 74:
-#line 264 "scan.y"
+#line 263 "scan.y"
     { switch( crt_section ) {
                       case SETVAR: SetSpcType( VAR_SPC, (yyvsp[(1) - (1)].str) ); break;
                       case SETRAD: SetSpcType( RAD_SPC, (yyvsp[(1) - (1)].str) ); break;
@@ -2004,12 +2003,12 @@ yyreduce:
     break;
 
   case 77:
-#line 274 "scan.y"
+#line 273 "scan.y"
     { ParserErrorMessage(); ;}
     break;
 
   case 80:
-#line 280 "scan.y"
+#line 279 "scan.y"
     { switch( crt_section ) {
                       case DEFVAR: DeclareSpecies( VAR_SPC, (yyvsp[(1) - (3)].str) ); break;
                       case DEFRAD: DeclareSpecies( RAD_SPC, (yyvsp[(1) - (3)].str) ); break;
@@ -2019,7 +2018,7 @@ yyreduce:
     break;
 
   case 81:
-#line 288 "scan.y"
+#line 287 "scan.y"
     { switch( crt_section ) {
                       case DEFVAR: DeclareSpecies( VAR_SPC, (yyvsp[(1) - (1)].str) ); break;
                       case DEFRAD: DeclareSpecies( RAD_SPC, (yyvsp[(1) - (1)].str) ); break;
@@ -2029,36 +2028,36 @@ yyreduce:
     break;
 
   case 84:
-#line 299 "scan.y"
+#line 298 "scan.y"
     { AddAtom( (yyvsp[(2) - (2)].str), (yyvsp[(1) - (2)].str) );
                   ;}
     break;
 
   case 85:
-#line 302 "scan.y"
+#line 301 "scan.y"
     { AddAtom( (yyvsp[(1) - (1)].str), "1" );
                   ;}
     break;
 
   case 88:
-#line 308 "scan.y"
+#line 307 "scan.y"
     { ParserErrorMessage(); ;}
     break;
 
   case 89:
-#line 311 "scan.y"
+#line 310 "scan.y"
     { AssignInitialValue( (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str) ); ;}
     break;
 
   case 92:
-#line 316 "scan.y"
+#line 315 "scan.y"
     { ParserErrorMessage();
                     eqState = LHS; 
                   ;}
     break;
 
   case 93:
-#line 321 "scan.y"
+#line 320 "scan.y"
     { eqState = LHS;
                     StoreEquationRate( (yyvsp[(4) - (4)].str), (yyvsp[(1) - (4)].str) ); 
                     CheckEquation();
@@ -2066,7 +2065,7 @@ yyreduce:
     break;
 
   case 94:
-#line 326 "scan.y"
+#line 325 "scan.y"
     { eqState = LHS;
                     StoreEquationRate( (yyvsp[(3) - (3)].str), "          " ); 
                     CheckEquation();
@@ -2074,79 +2073,79 @@ yyreduce:
     break;
 
   case 95:
-#line 331 "scan.y"
+#line 330 "scan.y"
     { strcpy( (yyval.str), (yyvsp[(1) - (2)].str) );
                     strcat( (yyval.str), (yyvsp[(2) - (2)].str) ); 
                   ;}
     break;
 
   case 96:
-#line 335 "scan.y"
+#line 334 "scan.y"
     { strcpy( (yyval.str), (yyvsp[(1) - (1)].str) );
                   ;}
     break;
 
   case 97:
-#line 339 "scan.y"
+#line 338 "scan.y"
     { strcpy( (yyval.str), (yyvsp[(2) - (3)].str) );
                   ;}
     break;
 
   case 98:
-#line 343 "scan.y"
+#line 342 "scan.y"
     { eqState = RHS; ;}
     break;
 
   case 99:
-#line 346 "scan.y"
+#line 345 "scan.y"
     { eqState = RAT; ;}
     break;
 
   case 100:
-#line 349 "scan.y"
+#line 348 "scan.y"
     { ProcessTerm( eqState, (yyvsp[(2) - (3)].str), crt_coef, crt_term ); 
                   ;}
     break;
 
   case 101:
-#line 352 "scan.y"
+#line 351 "scan.y"
     { ProcessTerm( eqState, (yyvsp[(1) - (2)].str), crt_coef, crt_term );
                   ;}
     break;
 
   case 102:
-#line 355 "scan.y"
+#line 354 "scan.y"
     { ProcessTerm( eqState, "+", crt_coef, crt_term );
                   ;}
     break;
 
   case 103:
-#line 359 "scan.y"
+#line 358 "scan.y"
     { strcpy( crt_term, (yyvsp[(2) - (2)].str) );
                     strcpy( crt_coef, (yyvsp[(1) - (2)].str) );  
                   ;}
     break;
 
   case 104:
-#line 363 "scan.y"
+#line 362 "scan.y"
     { strcpy( crt_term, (yyvsp[(1) - (1)].str) );         
                     strcpy( crt_coef, "1" ); 
                   ;}
     break;
 
   case 107:
-#line 370 "scan.y"
+#line 369 "scan.y"
     { ParserErrorMessage(); ;}
     break;
 
   case 108:
-#line 373 "scan.y"
+#line 372 "scan.y"
     { AddLumpSpecies( (yyvsp[(1) - (3)].str) );
                   ;}
     break;
 
   case 109:
-#line 376 "scan.y"
+#line 375 "scan.y"
     {
                     AddLumpSpecies( (yyvsp[(1) - (3)].str) );
                     CheckLump( (yyvsp[(3) - (3)].str) );  
@@ -2154,14 +2153,14 @@ yyreduce:
     break;
 
   case 110:
-#line 381 "scan.y"
+#line 380 "scan.y"
     {
 		    InlineBuf = AppendString( InlineBuf, (yyvsp[(2) - (2)].str), &InlineLen, MAX_INLINE );
 		  ;}
     break;
 
   case 111:
-#line 385 "scan.y"
+#line 384 "scan.y"
     {
 		    InlineBuf = malloc( MAX_INLINE ); 
                     InlineLen = MAX_INLINE;
@@ -2171,7 +2170,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 2175 "y.tab.c"
+#line 2174 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2385,7 +2384,7 @@ yyreturn:
 }
 
 
-#line 391 "scan.y"
+#line 390 "scan.y"
 
 
 void yyerror( char * str )

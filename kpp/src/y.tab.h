@@ -194,7 +194,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 72 "scan.y"
+#line 71 "scan.y"
 {
   char str[200];
 }
