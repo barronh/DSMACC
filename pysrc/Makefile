@@ -42,30 +42,30 @@
 #    For the native compiler use:
 #      CC=cc
 
-CC=@CC@
+CC=gcc
 
 # 2. Platform independent C compiler flags. By default "-O" is used which 
 #    turns on optimisation. If you are experiencing problems you may try 
 #    "-g" to include debuging informations.
 
-CFLAGS=@CFLAGS@
-CPPFLAGS=@CPPFLAGS@
+CFLAGS=-g -O2
+CPPFLAGS=
 
 # 3. The name of your lexical analizer. KPP requires FLEX to be used.
 #    FLEX is a public domain lexical analizer and you can download it from
 #    http://www.gnu.org/software/flex/ or any other mirror site. If flex
 #    directory is not included in your path use the complete pathname.
 
-FLEX=@LEX@
+FLEX=flex
 
 # 4. Linker flags to ensure access to the FLEX library (libfl.a).
 #    If libfl.a is in a standard location, this can be blank.
 #    Otherwise LDFLAGS=-L<DIRPATH> where DIRPATH is the path that
 #    contains libfl.a
-LDFLAGS=@LDFLAGS@
+LDFLAGS=-L/home/bhenders/pkgs/flex-flex-2-5-35/
 
 # 4. Flex library. Can either be -lfl or the full path to a libfl.a
-FLEX_LIB=@LEXLIB@
+FLEX_LIB=-lfl
 
 # 5. The name of the fortran compiler you want to use. Normaly this 
 #    is either GNU Fortran compiler (gfortran), the Intel Fortran
@@ -75,13 +75,13 @@ FLEX_LIB=@LEXLIB@
 #    For the Intel compiler use:
 #      FC=ifort
 
-FC=@FC@
+FC=gfortran
 
 # 6. Platform independent C compiler flags. By default "-O" is used which 
 #    turns on optimisation. If you are experiencing problems you may try 
 #    "-g" to include debuging informations.
 
-F90FLAGS=@FCFLAGS_f90@ @FCFLAGS@
+F90FLAGS=-cpp -g -O2 -fno-automatic -fPIC -fcheck=bounds -fimplicit-none
 
 export KPP_HOME=$(PWD)/../kpp
 
@@ -96,29 +96,15 @@ inputs:
 	ln -fs ../tuv_new/INPUTS ../tuv_new/DATA* .
 
 # build the standard cri model including f90 and objects
-source: cri_mcmj.kpp ../src/global.inc ../src/mcmratedef.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
-	cd ../src && make distclean && $(KPP_HOME)/bin/kpp ../pysrc/cri_mcmj.kpp dsmacc && make libtuv libfastjx #&& rm ../bin/dsmacc
+source:
+	make -C ../src libtuv.a
+	make -C ../src libfastjx.a
+	make -C ../cri src/dsmacc_Main.f90
+	make -C ../geoschem src/dsmacc_Main.f90
 
-
+install: source
+	python setup.py install
 # Run the model and make a plot
-test:
-	python driver.py
-	python plot.py
+test: install
+	cd testrun; python driver.py; python ../plot.py
 
-# complete list of all f90 source files
-SRCS1 = $(wildcard ../src/dsmacc_*.f90)
-
-# the object files are the same as the source files but with suffix ".o"
-OBJS1 := $(SRCS1:.f90=.o) 
-OBJS := $(OBJS1)
-LIBS := ../tuv_new/libtuv.a ../UCI_fastJX72e/libfastjx.a
-
-pykpp: kpp.pyf
-	$(F2PY) --f90exec=gfortran -m kpp kpp.pyf pyint.f90 pyglob.f90 pyrate.f90 pymon.f90 ../src/dsmacc_Parameters.f90 ../src/dsmacc_Precision.f90
-	$(F2PY) --f90exec=gfortran -c -m kpp kpp.pyf pyint.f90 pyglob.f90 pyrate.f90 pymon.f90 -I../src/ ../src/dsmacc_Parameters.f90  ../src/dsmacc_Precision.f90 $(OBJS) $(LIBS)
-
-kpp.pyf: ../src/dsmacc_Precision.f90
-	python makekpp_pyf.py
-
-clean:
-	rm -f kpp.pyf photolysis.txt *.so *.tsv *.png INPUTS DATA* *.dat

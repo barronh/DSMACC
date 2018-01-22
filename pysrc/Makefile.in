@@ -96,14 +96,17 @@ inputs:
 	ln -fs ../tuv_new/INPUTS ../tuv_new/DATA* .
 
 # build the standard cri model including f90 and objects
-source: cri_mcmj.kpp ../src/global.inc ../src/mcmratedef.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
-	cd ../src && make distclean && $(KPP_HOME)/bin/kpp ../pysrc/cri_mcmj.kpp dsmacc && make libtuv libfastjx #&& rm ../bin/dsmacc
+source:
+	make -C ../src libtuv.a
+	make -C ../src libfastjx.a
+	make -C ../cri src/dsmacc_Main.f90
+	make -C ../geoschem src/dsmacc_Main.f90
 
-
+install: source
+	python setup.py install
 # Run the model and make a plot
 test:
-	python driver.py
-	python plot.py
+	cd testrun; python driver.py; python ../plot.py
 
 # complete list of all f90 source files
 SRCS1 = $(wildcard ../src/dsmacc_*.f90)
