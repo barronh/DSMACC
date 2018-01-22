@@ -103,8 +103,9 @@ source:
 	make -C ../geoschem src/dsmacc_Main.f90
 
 install: source
-	python setup.py install
+	python setup.py install -f
 # Run the model and make a plot
 test: install
-	cd testrun; python driver.py; python ../plot.py
+	python box.py; python plot.py boxconc.dat cri_isop_box.png
+	python trajectory.py; python plot.py trajectoryconc.dat cri_isop_trajectory.png
 

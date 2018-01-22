@@ -1,5 +1,12 @@
 import pandas as pd;
-data = pd.read_csv('output.dat', delimiter = ',')
+import sys
+inpath = 'output.dat'
+outpath = 'cri_isop.png'
+if len(sys.argv)>1:
+    inpath = sys.argv[1]
+if len(sys.argv)>1:
+    outpath = sys.argv[2]
+data = pd.read_csv(inpath, delimiter = ',')
 data.eval('JDAY=time/3600./24.', inplace = True)
 data.eval('NOx=NO+NO2', inplace = True)
 ntrs = [k for k in data.columns if 'NO3' in k and k not in ('NO3', 'HNO3')]
@@ -57,4 +64,4 @@ if hastemp:
 pax.set_ylabel('O3 ppb, 50x C5H8 ppb')
 sax.set_ylabel('$\sum_i{NOy_i}$')
 pax.legend(patches, labels, loc = 'lower center', bbox_to_anchor = anchor, ncol = 5, handlelength = None)
-pax.figure.savefig('cri_isop.png')
+pax.figure.savefig(outpath)
