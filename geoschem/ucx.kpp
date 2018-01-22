@@ -1,5 +1,12 @@
 #INLINE F90_GLOBAL 
  LOGICAL :: UCX = .true.
 #ENDINLINE
-#INCLUDE ../geoschem/ucx.spc
-#INCLUDE ../geoschem/ucx.eqn
+
+#INLINE F90_RCONST 
+ C(ind_O2) = 0.2095e+0_dp * NUMDEN
+ C(ind_N2) = 0.7808e+0_dp * NUMDEN
+ C(ind_H2) = 0.5000e-6_dp * NUMDEN
+#ENDINLINE
+
+#INCLUDE ../ucx.spc
+#INCLUDE ../ucx.eqn

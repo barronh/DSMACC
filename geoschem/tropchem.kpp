@@ -1,5 +1,11 @@
 #INLINE F90_GLOBAL 
  LOGICAL :: UCX = .false.
 #ENDINLINE
-#INCLUDE ../geoschem/tropchem.spc
-#INCLUDE ../geoschem/tropchem.eqn
+
+#INLINE F90_RCONST 
+ C(ind_H2O) = H2O
+#ENDINLINE
+
+#INCLUDE ../tropchem.spc
+#INCLUDE ../tropchem.eqn
+
