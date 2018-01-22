@@ -1,6 +1,6 @@
 #INLINE F90_GLOBAL
     !Photolysis variables
-    include '../tuv_new/params'
+    include 'params'
     REAL*8::bs(19,kj), cs(19,kj),ds(19,kj)
     REAL*8::JSCALE = 1.0d0
     REAL::svj_tj(kt,kj), szas(kt)
@@ -88,7 +88,7 @@
   &        OLD_JDAY .ne. IJDAY) THEN
          WRITE (6,*) 'hvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhv'
          WRITE (6,*) 'Using TUV to calculate photolysis rates as a function of O3 column, SZA, ALT, and TEMP'
-         alta=max(0., (1-(press/1013.25)**0.190263)*288.15/0.00198122*0.304800/1000.)
+         alta=max(0., (1-(press/101325.)**0.190263)*288.15/0.00198122*0.304800/1000.)
         
          if (o3col .eq. 0) then 
            o3col=260.

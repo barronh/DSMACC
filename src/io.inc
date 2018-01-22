@@ -8,7 +8,7 @@
         WRITE(6,*) "        steady-state constrained (-2) run. "
         WRITE(6,*) "      - The second line (10000(a15,x)) has the names of "
         WRITE(6,*) "        species or global properties (e.g., JDAY_GMT, TEMP_K,"
-        WRITE(6,*) "        PRESS_hPa, LON_degE, LAT_degN). "
+        WRITE(6,*) "        PRESS_Pa, LON_degE, LAT_degN). "
         WRITE(6,*) "      - The third line (10000(i15,x)) has 1 (yes) or 0 (no)"
         WRITE(6,*) "        indicating if the species will be constrained"
         WRITE(6,*) "      - The data lines (10000(e15.4,x)) specify data values"
@@ -57,7 +57,7 @@
            SELECT CASE (TRIM(ADJUSTL(INPATH)))
                   CASE ('-h', '--help')
                     CALL ShowHelp
-                    STOP
+                    STOP 0
            END SELECT
            IF (STATUS .ne. 0) THEN
                STOP 'INPATH was truncated'
@@ -114,7 +114,7 @@
          IF (SPECIAL .EQV. .TRUE.) THEN
             WRITE (6,*) 'Negative Integration Time', INTTIME
             WRITE (6,*) 'But not a special case', SPECIAL
-            STOP
+            STOP 1
          ENDIF
     
          
@@ -150,6 +150,10 @@
             CASE('H2O')
                H2O=CONCS(I)
             CASE('PRESS_hPa')
+               PRESS=CONCS(I)*100.
+            CASE('PRESS_Pa')
+               PRESS=CONCS(I)
+            CASE('PRESS')
                PRESS=CONCS(I)
             CASE('NOx')
                CONSTRAIN_NOX=.TRUE.
@@ -158,7 +162,11 @@
                LAT=CONCS(I)
             CASE('LON_degE') 
                LON=CONCS(I)
+            CASE('TEMP_C')
+               TEMP=CONCS(I) + 273.15
             CASE('TEMP_K')
+               TEMP=CONCS(I)
+            CASE('TEMP')
                TEMP=CONCS(I)
             CASE('JDAY_GMT') 
                JDAY_GMT=CONCS(I)
@@ -190,13 +198,13 @@
             CASE DEFAULT
                 IF (FOUND .eq. 0) THEN
                     WRITE (6,*) SPEC_NAME(I),' NOT FOUND'
-                    IF (SPEC_NAME(I)(1:1) .NE. 'X') STOP
+                    IF (SPEC_NAME(I)(1:1) .NE. 'X') STOP 1
                     WRITE (6,*) 'Starts with an X so ignored and continued'   
                 ENDIF
         END SELECT
       ENDDO
          
-      CFACTOR=PRESS*1e2*1e-6/(8.314*TEMP)*6.022E23
+      CFACTOR=PRESS*1e-6/(8.314*TEMP)*6.022E23
       
       H2O=H2O*CFACTOR 
       DO I=1,NSPEC
@@ -233,7 +241,7 @@
       
        IF (COUNT_NOX_CONSTRAINTS .GT. 1) THEN 
          WRITE (6,*) 'You can not contrains multiple NOX species'
-         STOP
+         STOP 1
        ENDIF
      ENDIF
     
@@ -279,7 +287,7 @@
            CALL GET_COMMAND_ARGUMENT(2, VALUE = SPECROOT, LENGTH = ARGLEN, STATUS = STATUS)
            IF (STATUS .ne. 0) THEN
                WRITE(*,*)'SPECROOT was truncated'
-               STOP 
+               STOP 1
            ENDIF
         ENDIF
         IF (COMMAND_ARGUMENT_COUNT() .lt. 3) THEN
@@ -290,7 +298,7 @@
            CALL GET_COMMAND_ARGUMENT(3, VALUE = RATEROOT, LENGTH = ARGLEN, STATUS = STATUS)
            IF (STATUS .ne. 0) THEN
                WRITE(*,*)'RATEROOT was truncated'
-               STOP
+               STOP 1
            ENDIF
         ENDIF
 
@@ -301,11 +309,11 @@
         filename=TRIM(ADJUSTL(RATEROOT))//TRIM(ADJUSTL(filename1))//'.dat'
         open(RATE_UNIT, file=filename)
 
-        WRITE(SPEC_UNIT,'(100000(a25,"!"))') 'TIME','JDAY_GMT','LAT_degN','LON_degE','PRESS_hPa','TEMP_K','THETA',&
+        WRITE(SPEC_UNIT,'(100000(a25,"!"))') 'TIME','JDAY_GMT','LAT_degN','LON_degE','PRESS_Pa','TEMP_K','THETA',&
                 'H2O', 'CFACTOR', 'M', 'N2', 'O2', 'JNO2FACT','JO1DFACT','RO2',&
                 (SPC_NAMES(LOOKAT(i)), i=1,NLOOKAT)
 
-        WRITE(RATE_UNIT,'(100000(a50,"!"))') 'TIME','JDAY_GMT','LAT_degN','LON_degE','PRESS_hPa','TEMP_K','THETA','H2O', &
+        WRITE(RATE_UNIT,'(100000(a50,"!"))') 'TIME','JDAY_GMT','LAT_degN','LON_degE','PRESS_Pa','TEMP_K','THETA','H2O', &
                 'CFACTOR', 'M', 'N2', 'O2', 'JNO2FACT','JO1DFACT','RO2',&
                                               EQN_NAMES
 
