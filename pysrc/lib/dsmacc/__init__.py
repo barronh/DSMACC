@@ -259,7 +259,8 @@ class model(object):
                 updateenv()
                 istatus, rstatus, ierr = integrate( tin = pyglob.time, tout = tout, icntrl_u = ICNTRL_U)
                 if ierr != 1:
-                    raise ValueError('Integration failed at ' + str(pyglob.time))
+                    self.save()
+                    raise ValueError('Integration failed at ' + str(pyglob.time) + '; saved partial run')
                 pyglob.time = rstatus[0]
             # show Local time for clarity
             #print(pyglob.JDAY_GMT+pyglob.LON/15./24, pyglob.THETA)
@@ -335,7 +336,7 @@ class dynenv(model):
             for ek, ev in emisvar.items():
                 if ek in spc_names:
                     ki = spc_names.index(ek)
-                    pyglob.c[:] += self.dt * ev * Avogadro / newpbl_cm
+                    pyglob.c[ki] += self.dt * ev * Avogadro / newpbl_cm
                 else:
                     warn(ek + ' in emissions, but not mechanism')
             self.oldpbl = newpbl
