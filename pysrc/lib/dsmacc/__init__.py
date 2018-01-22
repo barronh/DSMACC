@@ -17,7 +17,7 @@ class model(object):
         global _instance_count
         _instance_count[self.modelname] -= 1
     
-    def __init__(self, outconcpath = None, outratepath = None, delimiter = ',', globalkeys = ['time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR'], modelname = 'cri'):
+    def __init__(self, outconcpath = None, outratepath = None, delimiter = ',', globalkeys = ['time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'CFACTOR', 'H2O', 'N2', 'O2', 'M', 'H2', 'CH4'], modelname = 'cri'):
         """
             outconcpath - path for output concentrations to be saved (ppb)
             outratepath - path for output rates to be saved (1/s, cm3/molecules/s)
@@ -66,16 +66,16 @@ class model(object):
         """
         return
     
-    def updateenv(self, O2_vmr = 0.21, H2_vmr = 1e-6, CH4_vmr = 1.85e-6, **kwds):
+    def updateenv(self, O2_vmr = 0.21, H2_vmr = 550e-9, CH4_vmr = 1.85e-6, **kwds):
         """
         Arguments:
-            O3_vmr - default molecular oxygen volume mixing ratio
+            O2_vmr - default molecular oxygen volume mixing ratio
             H2_vmr - deafault molecular hydrogen volume mixing ratio
             CH4_vmr - default methane volume mixing ratio
         Actions:
         - uses BASE_JDAY_GMT to set JDAY_GMT
         - sets LON (degE), LAT (degN), TEMP (K), PRESS (Pa)
-        - sets O2, N2, H2, H2O in molecules/cm3
+        - sets O2, N2, H2, H2O, and CH4 in molecules/cm3 (from C if available)
         - sets CFACTOR to convert from ppb to molecules/cm3
         - calls custom_before_rconst, which should be overwritten
         - updates rate constants
@@ -85,6 +85,7 @@ class model(object):
         """
         pyglob = self.pyglob
         t = pyglob.time
+        spc_names = self.spc_names
         fday = pyglob.time / 24. / 3600
         pyglob.JDAY_GMT = pyglob.BASE_JDAY_GMT + fday
 
@@ -104,11 +105,20 @@ class model(object):
         # Set some globals
         pyglob.M=pyglob.PRESS * Avogadro / R / pyglob.TEMP * centi **3
         pyglob.CFACTOR = pyglob.M * nano#{ppb-to-molecules/cm3}
-        pyglob.O2=O2_vmr*pyglob.M
-        pyglob.N2=pyglob.M-pyglob.O2
-        pyglob.H2=H2_vmr*pyglob.M
-        pyglob.CH4=CH4_vmr*pyglob.M
-
+        def setfix(pyglob, key, defval, kwds):
+            if key in spc_names:
+                idx = spc_names.index(key)
+                newval = pyglob.c[idx]
+            elif key in kwds:
+                newval = kwds[key]
+            else:
+                newval = defval
+            setattr(pyglob, key, newval)
+        
+        setfix(pyglob, 'O2', O2_vmr * pyglob.M, kwds)
+        setfix(pyglob, 'H2', H2_vmr * pyglob.M, kwds)
+        setfix(pyglob, 'CH4', CH4_vmr * pyglob.M, kwds)
+        setfix(pyglob, 'N2', pyglob.M - pyglob.O2 - pyglob.H2 - pyglob.CH4, kwds)
         
         self.custom_before_rconst()
         self.pyrate.update_rconst()
