@@ -35,6 +35,8 @@ config.log
 config.status
 Makefile.defs
 autom*.cache
+cri/src
+geoschem/src
 */cri
 */geoschem
 */*_rate_*.dat
@@ -49,6 +51,7 @@ pysrc/INPUTS
 pysrc/DATA*
 pysrc/*.so
 pysrc/*.tsv
-pysrc/kpp.pyf
+pysrc/cri.pyf
+pysrc/geoschem.pyf
 pysrc/photolysis.txt
 pysrc/build/
