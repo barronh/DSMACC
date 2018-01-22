@@ -94,7 +94,7 @@ PROGRAM driver
 !    First calculate pressure altitude from altitude
         WRITE(OUTPUT_UNIT,*) 'hvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhv'
         WRITE(OUTPUT_UNIT,*) 'Using TUV to calculate photolysis rates as a function of SZA'
-        alta=(1-(press/1013.25)**0.190263)*288.15/0.00198122*0.304800/1000.
+        alta=(1-(press/101325.)**0.190263)*288.15/0.00198122*0.304800/1000.
         WRITE(OUTPUT_UNIT,*) 'Aerosol surface area', SAREA
         WRITE(OUTPUT_UNIT,*) 'Aerosol particle radius 1', RP1
         WRITE(OUTPUT_UNIT,*) 'Altitude =', alta

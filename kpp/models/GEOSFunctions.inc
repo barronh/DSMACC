@@ -62,7 +62,7 @@
 
     !IGNORES INPUTS per v08-02-04 update
     !K0 = GEOS_STD(A0, B0, C0)
-    !GEOS_Y = K0 * (1 + .6 * (PRESS * 100.) / 101325.)
+    !GEOS_Y = K0 * (1 + .6 * (PRESS) / 101325.)
     KLO1 = 5.9D-33 * (300 / TEMP)**(1.4D0) 
     KHI1 = 1.1D-12 * (300 / TEMP)**(-1.3D0)
     XYRAT1 = KLO1 * M /KHI1

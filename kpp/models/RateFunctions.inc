@@ -5,7 +5,7 @@
      !    First calculate pressure altitude from altitude
      WRITE (6,*) 'hvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhvhv'
      WRITE (6,*) 'Using TUV to calculate photolysis rates as a function of O3 column, SZA, ALT, and TEMP'
-     alta=(1-(press/1013.25)**0.190263)*288.15/0.00198122*0.304800/1000.
+     alta=(1-(press/101325.)**0.190263)*288.15/0.00198122*0.304800/1000.
  
      if (o3col .eq. 0) then 
        o3col=260.
@@ -119,7 +119,7 @@
     REAL A0, B0, C0
     REAL(kind=dp) K0
     K0 = GEOS_STD(A0, B0, C0)
-    GEOS_Y = K0 * (1 + .6 * (PRESS * 100.) / 101325.)
+    GEOS_Y = K0 * (1 + .6 * (PRESS) / 101325.)
   END FUNCTION
 
   !---------------------------------------------------------------------------
@@ -279,7 +279,7 @@
     REAL A0, B0, C0
     REAL(kind=dp) K0
     K0 = CMAQ_1to4(A0, B0, C0)
-    CMAQ_7 = K0 * (1 + .6 * PRESS * 100.)
+    CMAQ_7 = K0 * (1 + .6 * PRESS)
   END FUNCTION
 
   !---------------------------------------------------------------------------
