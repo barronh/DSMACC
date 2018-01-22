@@ -25,8 +25,16 @@ inputs:
 %_conc_1.dat: % %_init.dat inputs
 	./$< geoschem_init.dat $*_conc_ $*_rate_  > $*.log 2>&1
 
-geoschem: gckpp.kpp ../src/global.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
-	cd ../src && make distclean && $(KPP_HOME)/bin/kpp ../geoschem/gckpp.kpp dsmacc ; make && mv ../bin/dsmacc ../geoschem/geoschem
+src/Makefile:
+	mkdir -p src && cd src && ln -s ../../src/* .
+
+src/dsmacc_Main.f90: src/Makefile gckpp.kpp geoschem.inc ../src/global.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
+	make -C src distclean
+	cd src && $(KPP_HOME)/bin/kpp ../gckpp.kpp dsmacc ; test $${?} -ne 4
+
+geoschem: src/dsmacc_Main.f90
+	make -C src PROG=../geoschem TOPDIR=../../
 
 clean:
 	rm -f geoschem geoschem_conc_*.dat geoschem_rate_*.dat geoschem.log *.png DATA* INPUTS photolysis.txt CTM_GrdCld.dat FJX_scat-UMa.dat FJX_scat-aer.dat FJX_scat-cld.dat atmos_std.dat FJX_spec.dat FJX_j2j.dat
+	rm -rf src
