@@ -42,30 +42,30 @@
 #    For the native compiler use:
 #      CC=cc
 
-CC=gcc
+CC=@CC@
 
 # 2. Platform independent C compiler flags. By default "-O" is used which 
 #    turns on optimisation. If you are experiencing problems you may try 
 #    "-g" to include debuging informations.
 
-CFLAGS=-g -O2 -arch i386 -I/usr/include/malloc
-CPPFLAGS=
+CFLAGS=@CFLAGS@
+CPPFLAGS=@CPPFLAGS@
 
 # 3. The name of your lexical analizer. KPP requires FLEX to be used.
 #    FLEX is a public domain lexical analizer and you can download it from
 #    http://www.gnu.org/software/flex/ or any other mirror site. If flex
 #    directory is not included in your path use the complete pathname.
 
-FLEX=flex
+FLEX=@LEX@
 
 # 4. Linker flags to ensure access to the FLEX library (libfl.a).
 #    If libfl.a is in a standard location, this can be blank.
 #    Otherwise LDFLAGS=-L<DIRPATH> where DIRPATH is the path that
 #    contains libfl.a
-LDFLAGS=
+LDFLAGS=@LDFLAGS@
 
 # 4. Flex library. Can either be -lfl or the full path to a libfl.a
-FLEX_LIB=-lfl
+FLEX_LIB=@LEXLIB@
 
 # 5. The name of the fortran compiler you want to use. Normaly this 
 #    is either GNU Fortran compiler (gfortran), the Intel Fortran
@@ -75,23 +75,65 @@ FLEX_LIB=-lfl
 #    For the Intel compiler use:
 #      FC=ifort
 
-FC=gfortran
+FC=@FC@
 
 # 6. Platform independent C compiler flags. By default "-O" is used which 
 #    turns on optimisation. If you are experiencing problems you may try 
 #    "-g" to include debuging informations.
 
-F90FLAGS=-cpp -g -O2 -fno-automatic -fcheck=bounds -fimplicit-none
+F90FLAGS=@FCFLAGS_f90@ @FCFLAGS@
+
+
+BISON=bison -d 
 
 all: kpp
 
-kpp:
-	make -C src
+.c.o:
+	@echo "  "$(CC) $(CC_FLAGS) $(CFLAGS) -c $*.c
+	@$(CC) $(CC_FLAGS) $(CFLAGS) -c $*.c
 
-clean:
-	make -C src clean
-	rm -f *~ */*~
+OBJS  = \
+	y.tab.o \
+	lex.yy.o \
+	scanner.o \
+	scanutil.o \
+	kpp.o \
+	gen.o \
+	code.o \
+	code_c.o \
+	code_f77.o \
+	code_f90.o \
+	code_matlab.o \
+	debug.o
 
-distclean: clean
-	make -C src maintainer-clean
-	rm -f bin/kpp
+kpp:    $(OBJS)
+	@echo "  "$(CC) $(CC_FLAGS) $(CFLAGS) $(OBJS) $(LDFLAGS) $(FLEX_LIB) -o kpp
+	@$(CC) $(CC_FLAGS) $(CFLAGS) $(OBJS) $(LDFLAGS) $(FLEX_LIB) -o kpp
+	@mkdir -p ../bin
+	@mv kpp ../bin/
+
+clean:  
+	@rm -f *~ *.o
+
+maintainer-clean: clean
+	@rm -f lex.yy.c y.tab.c y.tab.h
+
+lex.yy.c: scan.l scan.h
+	@echo "  "$(FLEX) scan.l
+	@$(FLEX) -olex.yy.c scan.l 
+
+y.tab.c: scan.y scan.h
+	@echo "  "$(BISON) scan.y
+	@$(BISON) -o y.tab.c scan.y
+
+flex: lex.yy.c y.tab.c
+
+scanner.o: scan.h gdata.h
+scanutil.o: scan.h
+kpp.o: gdata.h
+gen.o: gdata.h code.h
+debug.o: gdata.h
+code.o: gdata.h code.h
+
+code_c.o: gdata.h code.h
+code_f.o: gdata.h code.h
