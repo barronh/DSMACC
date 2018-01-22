@@ -323,7 +323,7 @@ class dynenv(model):
                     emisvar[k] = v
         
         if 'PBL' in globvar:
-            pyglob.PBL = newpbl = globvar.pop('PBL')
+            pyglob.PBL = newpbl = np.array(globvar['PBL'])
             if self.updatebkg:
                 if hasattr(self, 'oldpbl'):
                     dpbl = newpbl - self.oldpbl
