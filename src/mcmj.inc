@@ -92,7 +92,7 @@
     TMPJ = MCM_L(IJ) * COSX**MCM_M(IJ) * EXP(-MCM_N(KJ) / COSX) *  JSCALE
     IF ((IJ .eq. 1) .and. (JFACTO1D.ne.1.)) THEN
        TMPJ = TMPJ * JFACTO1D
-    ELSEIF ((IJ .eq. 4) .and. (JFACTO1D.ne.1.)) THEN
+    ELSEIF ((IJ .eq. 4) .and. (JFACTNO2.ne.1.)) THEN
        TMPJ = TMPJ * JFACTNO2
     ENDIF
 
