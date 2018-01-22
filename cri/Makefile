@@ -11,8 +11,8 @@ help:
 
 figs: cri_conc_1.dat_O3.png
 
-cri_conc_1.dat_O3.png:
-	python ../plot.py -v "O3;label='Ozone',color='red'" cri_conc_1.dat
+%_O3.png: %
+	python ../plot.py -v "O3;label='Ozone',color='red'" $<
 
 inputs:
 	ln -s ../tuv_new/INPUTS .
@@ -25,8 +25,16 @@ inputs:
 %_conc_1.dat: % %_init.dat inputs
 	./$< cri_init.dat $*_conc_ $*_rate_  > $*.log 2>&1
 
-cri: cri.kpp ../src/global.inc ../src/mcmratedef.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
-	cd ../src && make distclean && $(KPP_HOME)/bin/kpp ../cri/cri.kpp dsmacc && make && mv ../bin/dsmacc ../cri/cri
+src/Makefile:
+	mkdir -p src && cd src && ln -s ../../src/* .
+
+src/dsmacc_Main.f90: src/Makefile cri.kpp ../src/global.inc ../src/mcmratedef.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
+	make -C src distclean
+	cd src && $(KPP_HOME)/bin/kpp ../cri.kpp dsmacc
+
+cri: src/dsmacc_Main.f90
+	make -C src PROG=../cri TOPDIR=../../
 
 clean:
 	rm -f cri cri_conc_*.dat cri_rate_*.dat cri.log *.png DATA* INPUTS photolysis.txt CTM_GrdCld.dat FJX_scat-UMa.dat FJX_scat-aer.dat FJX_scat-cld.dat atmos_std.dat FJX_spec.dat FJX_j2j.dat
+	rm -rf src
