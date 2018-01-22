@@ -28,7 +28,7 @@ inputs:
 src/Makefile:
 	mkdir -p src && cd src && ln -s ../../src/* .
 
-src/dsmacc_Main.f90: src/Makefile cri.kpp ../src/global.inc ../src/mcmratedef.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
+src/dsmacc_Main.f90: src/Makefile cri.kpp CRI_subset.kpp ../src/global.inc ../src/mcmratedef.inc ../driver.f90 ../src/tuv.inc ../src/io.inc
 	make -C src distclean
 	cd src && $(KPP_HOME)/bin/kpp ../cri.kpp dsmacc
 
