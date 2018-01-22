@@ -6,12 +6,12 @@
 #MEX off
 #STOICMAT on 
 // driver file that calls kpp subroutines
-#DRIVER ../driver
+#DRIVER ../../driver
 // equation IDs
 #EQNTAGS on
 
-// INCLUDE ../geoschem/tropchem.kpp
-#INCLUDE ../geoschem/ucx.kpp
+// INCLUDE ../tropchem.kpp
+#INCLUDE ../ucx.kpp
 
 // global.inc is required
 #INCLUDE global.inc
@@ -21,7 +21,7 @@
 #INCLUDE io.inc
 // use geos-chem j values
 #INCLUDE fastjx.inc
-#INCLUDE ../geoschem/geoschem.inc
+#INCLUDE ../geoschem.inc
 
 // #FAMILIES
 // POx : O3 + NO2 + 2NO3 + PAN + PMN + PPN + HNO4 + 3N2O5 + HNO3 + BrO + HOBr + BrNO2 + 2BrNO3 + MPN + ETHLN + ISN1 + ISOPNB + ISOPND + MACRN + MVKN + PROPNN + R4N2 + INPN + ISNP + INO2 + ISNOOA + ISNOOB + ISNOHOO + MAN2 + PRN1 + PRPN + R4N1 + PMNN + MACRNO2;
@@ -173,7 +173,7 @@
     REAL KCO1,KCO2,KCO
 
     R0 =  DBLE(A0) * EXP(DBLE(C0)/TEMP) * (300._dp/TEMP)**DBLE(B0)
-    R0 = R0 * (1.E+0_dp + 0.6e+0_dp*9.871E7_dp*PRESS_PA)
+    R0 = R0 * (1.E+0_dp + 0.6e+0_dp*9.871E7_dp*PRESS_hPA)
 
     ! new OH+CO rate from JPL2006.
     KLO1=5.9E-33_dp*(300._dp/TEMP)**(1.4E+0_dp) 
