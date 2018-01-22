@@ -1,63 +1,54 @@
 from __future__ import print_function
+from collections import defaultdict
+
+__all__ = ['model', 'dynenv', 'envutil']
+
 from warnings import warn
 from scipy.constants import Avogadro, R, centi, nano
 import numpy as np
-from . import kpp
-#Prepare kpp objects for easy access
-pyglob = kpp.pyglob
-pyrate = kpp.pyrate
-pymon = kpp.pymon
-
-_instance_count = 0
-
-# Get spc_names as a string
-spc_names = [n.decode('ASCII') for n in np.char.strip(kpp.pymon.getnames().copy().view('S24')[:, 0]).tolist()]
-
-# Get spc_names as a string
-eqn_names = [n.decode('ASCII') for n in np.char.strip(kpp.pymon.geteqnnames().copy().view('S100')[:, 0]).tolist()]
+from . import envutil
 
 
-def h2o_from_rh_and_temp(RH, TEMP):
-    """
-    Return H2O in molecules/cm**3 from RH (0-100) and
-    TEMP in K
-    """
-    TC = TEMP - 273.15
-    frh = RH / 100.
-    svp_millibar = 6.11 * 10**((7.5 * TC)/(TC+237.3))
-    svp_pa = svp_millibar * 100
-    vp_pa = svp_pa * frh
-    molecule_per_cubic_m = vp_pa * Avogadro / R / TEMP
-    molecule_per_cubic_cm = molecule_per_cubic_m * centi**3
-    #print RH, TEMP, molecule_per_cubic_cm
-    return molecule_per_cubic_cm
-
+# You can only have 1 instance at a time.
+_instance_count = defaultdict(lambda: 0)
 
 class model(object):
     def __del__(self):
         global _instance_count
-        _instance_count -= 1
+        _instance_count[self.modelname] -= 1
     
-    def __init__(self, outconcpath = None, outratepath = None, delimiter = ',', globalkeys = ['time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR']):
+    def __init__(self, outconcpath = None, outratepath = None, delimiter = ',', globalkeys = ['time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR'], modelname = 'cri'):
         """
             outconcpath - path for output concentrations to be saved (ppb)
             outratepath - path for output rates to be saved (1/s, cm3/molecules/s)
             globalkeys - keys to output with concentrations
         """
         global _instance_count
-        if _instance_count > 0:
-            raise ValueError('You may only have one DSMACC instance open per session; currently %d' % _instance_count)
+        self.modelname = modelname
+        if _instance_count[self.modelname] > 0:
+            raise ValueError('You may only have one DSMACC instance open per session; currently %d' % _instance_count[self.modelname])
         else:
-            _instance_count += 1
+            _instance_count[self.modelname] += 1
+            _instance_count
+
+        from importlib import import_module
+        #Prepare kpp objects for easy access
+        kpp = self.kpp = import_module('.'+self.modelname, package = 'dsmacc')
+        self.pyint = kpp.pyint
+        self.pyglob = kpp.pyglob
+        self.pyrate = kpp.pyrate
+        self.pymon = kpp.pymon
+        # Get spc_names as a string
+        self.spc_names = [n.decode('ASCII') for n in np.char.strip(self.pymon.getnames().copy().view('S24')[:, 0]).tolist()]
+
+        # Get spc_names as a string
+        self.eqn_names = [n.decode('ASCII') for n in np.char.strip(self.pymon.geteqnnames().copy().view('S100')[:, 0]).tolist()]
 
 
         self.outconcpath = outconcpath
         self.outratepath = outratepath
         self.delimiter = delimiter
         self.globalkeys = globalkeys
-        self._pyglob = pyglob
-        self._pyrate = pyrate
-        self._pymon = pymon
         
     def custom_before_rconst(self):
         """
@@ -92,6 +83,7 @@ class model(object):
     
         Can be edited called with arguments
         """
+        pyglob = self.pyglob
         t = pyglob.time
         fday = pyglob.time / 24. / 3600
         pyglob.JDAY_GMT = pyglob.BASE_JDAY_GMT + fday
@@ -105,7 +97,7 @@ class model(object):
                 else:
                     setattr(pyglob, k, v)
             elif 'RH_pct' == k:
-                pyglob.H2O=h2o_from_rh_and_temp(v, pyglob.TEMP)
+                pyglob.H2O=envutil.h2o_from_rh_and_temp(v, pyglob.TEMP)
             else:
                 warn('%s not set; not a global variable' % (k,))
 
@@ -119,7 +111,7 @@ class model(object):
 
         
         self.custom_before_rconst()
-        pyrate.update_rconst()
+        self.pyrate.update_rconst()
         self.custom_after_rconst()
 
     def initialize(self, JDAY_GMT, conc_ppb = {}, globvar = {}, default = 1e-32):
@@ -136,6 +128,8 @@ class model(object):
             - set default concentrations
             - set specified concentrations.       
         """
+        pyglob = self.pyglob
+        spc_names = self.spc_names
         # Set the base JDAY to the integer portion of the input
         pyglob.BASE_JDAY_GMT = (JDAY_GMT // 1)
         # Set the initial time to the fraction portion of the 
@@ -166,15 +160,27 @@ class model(object):
         Actions:
             saves current state to self.out
         """
+        spc_names = self.spc_names
+        eqn_names = self.eqn_names
+        pyglob = self.pyglob
         if globalkeys is None:
             globalkeys = self.globalkeys
         outconcvals = tuple([getattr(pyglob, gk, np.nan) for gk in globalkeys] + [(ci/pyglob.CFACTOR) for ci in pyglob.c[:]])
         outratevals = tuple([getattr(pyglob, gk, np.nan) for gk in globalkeys] + [(ri) for ri in pyglob.rconst[:]])
         if restart:
-            self.outconc = self.delimiter.join(globalkeys + spc_names)
-            self.outrate = self.delimiter.join(globalkeys + eqn_names)
-            self.fmtoutconc = self.delimiter.join(['%d'] + ['%.8e'] * (len(outconcvals) - 1))
-            self.fmtoutrate = self.delimiter.join(['%d'] + ['%.8e'] * (len(outratevals) - 1))
+            conckeys = globalkeys + spc_names
+            ratekeys = globalkeys + eqn_names
+            self.outconc = self.delimiter.join(conckeys)
+            self.outrate = self.delimiter.join(ratekeys)
+            concfmts = ['%.8e'] * len(conckeys)
+            ratefmts = ['%.8e'] * len(ratekeys)
+            if 'JDAY_GMT' in conckeys:
+                concfmts[conckeys.index('JDAY_GMT')] = '%.5f'
+            if 'JDAY_GMT' in ratekeys:
+                ratefmts[ratekeys.index('JDAY_GMT')] = '%.5f'
+
+            self.fmtoutconc = self.delimiter.join(concfmts)
+            self.fmtoutrate = self.delimiter.join(ratefmts)
 
         # Write out tout results
         outconc = self.fmtoutconc % outconcvals
@@ -227,9 +233,10 @@ class model(object):
                 
             
         """
+        pyglob = self.pyglob
         self.dt = dt
         # Prepare integrator
-        integrate =kpp.pyint.integrate
+        integrate =self.pyint.integrate
         RSTATE = np.zeros(30, dtype = 'd')
         ERROR = np.zeros(1, dtype = 'd')
         ICNTRL_U = np.array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], dtype = 'i')
@@ -245,9 +252,10 @@ class model(object):
         output(restart = True)
         
         # Loop through time until at end
-        while pyglob.time < tend:
+        ierr = 1
+        while pyglob.time < tend and ierr == 1:
             tout = pyglob.time+dt
-            while pyglob.time < tout:
+            while pyglob.time < tout and ierr == 1:
                 updateenv()
                 istatus, rstatus, ierr = integrate( tin = pyglob.time, tout = tout, icntrl_u = ICNTRL_U)
                 if ierr != 1:
@@ -262,7 +270,7 @@ class model(object):
         self.save()
 
 class dynenv(model):
-    def __init__(self, outconcpath = None, outratepath = None, delimiter = ',', envdata = None, emissdata = None, bkgdata = None, globalkeys = ['time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR', 'PBL']):
+    def __init__(self, outconcpath = None, outratepath = None, delimiter = ',', envdata = None, emissdata = None, bkgdata = None, globalkeys = ['time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA', 'H2O', 'CFACTOR', 'PBL'], modelname = 'cri'):
         """
         Arguments:
             outconcpath - path for output concentrations to be saved (ppb)
@@ -276,13 +284,13 @@ class dynenv(model):
             globalkeys - keys for outputing global variables
         """
         import pandas as pd
-        super(dynenv, self).__init__(outconcpath = outconcpath, outratepath = outratepath, delimiter = delimiter, globalkeys = globalkeys)
-        
+        super(dynenv, self).__init__(outconcpath = outconcpath, outratepath = outratepath, delimiter = delimiter, globalkeys = globalkeys, modelname = modelname)
+        spc_names = self.spc_names
         self.envdata = envdata
         self.emissdata = emissdata
         self.updatebkg = not bkgdata is None
         if self.updatebkg:
-            bkgc_ppb = self._bkgc_ppb = np.zeros_like(pyglob.c[:])
+            bkgc_ppb = self._bkgc_ppb = np.zeros_like(self.pyglob.c[:])
             for k, v in bkgdata.items():
                 ki = spc_names.index(k)
                 bkgc_ppb[ki] = v
@@ -294,7 +302,10 @@ class dynenv(model):
         
         uses optional keyword PBL to entrain air
         """
+        pyglob = self.pyglob
         globvar = kwds.copy()
+        spc_names = self.spc_names
+        pyglob = self.pyglob
         t = pyglob.BASE_JDAY_GMT + pyglob.time / 3600. / 24.
         if not self.envdata is None:
             xt = self.envdata['JDAY_GMT']
@@ -322,8 +333,11 @@ class dynenv(model):
                 
             newpbl_cm = newpbl * 100
             for ek, ev in emisvar.items():
-                ki = spc_names.index(ek)
-                pyglob.c[:] += self.dt * ev * Avogadro / newpbl_cm
+                if ek in spc_names:
+                    ki = spc_names.index(ek)
+                    pyglob.c[:] += self.dt * ev * Avogadro / newpbl_cm
+                else:
+                    warn(ek + ' in emissions, but not mechanism')
             self.oldpbl = newpbl
         
         super(dynenv, self).updateenv(**globvar)

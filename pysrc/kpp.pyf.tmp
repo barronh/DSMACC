@@ -3,12 +3,12 @@
 ! Note: dsmacc_precision and dsmacc_parameters parameter values must be
 !       updated manually to match code
 
-python module kpp ! in 
-    interface  ! in :kpp
-        module dsmacc_precision ! in :kpp:dsmacc_Precision.f90
+python module %(mech)s ! in 
+    interface  ! in :%(mech)s
+        module dsmacc_precision ! in :%(mech)s:dsmacc_Precision.f90
             integer, public,parameter,optional :: dp=8
         end module dsmacc_precision
-        module dsmacc_parameters ! in :kpp:dsmacc_Parameters.f90
+        module dsmacc_parameters ! in :%(mech)s:dsmacc_Parameters.f90
             !Note that these parameters must be updated
             !manually
             use dsmacc_precision, only : dp
@@ -16,9 +16,9 @@ python module kpp ! in
             integer, public,parameter,optional :: nvar=%(NVAR)d
             integer, public,parameter,optional :: nreact=%(NREACT)d
         end module dsmacc_parameters
-        module pyint ! in :kpp:pyint.f90
+        module pyint ! in :%(mech)s:pyint.f90
             use dsmacc_integrator, only: integrate
-            subroutine integrate(tin,tout,icntrl_u,rcntrl_u,istatus_u,rstatus_u,ierr_u) ! in :kpp:kpp_py.f90:pyint:unknown_interface
+            subroutine integrate(tin,tout,icntrl_u,rcntrl_u,istatus_u,rstatus_u,ierr_u) ! in :%(mech)s:%(mech)s_py.f90:pyint:unknown_interface
                 use dsmacc_global
                 use dsmacc_parameters
                 use dsmacc_precision, only : dp
@@ -31,7 +31,7 @@ python module kpp ! in
                 integer, optional,intent(out) :: ierr_u
             end subroutine integrate
         end module pyint
-        module pyglob ! in :kpp:pyglob.f90
+        module pyglob ! in :%(mech)s:pyglob.f90
             use dsmacc_global
             use dsmacc_precision, only : dp
             use dsmacc_parameters, only : nspec, nvar, nreact
@@ -61,24 +61,24 @@ python module kpp ! in
             real(kind=dp), public :: JSCALE
         end module pyglob
         module pyrate
-            subroutine update_rconst ! in :kpp:dsmacc_Rates.f90:dsmacc_rates
+            subroutine update_rconst ! in :%(mech)s:dsmacc_Rates.f90:dsmacc_rates
                 use constants
             end subroutine update_rconst
         end module pyrate 
-        module pymon ! in :kpp:pymon.f90
-            function getnames() result (out_names) ! in :kpp:pymon.f90:pymon
+        module pymon ! in :%(mech)s:pymon.f90
+            function getnames() result (out_names) ! in :%(mech)s:pymon.f90:pymon
                 use dsmacc_parameters, only: nspec
                 use dsmacc_monitor, only: spc_names
                 character, dimension(nspec,24) :: out_names
             end function getnames
-            function geteqnnames() result (out_names) ! in :kpp:pymon.f90:pymon
+            function geteqnnames() result (out_names) ! in :%(mech)s:pymon.f90:pymon
                 use dsmacc_parameters, only: nreact
                 use dsmacc_monitor, only: eqn_names
                 character, dimension(nreact,100) :: out_names
             end function geteqnnames
         end module pymon
     end interface 
-end python module kpp
+end python module %(mech)s
 
 ! This file was auto-generated with f2py (version:2).
 ! See http://cens.ioc.ee/projects/f2py2e/
