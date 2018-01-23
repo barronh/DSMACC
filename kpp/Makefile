@@ -93,5 +93,4 @@ clean:
 	rm -f *~ */*~
 
 distclean: clean
-	make -C src maintainer-clean
 	rm -f bin/kpp
