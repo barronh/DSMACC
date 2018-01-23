@@ -1,4 +1,13 @@
-# In order to compile KPP you have to provide the following information:
+##############################################################################
+# -*- sh -*-
+##############################################################################
+#
+#  DSMACC - The Dynamically Simple Model of Atmospheric Chemical Complexity
+#        uses KPP to build simulation code for chemical kinetic systems
+#
+##############################################################################
+
+# Basic compilers and compiler options are selected using configure
 
 # 1. The name of the compiler you want to use. Normaly this 
 #    is either GNU C compiler (gcc) or the native compiler (cc)
@@ -15,26 +24,27 @@ CC=gcc
 #    turns on optimisation. If you are experiencing problems you may try 
 #    "-g" to include debuging informations.
 
-CFLAGS=-g -O2 -arch i386 -I/usr/include/malloc
+CFLAGS=-g -O2
 CPPFLAGS=
 
-# 3. The name of your lexical analizer. KPP requires FLEX to be used.
+# 3. KPP requires a lexical analizer like FLEX to be used.
 #    FLEX is a public domain lexical analizer and you can download it from
 #    http://www.gnu.org/software/flex/ or any other mirror site. If flex
 #    directory is not included in your path use the complete pathname.
 
 FLEX=flex
 
-# 4. Linker flags to ensure access to the FLEX library (libfl.a).
+# 4. Flex library. Can either be -lfl or the full path to a libfl.a
+FLEX_LIB=-lfl
+
+
+# 5. Linker flags to ensure access to the libraries including libfl.a
 #    If libfl.a is in a standard location, this can be blank.
 #    Otherwise LDFLAGS=-L<DIRPATH> where DIRPATH is the path that
 #    contains libfl.a
 LDFLAGS=
 
-# 4. Flex library. Can either be -lfl or the full path to a libfl.a
-FLEX_LIB=-lfl
-
-# 5. The name of the fortran compiler you want to use. Normaly this 
+# 6. The name of the fortran compiler you want to use. Normaly this 
 #    is either GNU Fortran compiler (gfortran), the Intel Fortran
 #    compiler (ifort), or the Portland Group Compiler.
 #    For GNU C compiler use:
@@ -48,7 +58,7 @@ FC=gfortran
 #    turns on optimisation. If you are experiencing problems you may try 
 #    "-g" to include debuging informations.
 
-F90FLAGS=-cpp -g -O0 -fno-automatic -fcheck=bounds -fimplicit-none
+F90FLAGS=-cpp -g -O2 -fno-automatic -fcheck=bounds -fimplicit-none
 
 TOPDIR=..
 

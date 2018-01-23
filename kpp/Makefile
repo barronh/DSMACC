@@ -48,7 +48,7 @@ CC=gcc
 #    turns on optimisation. If you are experiencing problems you may try 
 #    "-g" to include debuging informations.
 
-CFLAGS=-g -O2 -arch i386 -I/usr/include/malloc
+CFLAGS=-g -O2
 CPPFLAGS=
 
 # 3. The name of your lexical analizer. KPP requires FLEX to be used.
