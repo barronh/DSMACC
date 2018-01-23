@@ -1,13 +1,23 @@
 # Driving DSMACC with Python
 
-After building a DSMACC model, you can drive it with python. This is great 
-for rapid modification and easy editing.
+Python is a great way to control DSMACC.
 
-Type `make` to:
-- build a copy of cri/cri.kpp
-- then compile a python library version of cri
-- run driver.py to create a time series simulation based on a chamber study
+There are three files to get things started
 
+ - Makefile can be called (`make install` or `make test`)
+            to install the python dsmacc module and optionally
+            run box.py, trajectory.py and plot.py
+ - setup.py can be called (`python setup.py install`),
+            but depends on source code in ../cri/src
+            and ../geoschem/src
+ - box.py   is the most simple box model driver for dsmacc
+            it sets initial conditons and some run options
+            to run CRI (or geoschem) to make boxconc.dat
+            and boxrate.dat output files
+ - trajectory.py conceptually adds emissions and a dynamic
+            PBL/TEMP to box.py to make trajectoryconc.dat
+            and trajectoryrate.dat output files
+ - plot.py  takes an input path (eg. trajectory.dat) and
+            and output path to create a figure of the output
+            concentrations
 
-driver.py is a simple example that could be copied and modified to make
-alternate versions of the model.
