@@ -103,25 +103,9 @@ source:
 	make -C ../geoschem src/dsmacc_Main.f90
 
 install: source
-	python setup.py install
+	python setup.py install -f
 # Run the model and make a plot
-test:
-	cd testrun; python driver.py; python ../plot.py
+test: install
+	python box.py; python plot.py boxconc.dat cri_isop_box.png
+	python trajectory.py; python plot.py trajectoryconc.dat cri_isop_trajectory.png
 
-# complete list of all f90 source files
-SRCS1 = $(wildcard ../src/dsmacc_*.f90)
-
-# the object files are the same as the source files but with suffix ".o"
-OBJS1 := $(SRCS1:.f90=.o) 
-OBJS := $(OBJS1)
-LIBS := ../tuv_new/libtuv.a ../UCI_fastJX72e/libfastjx.a
-
-pykpp: kpp.pyf
-	$(F2PY) --f90exec=gfortran -m kpp kpp.pyf pyint.f90 pyglob.f90 pyrate.f90 pymon.f90 ../src/dsmacc_Parameters.f90 ../src/dsmacc_Precision.f90
-	$(F2PY) --f90exec=gfortran -c -m kpp kpp.pyf pyint.f90 pyglob.f90 pyrate.f90 pymon.f90 -I../src/ ../src/dsmacc_Parameters.f90  ../src/dsmacc_Precision.f90 $(OBJS) $(LIBS)
-
-kpp.pyf: ../src/dsmacc_Precision.f90
-	python makekpp_pyf.py
-
-clean:
-	rm -f kpp.pyf photolysis.txt *.so *.tsv *.png INPUTS DATA* *.dat
