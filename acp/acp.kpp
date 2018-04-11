@@ -1,0 +1,60 @@
+#LANGUAGE Fortran90
+#DOUBLE ON
+#DRIVER ../../driver
+// do not create Hessian files
+#HESSIAN OFF
+
+// do not create Mex files
+#MEX OFF
+#
+#INLINE F90_RATES
+  REAL*8 FUNCTION PHOx()
+    USE dsmacc_Global, only : C
+    USE dsmacc_Parameters, only : ind_EMISSION
+    PHOx = 0.1e-12 * CFACTOR / C(ind_EMISSION)
+  END FUNCTION PHOx
+#ENDINLINE
+
+#INCLUDE io.inc
+#INCLUDE global.inc
+#INCLUDE mcmj.inc
+// initial concentrations
+#INITVALUES
+
+// initial mixing ratios
+ALL_SPEC = 0.;
+
+// integrator should usually be rosenbrock
+#INTEGRATOR rosenbrock
+
+#INLINE F90_GLOBAL
+  REAL(kind=dp) M, RO2, H2O, N2, O2
+#ENDINLINE
+#DEFVAR
+RH = IGNORE ;
+OH = IGNORE ;
+NO = IGNORE ;
+NO2 = IGNORE ;
+RO2 = IGNORE ;
+H2O2 = IGNORE ;
+HNO3 = IGNORE ;
+ROOH = IGNORE ;
+RCHO = IGNORE ;
+HO2 = IGNORE ;
+O3 = IGNORE ;
+EMISSION = IGNORE ;
+
+#EQUATIONS
+{R1} RH + OH = RO2 {+ H2O} : 26.3e-12;
+{R2} RO2 + NO = NO2 + RCHO + HO2 : 7.7e-12;
+{R3} HO2 + NO = NO2 + OH : 8.1e-12;
+{R4} NO2 = NO + O3 : .015 ;
+{R5} O3 + NO = NO2 {+ O2} : 1.9e-14 ;
+{R6} OH + NO2 = HNO3 : 1.1e-11 ; 
+{R7} HO2 + HO2 = H2O2 {+ O2} : 2.9e-12 ;
+{R8} RO2 + HO2 = ROOH {+ O2} : 5.2e-12 ;
+{R9} EMISSION = EMISSION + OH : PHOx();
+
+
+#MONITOR EMISSION; O3; RH; NO; NO2; OH; HO2;
+#LOOKATALL;

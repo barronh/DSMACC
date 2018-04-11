@@ -1,0 +1,28 @@
+# ACP 
+
+## Prerequisites:
+ - installed KPP (../kpp/bin/kpp)
+
+## Inventory
+
+This folder contains the following files
+ - acp.kpp: a file the contains kpp syntax to build a dsmacc model using VOC/NOx from pg 240 from Seinfeld and Pandis (ISBN: 978-0-471-72018-8)
+ - acp_init.dat: initial conditions for a RH=200 and NOx=10 simulation
+ - Makefile: a file with instructions on how to build and run the model.
+
+## Instructions
+
+To build and run the model, type "make" in a linux terminal
+  $ make
+
+The makefile will build the model (acp) and run it with initial
+conditions from acp_init.dat. This will produce four outputs:
+ - acp_conc_1.dat: concentrations in ! delimited format
+ - acp_rate_1.dat: reaction rates in ! delimited format
+ - acp.log: output log for warnings and/or errors
+ - acp_conc_1.dat_O3.png: time series of ozone
+
+## Switching Photolysis Options
+
+Photolysis is not used, but set to a constant 0.015/s as in table notes.
+
