@@ -69,10 +69,10 @@ LIB     :=.
 MOD     :=.
 
 # List of source files
-SOURCES :=$(wildcard *.F) #$(wildcard *.F90)
+SOURCES :=$(wildcard *.f) #$(wildcard *.F90)
 
 # List of object files (replace .F and .F90 extensions with *.o)
-TMP     :=$(SOURCES:.F=.o)
+TMP     :=$(SOURCES:.f=.o)
 OBJECTS :=$(TMP:.F90=.o)
 
 # List of module files.  Convert to lowercase, then prefix directory name.
@@ -131,12 +131,16 @@ debug:
 ###                                                                         ###
 ###############################################################################
 
-isoropiaIIcode.o:  isoropiaIIcode.F  isrpia.inc
+%.o: %.f isrpia.inc
 ifeq ($(PRECISION),8)
 	$(F90ISO) $(R8) -c $<
 endif
 ifeq ($(PRECISION),4)
 	$(F90ISO) $(R8) -c $<
 endif
+
+isocom.o:  isocom.f isrpia.inc
+isofwd.o:  isofwd.f isrpia.inc
+isorev.o:  isorev.f isrpia.inc
 #EOC
 
