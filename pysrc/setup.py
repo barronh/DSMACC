@@ -35,6 +35,13 @@ def addext(mech, path):
 crimod = addext('cri', 'cri')
 geoschemmod = addext('geoschem', 'geoschem')
 
+iso = Extension('dsmacc._isoropia',
+            sources = ['../ISOROPIA/isoropia_dsmacc.F90'],
+            library_dirs = ['../ISOROPIA/'],
+            libraries = ['Isoropia'],
+            include_dirs = ['.', '../ISOROPIA/'],
+            extra_f90_compile_args = ['-cpp', '-O0'])
+
             
 if __name__ == '__main__':
     setup (name = 'dsmacc',
@@ -45,4 +52,4 @@ if __name__ == '__main__':
            url = 'https://docs.python.org/extending/building',
            package_dir = {'': 'lib'},
            packages = ['dsmacc'],
-           ext_modules = [crimod, geoschemmod])
+           ext_modules = [crimod, geoschemmod, iso])

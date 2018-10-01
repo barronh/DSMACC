@@ -1,0 +1,22 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module _isoropia ! in 
+    interface  ! in :_isoropia
+        subroutine dsmacc_isoropia(wi,rhi,tempi,cntrl,wt,gas,aerliq,aersld,scasi,other) ! in :_isoropia:../ISOROPIA/isoropia_dsmacc.F90
+            real*8 dimension(8),intent(in) :: wi
+            real*8 intent(in) :: rhi
+            real*8 intent(in) :: tempi
+            real*8 intent(in),dimension(2) :: cntrl
+            real*8 intent(out),dimension(8) :: wt
+            real*8 intent(out),dimension(3) :: gas
+            real*8 intent(out),dimension(15) :: aerliq
+            real*8 intent(out),dimension(19) :: aersld
+            character*15 intent(out) :: scasi
+            real*8 intent(out), dimension(9) :: other
+        end subroutine dsmacc_isoropia
+    end interface 
+end python module _isoropia
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

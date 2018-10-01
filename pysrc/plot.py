@@ -9,13 +9,20 @@ if len(sys.argv)>1:
 data = pd.read_csv(inpath, delimiter = ',')
 data.eval('JDAY=time/3600./24.', inplace = True)
 data.eval('NOx=NO+NO2', inplace = True)
-ntrs = [k for k in data.columns if 'NO3' in k and k not in ('NO3', 'HNO3')]
-data.eval('NTR1 = %s' % ' + '.join(ntrs[:25]), inplace = True)
-data.eval('NTR2 = %s' % ' + '.join(ntrs[25:]), inplace = True)
-data.eval('NTR = NTR1 + NTR2', inplace = True)
+if 'R4N2' in data.columns:
+    data.eval('NTR = R4N2', inplace = True)
+    data.eval('C5H8 = ISOP', inplace = True)
+    NOYSPC = 'NOx NXOYN HNO2 HNO3 PANS HNO4 NTR'.split()
+else:
+    ntrs = [k for k in data.columns if 'NO3' in k and k not in ('NO3', 'HNO3')]
+    data.eval('NTR1 = %s' % ' + '.join(ntrs[:25]), inplace = True)
+    data.eval('NTR2 = %s' % ' + '.join(ntrs[25:]), inplace = True)
+    data.eval('NTR = NTR1 + NTR2', inplace = True)
+    NOYSPC = 'NOx NXOYN HONO HNO3 PANS HO2NO2 NTR NOA NA'.split()
 data.eval('N2O5N = 2*N2O5', inplace = True)
 data.eval('NXOYN = N2O5N + NO3', inplace = True)
 pans = [k for k in data.columns if 'PAN' in k] + 'PPN PHAN PBENZ IPBENZ'.split(' ')
+pans = [k for k in pans if k in data.columns]
 data.eval('PANS = %s' % ' + '.join(pans), inplace = True)
 data.eval('C5H8 = C5H8 * 100.', inplace = True)
 
@@ -32,7 +39,7 @@ pax.set_position(pos)
 sax = pax.twinx()
 sax.set_position(pos)
 patches, labels = pax.get_legend_handles_labels()
-data.plot(x = 'JDAY', y = 'NOx NXOYN HONO HNO3 PANS HO2NO2 NTR NOA NA'.split(), secondary_y = False, ax = sax, stacked = True, legend = False, linestyle = '--')
+data.plot(x = 'JDAY', y = NOYSPC, secondary_y = False, ax = sax, stacked = True, legend = False, linestyle = '--')
 patchesnax, labelsnax = sax.get_legend_handles_labels()
 patches = patches + patchesnax
 labels = labels + labelsnax 

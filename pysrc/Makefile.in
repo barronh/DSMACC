@@ -75,6 +75,7 @@ inputs:
 # build the standard cri model including f90 and objects
 source:
 	make -C ../kpp
+	make -C ../ISOROPIA/
 	make -C ../src libtuv.a
 	make -C ../src libfastjx.a
 	make -C ../cri src/dsmacc_Main.f90
