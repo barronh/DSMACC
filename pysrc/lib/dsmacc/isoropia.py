@@ -1,30 +1,32 @@
 import numpy as np
-g_NA  = np.array([0, 0, 0])
+
+# 345678901234567890123456789012345678901234567890123456789012345678901234567890
+g_NA = np.array([0, 0, 0])
 g_SO4 = np.array([0, 0, 0])
 g_NH4 = np.array([1, 0, 0])
 g_NO3 = np.array([0, 1, 0])
-g_CL  = np.array([0, 0, 1])
-g_CA  = np.array([0, 0, 0])
-g_K   = np.array([0, 0, 0])
-g_MG  = np.array([0, 0, 0])
+g_CL = np.array([0, 0, 1])
+g_CA = np.array([0, 0, 0])
+g_K = np.array([0, 0, 0])
+g_MG = np.array([0, 0, 0])
 
-al_NA  = np.array([0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+al_NA = np.array([0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 al_SO4 = np.array([0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 al_NH4 = np.array([0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0])
 al_NO3 = np.array([0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0])
-al_CL  = np.array([0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0])
-al_CA  = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0])
-al_K   = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0])
-al_MG  = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1])
-                
-as_NA  = np.array([1, 0, 1, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+al_CL = np.array([0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0])
+al_CA = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0])
+al_K = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0])
+al_MG = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1])
+
+as_NA = np.array([1, 0, 1, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 as_SO4 = np.array([0, 0, 0, 0, 1, 1, 1, 1, 2, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0])
 as_NH4 = np.array([0, 1, 0, 1, 0, 2, 0, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 as_NO3 = np.array([1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 2, 0])
-as_CL  = np.array([0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 2])
-as_CA  = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0])
-as_K   = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0])
-as_MG  = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1])
+as_CL = np.array([0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 2])
+as_CA = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0])
+as_K = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0])
+as_MG = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1])
 
 w_NA = 0
 w_SO4 = 1
@@ -37,7 +39,8 @@ w_MG = 7
 
 wSPCS = 'NA SO4 NH4 NO3 CL CA K MG'.split()
 
-def isoropia(WI, RHI, TEMPI, REVERSE = False, METASTABLE = False):
+
+def isoropia(WI, RHI, TEMPI, REVERSE=False, METASTABLE=False):
     """
     Parameters
     ----------
@@ -47,17 +50,17 @@ def isoropia(WI, RHI, TEMPI, REVERSE = False, METASTABLE = False):
     TEMPI     : temperature K
     REVERSE   : default False, run in reverse mode
     METASTABLE: default False, liquide only
-    
+
     Returns
     -------
     out       : dictionary WT, GAS, AERLIQ, AERSLD, SCASI, OTHER
-    
+
     Notes
     -----
-    
+
     Descriptions of options copied from isoropiaIIcode.F
     (1-based indices in fortran should be decremented)
-    
+
       INPUT:
       1. [WI]
          DOUBLE PRECISION array of length [8].
@@ -186,8 +189,9 @@ def isoropia(WI, RHI, TEMPI, REVERSE = False, METASTABLE = False):
          OTHER(6): Total number of calls to the activity coefficient
                    calculation subroutine.
 
-         OTHER(7): Sulfate ratio with crustal species, defined as (in moles/m3) :
-                   (total ammonia + total crustal species + total Na) / (total sulfate)
+         OTHER(7): Sulfate ratio w/ crustal species, defined as (in moles/m3) :
+                   (total ammonia + total crustal species + total Na) /
+                   (total sulfate)
 
          OTHER(8): Crustal species + sodium ratio, defined as (in moles/m3) :
                    (total crustal species + total Na) / (total sulfate)
@@ -202,29 +206,28 @@ def isoropia(WI, RHI, TEMPI, REVERSE = False, METASTABLE = False):
 
     """
     from dsmacc import _isoropia
-    WI = np.asarray(WI, dtype = 'd')
-    RHI = np.asarray(RHI, dtype = 'd')
-    TEMPI = np.asarray(TEMPI, dtype = 'd')
-    CNTRL = np.zeros(2, dtype = 'd')
+    WI = np.asarray(WI, dtype='d')
+    RHI = np.asarray(RHI, dtype='d')
+    TEMPI = np.asarray(TEMPI, dtype='d')
+    CNTRL = np.zeros(2, dtype='d')
     if REVERSE:
         CNTRL[0] = 1
     if METASTABLE:
         CNTRL[1] = 1
     out = _isoropia.dsmacc_isoropia(WI, RHI, TEMPI, CNTRL)
-    outd = dict(WT = out[0],
-                GAS = out[1],
-                AERLIQ = out[2],
-                AERSLD = out[3],
-                SCASI = out[4],
-                OTHER = out[5])
+    outd = dict(
+        WT=out[0], GAS=out[1], AERLIQ=out[2],
+        AERSLD=out[3], SCASI=out[4], OTHER=out[5]
+    )
     return outd
+
 
 def total_gasaero(isoout):
     """
     Parameters
     ----------
     isoout : output dictionary from isoropia
-    
+
     Returns
     -------
     gasaer : dictionary with GAS and AERO items.
@@ -253,12 +256,13 @@ def total_gasaero(isoout):
     GA[w_CA] = (GAS * g_CA).sum()
     GA[w_K] = (GAS * g_K).sum()
     GA[w_MG] = (GAS * g_MG).sum()
-    return dict(GAS = GA, AERO = TA)
-    
+    return dict(GAS=GA, AERO=TA)
+
+
 def test_conserve(isoin, isoout):
     WT = isoout['WT']
-    AERLIQ = isoout['AERLIQ']
-    AERSLD = isoout['AERSLD']
+    # AERLIQ = isoout['AERLIQ']
+    # AERSLD = isoout['AERSLD']
     out = total_gasaero(isoout)
     GAS = out['GAS']
     AERO = out['AERO']
@@ -267,16 +271,18 @@ def test_conserve(isoin, isoout):
     print('WI == Reconstructed?')
     print(' - SPCN, Equal, WT, RC, RC/WT-1')
     for si, spcn in enumerate(wSPCS):
-        print(' -', spcn, WT[si] == RC[si], WT[si], RC[si], RC[si] / WI[si] - 1)
-
-
+        print(
+            ' -', spcn, WT[si] == RC[si], WT[si], RC[si], RC[si] / WI[si] - 1
+        )
 
 
 if __name__ == '__main__':
-    from scipy.constants import R
     #     WI taken from ...
     #     from PseudoNetCDF import pncopen
-    #     f = pncopen('CAMx.v6.40.midwest.36.12.noMPI.20020603.avrg.grd02', format = 'uamiv').sliceDimensions(TSTEP = 18, LAY = 0, ROW = 45, COL = 45)
+    #     f = pncopen(
+    #         'CAMx.v6.40.midwest.36.12.noMPI.20020603.avrg.grd02',
+    #         format='uamiv'
+    #     ).sliceDimensions(TSTEP=18, LAY=0, ROW=45, COL=45)
     #     nacl = 0.05 # CAMx chmdat.f
     #     WI[w_NA] = nacl / 1e6 / 58. # sodium
     #     WI[w_SO4] = f.variables['PSO4'] / 1e6 / 96. # sulfate
@@ -288,12 +294,15 @@ if __name__ == '__main__':
     #     WI[w_CA] = 0. # calcium
     #     WI[w_K] = 0. # potassium
     #     WI[w_MG] = 0. # magnesium
-    WI = np.array([8.62068966e-10, 1.41172123e-08, 1.23921670e-02,
-                   1.77862160e-02, 8.62068966e-10, 0., 0., 0.], dtype = 'd') # input moles/m3
-    RHI = np.array(.5, dtype = 'd') # (0, 1)
-    TEMPI = np.array(295., dtype = 'd') # temperature K
-    PRESS = np.array(101325., dtype = 'd') # pressure Pa
-    CNTRL = np.array([0, 0], dtype = 'd')  # dim(2); forward = 0, backward = 1; solid/liquid = 0, solidonly = 1
+    WI = np.array([
+        8.62068966e-10, 1.41172123e-08, 1.23921670e-02,
+        1.77862160e-02, 8.62068966e-10, 0., 0., 0.
+    ], dtype='d')  # input moles/m3
+    RHI = np.array(.5, dtype='d')  # (0, 1)
+    TEMPI = np.array(295., dtype='d')  # temperature K
+    PRESS = np.array(101325., dtype='d')  # pressure Pa
+    # dim(2); forward = 0, backward = 1; solid/liquid = 0, solidonly = 1
+    CNTRL = np.array([0, 0], dtype='d')
     WI = np.maximum(WI, 1e-30)
     out = isoropia(WI, .5, 295.)
     print('TEST with minvals = 1e-30')
