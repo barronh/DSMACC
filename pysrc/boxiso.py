@@ -41,8 +41,28 @@ if modelname == 'geoschem':
     initcond['N2'] = 0.7905e9
     del initcond['C2H4']
 
-mod = base_model(
-    modelname=modelname, outconcpath='boxconc.dat', outratepath='boxrate.dat',
+#*** This will only work if CRI is compiled with kpp_lsode
+#*** other solvers update RCONST during integration steps,
+#*** which cannot be superseded by updateenv. Test with and
+#*** without RCONST override. If the answer is identical, then
+#*** the solver must not be kpp_lsode
+class override_na(gasplusiso_model):
+    def custom_after_rconst(self):
+        rxnids = self.find_eqn(prd='NA', rct='HNO3', return_index=True, return_name=False)
+        pyglob = self.pyglob
+        for rxnid in rxnids:
+            pyglob.rconst[rxnid] *= 0
+
+mod = override_na(
+    modelname=modelname, outconcpath='boxisoconc.dat', outratepath='boxisorate.dat',
+    mech2iso={'NA': 'NO3', 'HNO3': 'NO3', 'SA': 'SO4'},
+    iso2mech={'NO3': 'HNO3', 'SO4': 'SA'},
+    isoconst={  # currently const are provided in moles/m3, which is isorropia's unit
+        'NH4': 8.462914138362976e-04,  # CRI does not have NH3 or NH4, so providing as a constant
+        'NA': 8.62068966e-10,  # CRI does not have sodium, so providing as a constant
+        'CL': 8.62068966e-10  # CRI does not have chloride, so providing as a constant
+    },
+    #verbose=0
 )
 
-mod.run(startdate, 24, 180, conc_ppb=initcond, globvar=globvar)
+mod.run(startdate, 24, 180, conc_ppb = initcond, globvar = globvar)
