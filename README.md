@@ -3,7 +3,7 @@ Overview
 
 The Dynamically Simple Model for Atmospheric Chemical Complexity
 (DSMACC) is a tropospheric chemistry box model designed to help
-understand the composition of the troposphere in a flexiable and
+understand the composition of the troposphere in a flexible and
 friendly manner. It is written to address a range of problems ranging
 from calculating the expected concentrations of atmospheric radicals to
 comparing chemistry schemes.
