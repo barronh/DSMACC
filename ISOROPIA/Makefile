@@ -60,7 +60,7 @@
 PRECISION=8
 R8                 := -fdefault-real-8 -fdefault-double-8
 FFLAGS             :=-cpp -w -std=legacy -fautomatic -fno-align-commons
-FFLAGS             += -fconvert=big-endian
+FFLAGS             += -fconvert=big-endian -fPIC
 FFLAGS             += -fno-range-check -DUSE_REAL8
 F90ISO=gfortran $(FFLAGS)
 # Directories
