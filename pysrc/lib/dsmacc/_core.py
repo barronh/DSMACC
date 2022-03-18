@@ -1,15 +1,18 @@
+__all__ = ['base_model', 'dynenv_model', 'gasplusiso_model']
+
 from collections import defaultdict
 from warnings import warn
 from scipy.constants import Avogadro, R, centi, nano
 import numpy as np
 
+_minval = 1e-36
 
 # 345678901234567890123456789012345678901234567890123456789012345678901234567890
 # You can only have 1 instance at a time.
 _instance_count = defaultdict(lambda: 0)
 
 
-class model(object):
+class base_model(object):
     def __del__(self):
         global _instance_count
         _instance_count[self.modelname] -= 1
@@ -19,15 +22,24 @@ class model(object):
         globalkeys=(
             'time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP', 'THETA',
             'CFACTOR', 'H2O', 'N2', 'O2', 'M', 'H2', 'CH4'
-        ), modelname='cri'
+        ), modelname='cri', verbose=0
     ):
         """
-            outconcpath - path for saved output concentrations (ppb)
-            outratepath - path for saved output rates (1/s,
-                          cm3/molecules/s)
-            globalkeys - keys to output with concentrations
+        Arguments
+        ---------
+        outconcpath: str
+            path for saved output concentrations (ppb)
+        outratepath: str
+            path for saved output rates (1/s, cm3/molecules/s)
+        delimeter: str
+            Output delimiter
+        globalkeys: iterable
+            keys to output with concentrations
+        modelname: str
+            Name of model in DSMACC.
         """
         global _instance_count
+        self.verbose = verbose
         self.modelname = modelname
         if _instance_count[self.modelname] > 0:
             raise ValueError(
@@ -148,22 +160,31 @@ class model(object):
         self.pyrate.update_rconst()
         self.custom_after_rconst()
 
-    def initialize(self, JDAY_GMT, conc_ppb={}, globvar={}, default=1e-32):
+    def initialize(self, JDAY_GMT, conc_ppb=None, globvar=None, default=1e-32):
         """
-        Arguments:
-            JDAY_GMT - YYYYJJJ.FFFFFF where FFFFFF is a fraction of a day
-            conc_ppb - dictionary-like of initial concentrations in ppb for
-                       any species
-            globvar - dictionary-like of global variables
-            default - default concentration for any species not specified in
-                      conc_ppb
+        Arguments
+        ---------
+        JDAY_GMT: float
+            YYYYJJJ.FFFFFF where FFFFFF is a fraction of a day
+        conc_ppb: dict
+            dictionary-like of initial concentrations in ppb for any species
+        globvar: dict
+            dictionary-like of global variables
+        default: dict
+            default concentration for any species not specified in conc_ppb
 
+        Notes
+        -----
         Actions:
-            - set BASE_JDAY_GMT and initial time from JDAY_GMT
-            - update the global environment
-            - set default concentrations
-            - set specified concentrations.
+        - set BASE_JDAY_GMT and initial time from JDAY_GMT
+        - update the global environment
+        - set default concentrations
+        - set specified concentrations.
         """
+        if conc_ppb is None:
+            conc_ppb = {}
+        if globvar is None:
+            globvar = {}
         pyglob = self.pyglob
         spc_names = self.spc_names
         # Set the base JDAY to the integer portion of the input
@@ -189,9 +210,12 @@ class model(object):
 
     def output(self, globalkeys=None, restart=False):
         """
-        Arguments:
-            globalkeys - list of keys to print from global environment
-            restart - boolean indicating to restart the output
+        Arguments
+        ---------
+        globalkeys: list
+            list of keys to print from global environment
+        restart: bool
+            boolean indicating to restart the output
 
         Actions:
             saves current state to self.out
@@ -210,8 +234,8 @@ class model(object):
             + [(ri) for ri in pyglob.rconst[:]]
         )
         if restart:
-            conckeys = globalkeys + spc_names
-            ratekeys = globalkeys + eqn_names
+            conckeys = list(globalkeys) + list(spc_names)
+            ratekeys = list(globalkeys) + list(eqn_names)
             self.outconc = self.delimiter.join(conckeys)
             self.outrate = self.delimiter.join(ratekeys)
             concfmts = ['%.8e'] * len(conckeys)
@@ -232,12 +256,17 @@ class model(object):
 
     def save(self, concpath=None, ratepath=None, clear=True):
         """
-        Arguments:
-            concpath - string path for output concentrations to be saved to
-            ratepath - string path for output rates to be saved to
-            clear - boolean to erase self.out after savign
+        Arguments
+        ---------
+        concpath: str
+            string path for output concentrations to be saved to
+        ratepath: str
+            string path for output rates to be saved to
+        clear: bool
+            If true, erase self.out after saving
 
         Actions
+        -------
         """
         if concpath is None:
             concpath = self.outconcpath
@@ -264,19 +293,33 @@ class model(object):
         atol=1e-3, rtol=1e-5
     ):
         """
-        - jday_gmt, conc_ppb, globvar and initkwds are used to initialize the
-          model (See initialize)
-        - run_hours and dt are used to configure integration and steps
-        - atol and rtol are used to configure the solver
-
+        Overview
+        --------
         basically:
-            - configure integrate inputs
-                - RSTATE (30 double zeros)
-                - ERROR = (1 double zero)
-                - ICNTRL_U = (20 integer zeros)
-            - set global variables atol and rtol that integrator uses
-            - call initialize
-            - output initial values
+        - configure integrate inputs
+            - RSTATE (30 double zeros)
+            - ERROR = (1 double zero)
+            - ICNTRL_U = (20 integer zeros)
+        - set global variables atol and rtol that integrator uses
+        - call initialize
+        - output initial values
+
+        Arguments
+        ---------
+        jday_gmt: float
+            YYYYJJJ.SSSSS
+        conc_ppb: dict
+            concentrations in ppb
+        globvar: dict
+            Global variables
+        initkwds: dict
+            key words used to initialize the model (See initialize)
+        run_hours: scalar
+            duration in hours for the integration
+        dt: scalar
+            integrater time steps in seconds
+        atol, rtol: arrays
+            absolute and relative tolerance scalars or arrays
         """
         if initkwds is None:
             initkwds = {}
@@ -286,9 +329,7 @@ class model(object):
         integrate = self.pyint.integrate
         RSTATE = np.zeros(30, dtype='d')
         ERROR = np.zeros(1, dtype='d')
-        ICNTRL_U = np.array(
-            [0] * 20, dtype='i'
-        )
+        ICNTRL_U = np.array([0] * 20, dtype='i')
         pyglob.atol[:] = atol
         pyglob.rtol[:] = rtol
 
@@ -325,37 +366,83 @@ class model(object):
 
         self.save()
 
+    def find_eqn(self, spc=None, rct=None, prd=None, return_index=False, return_name=True):
+        import re
+        eqns = [(eqi, eq) for eqi, eq in enumerate(self.eqn_names)]
+        if spc is not None:
+            tmpre = re.compile(fr'\b{spc}\b')
+            eqns = [(eqi, eq) for eqi, eq in eqns if tmpre.search(eq) is not None]
+        if prd is not None:
+            tmpre = re.compile(fr'\b{prd}\b')
+            eqns = [(eqi, eq) for eqi, eq in eqns if tmpre.search(eq.split('-->')[1]) is not None]
+        if rct is not None:
+            tmpre = re.compile(fr'\b{rct}\b')
+            eqns = [(eqi, eq) for eqi, eq in eqns if tmpre.search(eq.split('-->')[0]) is not None]
+        if return_index and return_name:
+            return eqns
+        if return_index:
+            return [eqi for eqi, eq in eqns]
+        
+        return [eq for eqi, eq in eqns]
 
-class dynenv(model):
+    def find_spc(self, spc):
+        if spc in self.spc_names:
+            return self.spc_names.index(spc)
+        else:
+            return None
+
+    def get_conc(self, spc):
+        spci = self.find_spc(spc)
+        if spci is None:
+            return None
+
+        return self.pyglob.c[spci]
+
+    def aero_dict(self, outunits=True):
+        from . import isoropia
+        showvals = self.aerosol_phase
+        if outunits:
+            showvals = showvals / self.pyglob.CFACTOR
+        return dict(zip(isoropia.wSPCS, showvals))
+
+class dynenv_model(base_model):
     def __init__(
         self, outconcpath=None, outratepath=None, delimiter=',',
         envdata=None, emissdata=None, bkgdata=None,
         globalkeys=(
             'time', 'JDAY_GMT', 'LAT', 'LON', 'PRESS', 'TEMP',
             'THETA', 'H2O', 'CFACTOR', 'PBL'
-        ), modelname='cri'
+        ), modelname='cri', verbose=0
     ):
         """
-        Arguments:
-            outconcpath - path for output concentrations to be saved
-                          (ppb)
-            outratepath - path for output rates to be saved (1/s,
-                          cm3/molecules/s)
-            envdata - dictionary of vectors (must contain JDAY_GMT)
-                      and optionally other global variables that
-                      influence model. PBL can also be supplied in m.
-            emissdata - dictionary of vectors (must contain JDAY_GMT)
-                        and optionally species data in moles/area/s
-                        where area is cm2
-            bkgdata - dictionary of scalars optionally provides
-                      time-constant species data in ppb
-            globalkeys - keys for outputing global variables
+        The dynenv_model allows for emissions and global variables (key in
+        globalkeys) to evolve over time.
+
+        Arguments
+        ---------
+        outconcpath: str
+            path for output concentrations to be saved (ppb)
+        outratepath: str
+            path for output rates to be saved (1/s, cm3/molecules/s)
+        envdata: dict
+            dictionary of vectors (must contain JDAY_GMT) and optionally other
+            global variables that  influence model. PBL can also be supplied
+            in meters.
+        emissdata: dict
+            dictionary of vectors (must contain JDAY_GMT) and optionally
+            species data in moles/area/s where area is cm2
+        bkgdata: dict
+            dictionary of scalars optionally provides time-constant species
+            data in ppb
+        globalkeys: iterable
+            names of global variables to output
+        modelname: str
         """
         # import pandas as pd
-        super(dynenv, self).__init__(
+        super(dynenv_model, self).__init__(
             outconcpath=outconcpath, outratepath=outratepath,
             delimiter=delimiter, globalkeys=globalkeys,
-            modelname=modelname
+            modelname=modelname, verbose=verbose
         )
         spc_names = self.spc_names
         self.envdata = envdata
@@ -415,16 +502,120 @@ class dynenv(model):
                     warn(ek + ' in emissions, but not mechanism')
             self.oldpbl = newpbl
 
-        super(dynenv, self).updateenv(**globvar)
+        super(dynenv_model, self).updateenv(**globvar)
 
 
-class gasplusiso(model):
-    def __init__(self, *args, **kwds):
+class gasplusiso_model(dynenv_model):
+    def __init__(self, *args, mech2iso=None, iso2mech=None, isoconst=None, **kwds):
         """
-        Adding a aerosol_phase place holder for call_isorropia
+        See dynenv_model. This is a thin wrapper that adds a place holder for
+        call_isorropia.
+
+        mech2iso: dict
+            mechspc, isospc key/value pairs
+        iso2mech: dict
+            isospc, mechspc key/value pairs
         """
-        model.__init__(self, *args, **kwds)
+        dynenv_model.__init__(self, *args, **kwds)
+        self._mech2iso = None
+        self._iso2mech = None
+        self._isoconst = None
+        self.mech2iso = mech2iso
+        self.iso2mech = iso2mech
+        self.isoconst = isoconst
         self.aerosol_phase = np.zeros(8, dtype='f')
+
+    @property
+    def mech2iso(self):
+        return self._mech2iso
+
+    @mech2iso.setter
+    def mech2iso(self, mech2isomap):
+        from . import isoropia
+        ispci = isoropia.wSPCS.index
+        spc_names = self.spc_names
+        mspci = spc_names.index
+        self._mech2iso = []
+        if mech2isomap is None:
+            mech2isomap = {}
+            if 'SO4' in spc_names:
+                mech2isomap['SO4'] = 'SO4'
+            if 'NH3' in spc_names:
+                mech2isomap['NH3'] = 'NH4'
+            if 'NH4' in spc_names:
+                mech2isomap['NH3'] = 'NH4'
+            if 'HNO3' in spc_names:
+                mech2isomap['HNO3'] = 'NO3'
+            if 'NA' in spc_names:
+                mech2isomap['NA'] = 'NO3'
+            if 'CL' in spc_names:
+                mech2isomap['CL'] = 'CL'
+            if 'CA' in spc_names:
+                mech2isomap['CA'] = 'CA'
+            if 'K' in spc_names:
+                mech2isomap['K'] = 'K'
+            if 'MG' in spc_names:
+                mech2isomap['MG'] = 'MG'
+            print('Default mech2iso')
+            print(mech2isomap)
+
+        for srckey, destkey in mech2isomap.items():
+            self._mech2iso.append((ispci(destkey), mspci(srckey)))
+
+    @property
+    def iso2mech(self):
+        return self._iso2mech
+
+    @iso2mech.setter
+    def iso2mech(self, iso2mechmap):
+        from . import isoropia
+        ispci = isoropia.wSPCS.index
+        spc_names = self.spc_names
+        mspci = spc_names.index
+        self._iso2mech = []
+        if iso2mechmap is None:
+            iso2mechmap = {}
+            if 'SA' in spc_names:
+                iso2mechmap['SO4'] = 'SA'
+            if 'NH3' in spc_names:
+                iso2mechmap['NH4'] = 'NH3'
+            if 'HNO3' in spc_names:
+                iso2mechmap['NO3'] = 'HNO3'
+            if 'CL' in spc_names:
+                iso2mechmap['CL'] = 'CL'
+            if 'CA' in spc_names:
+                iso2mechmap['CA'] = 'CA'
+            if 'K' in spc_names:
+                iso2mechmap['K'] = 'K'
+            if 'MG' in spc_names:
+                iso2mechmap['MG'] = 'MG'
+            print('Default iso2mech')
+            print(iso2mechmap)
+
+        for srckey, destkey in iso2mechmap.items():
+            self._iso2mech.append((mspci(destkey), ispci(srckey)))
+
+    @property
+    def isoconst(self):
+        return self._isoconst
+
+    @isoconst.setter
+    def isoconst(self, isoconstmap):
+        from . import isoropia
+        ispci = isoropia.wSPCS.index
+        mspci = self.spc_names.index
+        self._isoconst = []
+        if isoconstmap is None:
+            isoconstmap = {}
+            if 'NA' not in self.mech2iso:
+                isoconstmap['NA'] = 8.62068966e-10
+            if 'CL' not in self.mech2iso:
+                isoconstmap['CL'] = 8.62068966e-10
+            print('Default isoconst')
+            print(isoconstmap)
+
+        for destkey, val in isoconstmap.items():
+            self._isoconst.append((ispci(destkey), val))
 
     def gas_to_iso(self):
         """
@@ -433,24 +624,28 @@ class gasplusiso(model):
         out : np.array
             output correctly ordred for ISOROPIA
         """
-        import isoropia
+        from . import isoropia
         from scipy.constants import Avogadro
         i = isoropia
         pyglob = self.pyglob
-        WI = np.zeros(8)
+        WI = np.zeros(8, dtype='f')
+        spc_names = self.spc_names
+        spci = self.spc_names.index
+        # i.w_NA is sodium
         # WI[i.w_NA] = pyglob.c[pyglob.ind_NA] * Avogadro
-        WI[i.w_SO4] = pyglob.c[pyglob.ind_SO4] * Avogadro
-        WI[i.w_NH4] = (pyglob.c[pyglob.ind_NH3] +
-                       pyglob.c[pyglob.ind_NH3]) * Avogadro
-        WI[i.w_NO3] = (pyglob.c[pyglob.ind_HNO3] +
-                       pyglob.c[pyglob.ind_NA]) * Avogadro
-        WI[i.w_CL] = pyglob.c[pyglob.ind_CL] * Avogadro
-        WI[i.w_CA] = pyglob.c[pyglob.ind_CA] * Avogadro
-        WI[i.w_K] = pyglob.c[pyglob.ind_K] * Avogadro
-        WI[i.w_MG] = pyglob.c[pyglob.ind_MG] * Avogadro
+        # The gas phase mechanism must implement the rest of these species
+        for desti, srci in self.mech2iso:
+            # Convert from molecules/cm3 to moles/m3
+            WI[desti] = pyglob.c[srci] / Avogadro * 1e6
+            pyglob.c[srci] = 0
+
         # previous time step aerosols
-        WI[:] += self.aerosol_phase
-        return WI
+        WI[:] += (self.aerosol_phase / Avogadro * 1e6)
+
+        for desti, val in self._isoconst:
+            WI[desti] = val
+
+        return np.ma.maximum(WI, _minval).filled(_minval)
 
     def process_isoout(self, iout):
         """
@@ -463,39 +658,46 @@ class gasplusiso(model):
         Returns
         -------
         None
-
         """
-        import isoropia
+        from . import isoropia
         i = isoropia
         pyglob = self.pyglob
         # separate gas and total aerosol phase
         ga = isoropia.total_gasaero(iout)
         gases = ga['GAS']
+        spc_names = self.spc_names
+        spci = spc_names.index
         # map isorropia resultant gases into the gas vector
         # pyglob.c[pyglob.ind_NA] = gases[i.w_NA] * Avogadro
-        pyglob.c[pyglob.ind_SA] = gases[i.w_SO4] * Avogadro
-        pyglob.c[pyglob.ind_NH3] = gases[i.w_NH4] * Avogadro
-        pyglob.c[pyglob.ind_HNO3] = gases[i.w_NO3] * Avogadro
-        pyglob.c[pyglob.ind_CL] = gases[i.w_CL] * Avogadro
-        pyglob.c[pyglob.ind_CA] = gases[i.w_CA] * Avogadro
-        pyglob.c[pyglob.ind_K] = gases[i.w_K] * Avogadro
-        pyglob.c[pyglob.ind_MG] = gases[i.w_MG] * Avogadro
+        for dsti, srci in self.iso2mech:
+            # convert moles/m3 to molecules/cm3
+            pyglob.c[dsti] = gases[srci] * Avogadro / 1e6
 
         # store aerosol phase sum separately
-        pyglob.aerosol_phase = ga['AERO'] * Avogadro
+        # convert moles/m3 to molecules/cm3
+        self.aerosol_phase[:] = np.ma.maximum(ga['AERO'] * Avogadro / 1e6, _minval).filled(_minval)
 
     def isorropia(self):
-        # get indices and stuff you'll need
-        # create input condition arrays
-        import isoropia
+        """
+        get indices and stuff you'll need create input condition arrays
+        """
+        from . import isoropia
         RHI = 0.5  # just a place holder.
         TEMPI = float(self.pyglob.TEMP)
         WI = self.gas_to_iso()
-
+        if self.verbose > 1:
+            print('ISO IN')
+            print(list(zip(isoropia.wSPCS, WI)))
         # run isorropia
         isoresult = isoropia.isoropia(WI, RHI, TEMPI, METASTABLE=True)
+        if self.verbose > 1:
+            print('ISO OUT')
+            print(list(zip(isoropia.wSPCS, isoresult['WT'])))
         self.process_isoout(isoresult)
 
     def updateenv(self, **kwds):
+        """
+        Thin wrapper that calls isoropia before updateenv
+        """
         self.isorropia()
-        return model.updateenv(self, **kwds)
+        return super(gasplusiso_model, self).updateenv(**kwds)

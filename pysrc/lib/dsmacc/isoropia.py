@@ -260,6 +260,7 @@ def total_gasaero(isoout):
 
 
 def test_conserve(isoin, isoout):
+    import numpy as np
     WT = isoout['WT']
     # AERLIQ = isoout['AERLIQ']
     # AERSLD = isoout['AERSLD']
@@ -272,7 +273,8 @@ def test_conserve(isoin, isoout):
     print(' - SPCN, Equal, WT, RC, RC/WT-1')
     for si, spcn in enumerate(wSPCS):
         print(
-            ' -', spcn, WT[si] == RC[si], WT[si], RC[si], RC[si] / WI[si] - 1
+            ' -', spcn, np.isclose(WT[si], RC[si]),
+            WT[si], RC[si], RC[si] / WI[si] - 1
         )
 
 
@@ -303,11 +305,19 @@ if __name__ == '__main__':
     PRESS = np.array(101325., dtype='d')  # pressure Pa
     # dim(2); forward = 0, backward = 1; solid/liquid = 0, solidonly = 1
     CNTRL = np.array([0, 0], dtype='d')
-    WI = np.maximum(WI, 1e-30)
+    print('TEST with CAMx = 1e-30')
     out = isoropia(WI, .5, 295.)
+    aout = total_gasaero(out)
+    print(wSPCS)
+    print('INP', WI)
+    print('GAS', aout['GAS'])
+    print('AER', aout['AERO'])
+    test_conserve(WI, out)
+    WI = np.maximum(WI, 1e-30)
     print('TEST with minvals = 1e-30')
+    out = isoropia(WI, .5, 295.)
     test_conserve(WI, out)
     WI = np.maximum(WI, 1e-20)
-    out = isoropia(WI, .5, 295.)
     print('TEST with minvals = 1e-20')
+    out = isoropia(WI, .5, 295.)
     test_conserve(WI, out)

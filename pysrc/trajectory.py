@@ -3,7 +3,7 @@ This file is an example of how to use dsmacc in python
 as a trajectory model with emissions (mean NEI2005)
 and a simple physical environment (Knote et al. 2015)
 """
-from dsmacc import model, dynenv
+from dsmacc import base_model, dynenv_model
 from scipy.constants import Avogadro
 # mod = model();
 # alternatively, use a file ('test.dat') to make a dynamic
@@ -69,9 +69,28 @@ emissdata = pd.read_csv(io.StringIO("""JDAY_GMT,CH3CHO,C2H5CHO,CH4,CL2,CO,C2H4,C
 """)).to_dict(orient = 'list')
 
 # Set global variables
-globvar = {'LAT': 30.0, 'LON': 0.0, 'TEMP': 288.0, 'PRESS': 101325.0, 'JDAY_GMT': 2006186.0, 'H2O': 9500000.0 / 1e9 * Avogadro * 1e-6 * 101325. / 298./ 8.314 }
+globvar = {
+    'JDAY_GMT': 2006186.0,
+    'LAT': 30.0, 'LON': 0.0, 'TEMP': 288.0, 'PRESS': 101325.0,
+    'H2O': 9500000.0 / 1e9 * Avogadro * 1e-6 * 101325. / 298./ 8.314 
+}
 
-initcond = {'HNO3': 0.754, 'MEK': 0.7013, 'CH4': 1879., 'NO': 1.7879, 'NC4H10': 7.171, 'NO3': 0.0002, 'C2H6': 8.658, 'PPN': 0.0825, 'NO2': 5.9328, 'N2O5': 0.0028, 'CH3CHO': 1.8779, 'CH3OH': 6.1246, 'HCOOH': 0.1881, 'SO2': 13.63, 'CH3COCH3': 2.3931, 'C3H8': 6.59, 'O3': 41.3038, 'HCHO': 2.7141, 'CO': 142.2, 'C2H4': 1.458, 'PAN': 0.6496}
+initcond = {
+    'HNO3': 0.754, 'NO': 1.7879, 'NO2': 5.9328, 'N2O5': 0.0028, 'NO3': 0.0002,
+    'O3': 41.3038, 'SO2': 13.63, 'CO': 142.2, 'CH4': 1879.,
+    'C2H6': 8.658, 'C2H4': 1.458, 'C3H8': 6.59,
+    'HCHO': 2.7141, 'CH3OH': 6.1246, 'HCOOH': 0.1881, 'CH3CHO': 1.8779,
+    'CH3COCH3': 2.3931, 'MEK': 0.7013, 'NC4H10': 7.171,
+    'PAN': 0.6496, 'PPN': 0.0825
+}
 
-mod = dynenv(envdata = envdata, emissdata = emissdata, bkgdata = initcond, modelname = 'cri', outconcpath = 'trajectoryconc.dat', outratepath = 'trajectoryrate.dat')
-mod.run(2006186.0, 24, 180, conc_ppb = initcond, globvar = globvar)
+bkgcond = {k: v * 0.5 for k, v in initcond.items()}
+bkgcond['O3'] = initcond['O3']
+
+mod = dynenv_model(
+    envdata=envdata, emissdata=emissdata, bkgdata=bkgcond, modelname='cri',
+    outconcpath='trajectoryconc.dat', outratepath='trajectoryrate.dat'
+)
+
+# Start time, hours of simulation, seconds/step, starting conc, environment
+mod.run(2006186.0, 24, 180, conc_ppb=initcond, globvar=globvar)
