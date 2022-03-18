@@ -21,3 +21,26 @@ There are three files to get things started
             and output path to create a figure of the output
             concentrations
 
+# Run Examples including install
+
+## Abstract Steps
+
+1. Install flex library (libfl.a)
+2. Clone repository
+3. Build and install
+4. Execute box.py, trajectory.py
+
+## Ubuntu
+
+```
+# Command may vary on non Ubuntu platforms
+apt-get install libfl-dev
+git clone https://github.com/barronh/dsmacc
+cd dsmacc
+# Library location may vary on non Ubuntu platforms
+LDFLAGS=-L/usr/lib/x86_64-linux-gnu/ CFLAGS=-static ./configure
+cd pysrc
+make install
+python box.py
+python trajectory.py
+```
