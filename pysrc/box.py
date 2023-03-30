@@ -1,7 +1,8 @@
 """
 This file is an example of how to use dsmacc in python
 """
-from dsmacc import base_model, dynenv_model, gasplusiso_model
+from dsmacc import base_model
+# or dynenv_model, gasplusiso_model
 from scipy.constants import Avogadro as N_A, R
 
 # Choose model (cri or geoschem)
@@ -13,6 +14,8 @@ globvar = {'LAT': 30.0, 'LON': -90.0,
            'JDAY_GMT': 2006186.0}
 
 # Add water in #/cm3
+_ = N_A
+_ = R
 exec('H2O = 9.50e-9 * N_A * PRESS / TEMP / R', globals(), globvar)
 
 # Set the starting date
@@ -42,7 +45,8 @@ if modelname == 'geoschem':
     del initcond['C2H4']
 
 mod = base_model(
-    modelname=modelname, outconcpath='boxconc.dat', outratepath='boxrate.dat',
+    modelname=modelname, outconcpath='boxconc.dat',
+    outratepath='boxrate.dat',
 )
 
 mod.run(startdate, 24, 180, conc_ppb=initcond, globvar=globvar)

@@ -3,12 +3,14 @@ This file is an example of how to use dsmacc in python
 as a trajectory model with emissions (mean NEI2005)
 and a simple physical environment (Knote et al. 2015)
 """
-from dsmacc import base_model, dynenv_model
+from dsmacc import dynenv_model  # or base_model
 from scipy.constants import Avogadro
+
 # mod = model();
 # alternatively, use a file ('test.dat') to make a dynamic
 # physical environment. Add variables as you see fit.
-# 
+#
+
 import pandas as pd
 import io
 # Emissions in GMT at LON = 0.
@@ -38,8 +40,8 @@ envdata = pd.read_csv(io.StringIO("""JDAY_GMT,TEMP,PBL
 2006186.91667,288.15,250.0
 2006186.95833,288.15,250.0
 2006187.0,288.15,250.0
-""")).to_dict(orient = 'list')
-#JDAY_GMT,ALD2,ALDX,CH4,CL2,CO,ETH,ETHA,ETOH,FORM,HONO,IOLE,ISOP,MEOH,NH3,NO,NO2,OLE,PAR,SESQ,SO2,SULF,TERP,TOL,XYL
+""")).to_dict(orient='list')
+# JDAY_GMT,ALD2,ALDX,CH4,CL2,CO,ETH,ETHA,ETOH,FORM,HONO,IOLE,ISOP,MEOH,NH3,NO,NO2,OLE,PAR,SESQ,SO2,SULF,TERP,TOL,XYL
 emissdata = pd.read_csv(io.StringIO("""JDAY_GMT,CH3CHO,C2H5CHO,CH4,CL2,CO,C2H4,C2H6,C2H5OH,HCHO,HONO,BUT1ENE,C5H8,CH3OH,NH3,NO,NO2,C3H6,NC4H10,APINENE,SO2,SULF,CARENE,TOLUENE,OXYL
 2006186.0000,6.793e-15,2.346e-15,1.430e-14,1.895e-16,2.613e-13,1.638e-14,5.384e-15,1.662e-14,1.372e-14,3.130e-16,1.524e-14,1.007e-17,1.392e-15,2.869e-14,4.731e-14,4.229e-15,1.780e-14,1.688e-13,2.104e-15,1.333e-15,1.312e-17,3.142e-14,1.336e-15,1.004e-15
 2006186.0417,6.437e-15,2.225e-15,1.358e-14,1.895e-16,2.279e-13,1.548e-14,5.043e-15,1.574e-14,1.301e-14,2.860e-16,1.446e-14,9.653e-18,1.320e-15,2.630e-14,4.386e-14,3.892e-15,1.686e-14,1.579e-13,1.908e-15,1.236e-15,1.208e-17,2.988e-14,1.198e-15,8.914e-16
@@ -66,13 +68,13 @@ emissdata = pd.read_csv(io.StringIO("""JDAY_GMT,CH3CHO,C2H5CHO,CH4,CL2,CO,C2H4,C
 2006186.9167,9.108e-15,3.134e-15,2.113e-14,1.895e-16,5.325e-13,2.225e-14,8.184e-15,2.269e-14,1.819e-14,5.050e-16,2.026e-14,1.297e-15,2.429e-15,4.723e-14,7.236e-14,6.568e-15,2.398e-14,2.546e-13,3.548e-15,2.298e-15,2.347e-17,4.099e-14,2.606e-15,2.061e-15
 2006186.9583,8.022e-15,2.765e-15,1.806e-14,1.895e-16,4.145e-13,1.956e-14,6.859e-15,1.980e-14,1.611e-14,4.260e-16,1.788e-14,1.181e-17,1.760e-15,3.828e-14,6.179e-14,5.570e-15,2.111e-14,2.133e-13,2.819e-15,1.820e-15,1.826e-17,3.649e-14,2.013e-15,1.571e-15
 2006187.0000,7.295e-15,2.517e-15,1.584e-14,1.895e-16,3.245e-13,1.770e-14,5.954e-15,1.791e-14,1.470e-14,3.601e-16,1.631e-14,1.076e-17,1.523e-15,3.218e-14,5.325e-14,4.781e-15,1.916e-14,1.866e-13,2.383e-15,1.508e-15,1.493e-17,3.350e-14,1.627e-15,1.243e-15
-""")).to_dict(orient = 'list')
+""")).to_dict(orient='list')
 
 # Set global variables
 globvar = {
     'JDAY_GMT': 2006186.0,
     'LAT': 30.0, 'LON': 0.0, 'TEMP': 288.0, 'PRESS': 101325.0,
-    'H2O': 9500000.0 / 1e9 * Avogadro * 1e-6 * 101325. / 298./ 8.314 
+    'H2O': 9500000.0 / 1e9 * Avogadro * 1e-6 * 101325. / 298. / 8.314
 }
 
 initcond = {

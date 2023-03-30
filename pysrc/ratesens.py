@@ -11,11 +11,14 @@ to modify the "O3 + NO --> NO2 + O2" rxn
 f(T) = f(298K)exp|g(1/T - 1/298)|       Eq 1
 
 """
-from dsmacc import model
-from scipy.constants import Avogadro
+from dsmacc import base_model as model
+from scipy.constants import Avogadro as N_A, R
 import numpy as np
+import pandas as pd
+
+
 class jpluncertainty(model):
-    def __init__(self, *args, rxnname = None, f298K = 1., g = 0., pow = 0, **kwds):
+    def __init__(self, *args, rxnname=None, f298K=1., g=0., pow=0, **kwds):
         """
         Description
         -----------
@@ -23,9 +26,9 @@ class jpluncertainty(model):
         uncertainty
         Parameters
         ----------
-        args and kwds : positional arguments and keywords are passed 
+        args and kwds : positional arguments and keywords are passed
                         to the standard model (see model.__doc__)
-        
+
         rxnname : name excluding preceding or trailing spaces for reaction
         f298K   : JPL uncertainty estimate at 298K
         g       : JPL temperature dependent uncertainty factor
@@ -34,7 +37,7 @@ class jpluncertainty(model):
         Notes
         -----
         fT = f298Kexp|g(1/T - 1/298)|       Eq 1
-        
+
         RCONST[rxnidx] *= fT**pow
         """
         super(jpluncertainty, self).__init__(*args, **kwds)
@@ -43,15 +46,15 @@ class jpluncertainty(model):
         self.f298K = f298K
         self.g = g
         self.pow = pow
-     
+
     def custom_after_rconst(self):
         pyglob = self.pyglob
-        scale = self.f298K * np.exp(self.g * np.abs(1 / pyglob.TEMP - 1 / 298.))
+        scale = self.f298K * np.exp(
+            self.g * np.abs(1 / pyglob.TEMP - 1 / 298.)
+        )
         scale = scale**(self.pow)
         self.pyglob.rconst[self.rxnidx] *= scale
 
-from dsmacc import model, dynenv
-from scipy.constants import Avogadro as N_A, R
 
 # Choose model (cri or geoschem)
 modelname = 'geoschem'
@@ -62,6 +65,8 @@ globvar = {'LAT': 30.0, 'LON': -90.0,
            'JDAY_GMT': 2006186.0}
 
 # Add water in #/cm3
+_ = N_A
+_ = R
 exec('H2O = 9.50e-9 * N_A * PRESS / TEMP / R', globals(), globvar)
 
 # Set the starting date
@@ -96,25 +101,30 @@ if modelname == 'geoschem':
 for pow in [-2, -1, 0, 1, 2]:
     prefix = ('O3plNO_NO2plO2_k_pos%ssigma' % str(pow)).replace('pos-', 'neg')
     print(prefix)
-    mod = jpluncertainty(modelname = modelname,
-                    outconcpath = prefix + 'conc.dat',
-                    outratepath = prefix + 'rate.dat',
-                    rxnname = 'NO + O3 --> NO2 + O2', f298K = 1.1, g = 200, pow = pow)
+    mod = jpluncertainty(
+        modelname=modelname,
+        outconcpath=prefix + 'conc.dat',
+        outratepath=prefix + 'rate.dat',
+        rxnname='NO + O3 --> NO2 + O2', f298K=1.1, g=200, pow=pow
+    )
 
-    mod.run(startdate, 24, 180, conc_ppb = initcond, globvar = globvar)
-    
+    mod.run(startdate, 24, 180, conc_ppb=initcond, globvar=globvar)
+
     del mod
 
-import pandas as pd
-mn2 = pd.read_csv('O3plNO_NO2plO2_k_neg2sigmaconc.dat', index_col = 'JDAY_GMT')
-mn1 = pd.read_csv('O3plNO_NO2plO2_k_neg1sigmaconc.dat', index_col = 'JDAY_GMT')
-orig = pd.read_csv('O3plNO_NO2plO2_k_pos0sigmaconc.dat', index_col = 'JDAY_GMT')
-pl1 = pd.read_csv('O3plNO_NO2plO2_k_pos1sigmaconc.dat', index_col = 'JDAY_GMT')
-pl2 = pd.read_csv('O3plNO_NO2plO2_k_pos2sigmaconc.dat', index_col = 'JDAY_GMT')
-paired = orig.join(pl1, lsuffix = '', rsuffix = '+1s')\
-              .join(pl2, rsuffix = '+2s')\
-              .join(mn1, rsuffix = '-1s')\
-              .join(mn2, rsuffix = '-2s')
+
+mn2 = pd.read_csv('O3plNO_NO2plO2_k_neg2sigmaconc.dat', index_col='JDAY_GMT')
+mn1 = pd.read_csv('O3plNO_NO2plO2_k_neg1sigmaconc.dat', index_col='JDAY_GMT')
+orig = pd.read_csv('O3plNO_NO2plO2_k_pos0sigmaconc.dat', index_col='JDAY_GMT')
+pl1 = pd.read_csv('O3plNO_NO2plO2_k_pos1sigmaconc.dat', index_col='JDAY_GMT')
+pl2 = pd.read_csv('O3plNO_NO2plO2_k_pos2sigmaconc.dat', index_col='JDAY_GMT')
+paired = orig.join(pl1, lsuffix='', rsuffix='+1s')\
+              .join(pl2, rsuffix='+2s')\
+              .join(mn1, rsuffix='-1s')\
+              .join(mn2, rsuffix='-2s')
 ratios = (pl1 / orig)
-paired.plot(y = ['O3-2s', 'O3-1s', 'O3', 'O3+1s', 'O3+2s'], color = ['darkblue', 'lightblue', 'k', 'pink', 'red']).figure.savefig('ratesens.png')
-print(ratios[::60].filter(['O3']).to_csv(float_format = '%.6f'))
+paired.plot(
+    y=['O3-2s', 'O3-1s', 'O3', 'O3+1s', 'O3+2s'],
+    color=['darkblue', 'lightblue', 'k', 'pink', 'red']
+).figure.savefig('ratesens.png')
+print(ratios[::60].filter(['O3']).to_csv(float_format='%.6f'))

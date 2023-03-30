@@ -1,7 +1,8 @@
 """
 This file is an example of how to use dsmacc in python
 """
-from dsmacc import base_model, dynenv_model, gasplusiso_model
+from dsmacc import gasplusiso_model
+# or base_model, dynenv_model
 from scipy.constants import Avogadro as N_A, R
 
 # Choose model (cri or geoschem)
@@ -13,6 +14,8 @@ globvar = {'LAT': 30.0, 'LON': -90.0,
            'JDAY_GMT': 2006186.0}
 
 # Add water in #/cm3
+_ = N_A
+_ = R
 exec('H2O = 9.50e-9 * N_A * PRESS / TEMP / R', globals(), globvar)
 
 # Set the starting date
@@ -41,28 +44,34 @@ if modelname == 'geoschem':
     initcond['N2'] = 0.7905e9
     del initcond['C2H4']
 
-#*** This will only work if CRI is compiled with kpp_lsode
-#*** other solvers update RCONST during integration steps,
-#*** which cannot be superseded by updateenv. Test with and
-#*** without RCONST override. If the answer is identical, then
-#*** the solver must not be kpp_lsode
+
+# *** This will only work if CRI is compiled with kpp_lsode
+# *** other solvers update RCONST during integration steps,
+# *** which cannot be superseded by updateenv. Test with and
+# *** without RCONST override. If the answer is identical, then
+# *** the solver must not be kpp_lsode
 class override_na(gasplusiso_model):
     def custom_after_rconst(self):
-        rxnids = self.find_eqn(prd='NA', rct='HNO3', return_index=True, return_name=False)
+        rxnids = self.find_eqn(
+            prd='NA', rct='HNO3', return_index=True, return_name=False
+        )
         pyglob = self.pyglob
         for rxnid in rxnids:
             pyglob.rconst[rxnid] *= 0
 
+
 mod = override_na(
-    modelname=modelname, outconcpath='boxisoconc.dat', outratepath='boxisorate.dat',
+    modelname=modelname, outconcpath='boxisoconc.dat',
+    outratepath='boxisorate.dat',
     mech2iso={'NA': 'NO3', 'HNO3': 'NO3', 'SA': 'SO4'},
     iso2mech={'NO3': 'HNO3', 'SO4': 'SA'},
-    isoconst={  # currently const are provided in moles/m3, which is isorropia's unit
-        'NH4': 8.462914138362976e-04,  # CRI does not have NH3 or NH4, so providing as a constant
-        'NA': 8.62068966e-10,  # CRI does not have sodium, so providing as a constant
-        'CL': 8.62068966e-10  # CRI does not have chloride, so providing as a constant
+    # currently const are provided in moles/m3, which is isorropia's unit
+    isoconst={
+        'NH4': 8.462914138362976e-04,  # NH4/NH3 not in CRI
+        'NA': 8.62068966e-10,  # Sodium not in CRI
+        'CL': 8.62068966e-10  # Chloride not in CRI
     },
-    #verbose=0
+    # verbose=0
 )
 
-mod.run(startdate, 24, 180, conc_ppb = initcond, globvar = globvar)
+mod.run(startdate, 24, 180, conc_ppb=initcond, globvar=globvar)
