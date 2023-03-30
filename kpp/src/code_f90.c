@@ -117,7 +117,7 @@ int crtident;
 
 /* Max no of continuation lines in F90/F95 differs with compilers, but 39
                                should work for every compiler*/
-int number_of_lines = 1, MAX_NO_OF_LINES = 500;
+int number_of_lines = 1, MAX_NO_OF_LINES = 2000;
 
 /*  Operator Mapping: 0xaa = '*' | 0xab = '+' | 0xac = ',' 
                       0xad = '-' | 0xae ='.' | 0xaf = '/' */		      

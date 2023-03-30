@@ -16,6 +16,7 @@
 //#INCLUDE fastjx.inc
 // MCM photolysis from fit
 #INCLUDE mcmj.inc
+#INTEGRATOR kpp_lsode
 
 #MONITOR O3; NO2; NO;
 #LOOKATALL;
