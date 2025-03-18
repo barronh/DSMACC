@@ -70,7 +70,7 @@ manual.
 
 Using MCM is easiest using a single extracted subset that includes both inorganic and organic chemistry.
 
-To make a new mcm_subset.kpp, go to http://mcm.leeds.ac.uk/MCM/roots.htt . Then select the base VOCs that you would like to simulate the chemistry of by selecting the check boxes associated with each species. Once all the VOC's have been selected click 'Added Selection to Marked List.' Then click on 'Extract' from the menu at the top of the page. Select "KPP, experimental KPP format". It is good practice to select "Include generic rate coefficients" and "Include inorganic reactions." and " Then, Click on Extract.
+To make a new mcm_subset.kpp, go to https://mcm.york.ac.uk/MCM/browse . Then select the base VOCs that you would like to simulate the chemistry of by selecting the check boxes associated with each species. Once all the VOC's have been selected click 'Added Selection to Marked List.' Then click on 'Extract' from the menu at the top of the page. Select "KPP, experimental KPP format". It is good practice to select "Include generic rate coefficients" and "Include inorganic reactions." and " Then, Click on Extract.
 
 By default, the extract will be called mcm_subset.kpp that needs two updates: *line endings* and *mcm_constants* call.
 First, it has mixed line endings that will not work. Second, reactions with no products need a DUMMY species. Third, 
@@ -258,17 +258,11 @@ To log the diagnostic information produced by the model to a file type
 Credits
 =======
 
-The original code development was by [Mat
-Evans](http://www.env.leeds.ac.uk/people/m.evans) and [Kathryn
-Emmerson](http://www.env.leeds.ac.uk/people/k.emmerson) at the
+The original code development was by Mat Evans and Kathryn Emmerson at the 
 University of Leeds. Subsquently developement / testing work has been
-undertaken by [Barron Henderson](mailto:barronh@ufl.edu) (UF), [Dylan
-Millet](http://www.atmoschem.umn.edu/) , [Michael
-Berkley](http://www.geos.ed.ac.uk/qeo/postgraduate/PhD/Applications/people/person.html?indv=1476)
-(U. Edinburgh), and [Daniel
-Stone](http://www.chem.leeds.ac.uk/Atmospheric/Field/fage/daniel.html)
-(U. Leeds). The interface for GEOS-Chem was developed by [Jingqiu
-Mao](http://www.people.fas.harvard.edu/%7Emao/) (Harvard) and Mat Evans.
+undertaken by Barron Henderson, Dylan Millet, Michael Berkley, and Daniel
+Stone (U. Leeds). The interface for GEOS-Chem was developed by Jingqiu
+Mao (Harvard) and Mat Evans.
 
 The DSMACC model code and testcase is available from
 [here](http://www.github.com/barronh/DSMACC). It is based on the [KPP
